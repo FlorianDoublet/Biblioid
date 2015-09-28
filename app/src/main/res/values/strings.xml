@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ProjectBooks</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_create_book">Création d\'un livre</string>
+    <string name="bookTitle">Titre :</string>
+    <string name="bookAuthor">Auteur :</string>
+    <string name="bookISBN">ISBN :</string>
+    <string name="btnOK">OK</string>
+    <string name="openCreateBookButton">Création d\'un nouveau livre</string>
+    <string name="openBookListButton">Afficher la liste des livres</string>
+    <string name="title_activity_display_books">Liste des livres</string>
+</resources>
