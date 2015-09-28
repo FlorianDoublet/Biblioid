@@ -10,13 +10,19 @@ import android.view.View;
 
 public class Main extends ActionBarActivity {
 
-     protected BookLibrary books;
+    public final static String EXTRA_MESSAGE = "flq.LISTOFBOOKS";
+    protected BookLibrary books;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         books = new BookLibrary();
+
+        books.Add(new Book("Harry Pot De Fleur", "J.K. Brownie", "1451", null));
+        books.Add(new Book("Le Seigneur Des Panneaux", "J.R.R. Trollkien", "45187", null));
+        books.Add(new Book("Fhamlette", "William Cestpire", "0218", null));
+        books.Add(new Book("Les Sirops d'érable", "Victor Jus Go", "45187", null));
 
     }
 
@@ -46,6 +52,12 @@ public class Main extends ActionBarActivity {
         Intent intent = new Intent(this, createBook.class);
 
         startActivityForResult(intent, 0);
+    }
+
+    public void openDisplayBookActivity(View view) {
+        Intent intent = new Intent(this, displayBooks.class);
+        intent.putExtra(EXTRA_MESSAGE, books);
+        startActivity(intent);
     }
 
     @Override

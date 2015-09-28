@@ -11,4 +11,5 @@
     <string name="openCreateBookButton">Création d\'un nouveau livre</string>
     <string name="openBookListButton">Afficher la liste des livres</string>
     <string name="title_activity_display_books">Liste des livres</string>
+    <string name="book_image">The picture in the listviews</string>
 </resources>

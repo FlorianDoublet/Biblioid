@@ -1,17 +1,18 @@
 package flq.projectbooks;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Doublet F. Delvallet Q. and Delvallet L. on 24/09/15.
  */
-public class BookLibrary {
+public class BookLibrary implements Serializable {
 
     List<Book> books;
 
     public BookLibrary() {
-        books = new ArrayList<Book>();
+        books = new ArrayList<>();
     }
 
     public void Add(Book book){
