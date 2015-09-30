@@ -18,7 +18,8 @@
         </activity>
         <activity
             android:name=".createBook"
-            android:label="@string/title_activity_create_book" >
+            android:label="@string/title_activity_create_book"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".displayBooks"
