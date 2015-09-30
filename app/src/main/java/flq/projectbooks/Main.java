@@ -63,7 +63,9 @@ public class Main extends ActionBarActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Book book = (Book) data.getSerializableExtra(createBook.EXTRA_MESSAGE);
-        books.Add(book);
+        if(data != null && data.hasExtra(createBook.EXTRA_MESSAGE)){
+            Book book = (Book) data.getSerializableExtra(createBook.EXTRA_MESSAGE);
+            books.Add(book);
+        }
     }
 }
