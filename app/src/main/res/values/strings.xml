@@ -14,4 +14,9 @@
     <string name="book_image">The picture in the listviews</string>
     <string name="edit_bookTitle">Modifier le livre</string>
     <string name="delete_bookTitle">Supprimer le livre</string>
+    <string name="title_activity_display_filters">Liste des filtres</string>
+    <string name="bookfilterListButton">Afficher la liste des filtres</string>
+    <string name="title_activity_create_filter">Créer un filtre</string>
+    <string name="display_filter">Appliquer le filtre</string>
+    <string name="delete_filter">Supprimer le filtre</string>
 </resources>

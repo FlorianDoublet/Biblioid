@@ -116,7 +116,7 @@ public class displayBooks extends ActionBarActivity implements PopupMenu.OnMenuI
                 bookLibrary.getBooks().remove(selectedBookIndex);
                 listOfBooks.remove(selectedBookIndex);
                 listAdapter.notifyDataSetChanged();
-                Toast.makeText(this, "Book removed" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Livre effacé" , Toast.LENGTH_SHORT).show();
 
                 return true;
         }
