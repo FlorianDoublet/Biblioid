@@ -10,7 +10,8 @@ import android.view.View;
 
 public class Main extends ActionBarActivity {
 
-    public final static String EXTRA_MESSAGE = "flq.LISTOFBOOKS";
+    public final static String GIVE_LIST_OF_BOOKS = "flq.LISTOFBOOKS";
+    public final static String GIVE_BOOK = "flq.GIVE_BOOK";
     protected BookLibrary books;
 
     @Override
@@ -50,22 +51,28 @@ public class Main extends ActionBarActivity {
 
     public void openCreateBookActivity(View view) {
         Intent intent = new Intent(this, createBook.class);
-
+        intent.putExtra(GIVE_BOOK, books.getNewBook());
         startActivityForResult(intent, 0);
     }
 
     public void openDisplayBookActivity(View view) {
         Intent intent = new Intent(this, displayBooks.class);
-        intent.putExtra(EXTRA_MESSAGE, books);
-        startActivity(intent);
+        intent.putExtra(GIVE_LIST_OF_BOOKS, books);
+        startActivityForResult(intent, 0);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data != null && data.hasExtra(createBook.EXTRA_MESSAGE)){
-            Book book = (Book) data.getSerializableExtra(createBook.EXTRA_MESSAGE);
+        if(data != null && data.hasExtra(createBook.GIVE_BOOK_BACK)){
+            Book book = (Book) data.getSerializableExtra(createBook.GIVE_BOOK_BACK);
             books.Add(book);
         }
+
+        if(data != null && data.hasExtra(displayBooks.GIVE_BOOKS_BACK)){
+            BookLibrary retrievedBooks = (BookLibrary) data.getSerializableExtra(displayBooks.GIVE_BOOKS_BACK);
+            books = retrievedBooks ;
+        }
+
     }
 }

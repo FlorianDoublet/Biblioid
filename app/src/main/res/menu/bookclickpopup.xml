@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <item
+        android:id="@+id/edit_book"
+        android:title="@string/edit_bookTitle"
+        android:visible="true"/>
+    <item
+        android:id="@+id/delete_book"
+        android:title="@string/delete_bookTitle"
+        android:visible="true"/>
+
+</menu>

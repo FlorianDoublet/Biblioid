@@ -1,12 +1,17 @@
 package flq.projectbooks;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +19,16 @@ import java.util.List;
 import java.util.Map;
 
 
-public class displayBooks extends ActionBarActivity {
+public class displayBooks extends ActionBarActivity implements PopupMenu.OnMenuItemClickListener {
+
+    public final static String GIVE_BOOKS_BACK = "flq.UPDATED_LIST_OF_BOOKS";
+    public final static String GIVE_BOOK = "flq.GIVE_BOOK";
+
+    private int selectedBookIndex;
+    private ListView bookList;
+    private List<Map<String, String>> listOfBooks ;
+    private SimpleAdapter listAdapter;
+    private BookLibrary bookLibrary ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +36,31 @@ public class displayBooks extends ActionBarActivity {
         setContentView(R.layout.activity_display_books);
         Intent intent = getIntent();
 
+        bookList = (ListView) findViewById(R.id.bookList);
 
+        bookList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedBookIndex = position;
+                PopupMenu popupMenu = new PopupMenu(displayBooks.this, view);
+                popupMenu.setOnMenuItemClickListener(displayBooks.this);
+                popupMenu.inflate(R.menu.bookclickpopup);
+                popupMenu.show();
+
+                return true;
+            }
+        });
+        bookLibrary = (BookLibrary) intent.getSerializableExtra(Main.GIVE_LIST_OF_BOOKS);
+        createListView(bookLibrary);
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(GIVE_BOOKS_BACK, bookLibrary);
+        setResult(Activity.RESULT_OK, resultIntent);
+    }
+
+    private void createListView(BookLibrary books){
+        listOfBooks = new ArrayList<>();
         ListView bookList = (ListView) findViewById(R.id.bookList);
-
-        BookLibrary books = (BookLibrary) intent.getSerializableExtra(Main.EXTRA_MESSAGE);
-
-        List<Map<String, String>> listOfBooks = new ArrayList<>();
 
         for (Book book : books.getBooks()) {
             Map<String, String> bookMap = new HashMap<>() ;
@@ -38,9 +71,10 @@ public class displayBooks extends ActionBarActivity {
             listOfBooks.add(bookMap);
         }
 
-        SimpleAdapter listAdapter = new SimpleAdapter(this.getBaseContext(), listOfBooks, R.layout.book_detail,
+        listAdapter = new SimpleAdapter(this.getBaseContext(), listOfBooks, R.layout.book_detail,
                 new String[] {"img", "author", "title", "isbn"},
                 new int[] {R.id.img, R.id.author, R.id.title, R.id.isbn});
+
 
         bookList.setAdapter(listAdapter);
     }
@@ -66,4 +100,46 @@ public class displayBooks extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public boolean onMenuItemClick(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.edit_book:
+                Book book = bookLibrary.getBooks().get(selectedBookIndex);
+
+                Intent intent = new Intent(this, createBook.class);
+                intent.putExtra(GIVE_BOOK, book);
+                startActivityForResult(intent, 0);
+
+                return true;
+            case R.id.delete_book:
+                bookLibrary.getBooks().remove(selectedBookIndex);
+                listOfBooks.remove(selectedBookIndex);
+                listAdapter.notifyDataSetChanged();
+                Toast.makeText(this, "Book removed" , Toast.LENGTH_SHORT).show();
+
+                return true;
+        }
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data != null && data.hasExtra(createBook.GIVE_BOOK_BACK)){
+            Book book = (Book) data.getSerializableExtra(createBook.GIVE_BOOK_BACK);
+            bookLibrary.getBooks().set(selectedBookIndex, book);
+
+            Map<String, String> bookMap = new HashMap<>() ;
+            bookMap.put("img", String.valueOf(R.drawable.picturebook));
+            bookMap.put("author", book.getAuthor());
+            bookMap.put("title", book.getTitle());
+            bookMap.put("isbn", book.getIsbn());
+            listOfBooks.set(selectedBookIndex, bookMap);
+
+            listAdapter.notifyDataSetChanged();
+        }
+    }
+
+
 }

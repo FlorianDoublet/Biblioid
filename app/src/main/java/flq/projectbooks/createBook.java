@@ -8,15 +8,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class createBook extends ActionBarActivity {
 
-    public final static String EXTRA_MESSAGE = "flq.NEWBOOK";
+    public final static String GIVE_BOOK_BACK = "flq.NEWBOOK";
+    private Book book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_book);
+
+        Intent intent = getIntent();
+        book = (Book) intent.getSerializableExtra(displayBooks.GIVE_BOOK);
+
+        if(book.isNew()) {
+            setTitle("Création d'un livre");
+        } else {
+            setTitle("Modification d'un livre");
+        }
+
+        ((TextView)findViewById(R.id.bookTitle)).setText(book.getTitle());
+        ((TextView)findViewById(R.id.bookISBN)).setText(book.getIsbn());
+        ((TextView)findViewById(R.id.bookAuthor)).setText(book.getAuthor());
     }
 
     @Override
@@ -46,10 +61,12 @@ public class createBook extends ActionBarActivity {
         EditText author = (EditText) findViewById(R.id.bookAuthor);
         EditText isbn = (EditText) findViewById(R.id.bookISBN);
 
-        Book book = new Book(title.getText().toString(), author.getText().toString(), isbn.getText().toString(), "");
+        book.setTitle(title.getText().toString());
+        book.setAuthor(author.getText().toString());
+        book.setIsbn(isbn.getText().toString());
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra(EXTRA_MESSAGE, book);
+        resultIntent.putExtra(GIVE_BOOK_BACK, book);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
 

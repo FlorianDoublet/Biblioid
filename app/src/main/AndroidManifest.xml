@@ -23,11 +23,7 @@
         </activity>
         <activity
             android:name=".displayBooks"
-            android:label="@string/title_activity_display_books"
-            android:parentActivityName=".Main" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="flq.projectbooks.Main" />
+            android:label="@string/title_activity_display_books">
         </activity>
     </application>
 

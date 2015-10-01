@@ -12,4 +12,6 @@
     <string name="openBookListButton">Afficher la liste des livres</string>
     <string name="title_activity_display_books">Liste des livres</string>
     <string name="book_image">The picture in the listviews</string>
+    <string name="edit_bookTitle">Modifier le livre</string>
+    <string name="delete_bookTitle">Supprimer le livre</string>
 </resources>
