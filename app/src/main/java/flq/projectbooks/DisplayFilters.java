@@ -22,13 +22,13 @@ import java.util.Map;
 public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMenuItemClickListener {
 
     public final static String GIVE_FILTER_BACK = "flq.UPDATED_LIST_OF_FILTER";
-    public final static String GIVE_FILTER = "flq.GIVE_FILTER";
+    public final static String GIVE_FILTER_FOR_DISPLAY = "flq.GIVE_FILTER_FOR_DISPLAY";
 
     private int selectedFilterIndex;
     private ListView filterList;
     private List<Map<String, String>> listOfFilters;
     private SimpleAdapter listAdapter;
-    private FilterLibrary filterLibrary ;
+    private BookFilterCatalog bookFilterCatalog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +50,15 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
                 return true;
             }
         });
-        filterLibrary = (FilterLibrary) intent.getSerializableExtra(Main.GIVE_LIST_OF_FILTERS);
-        createListView(filterLibrary);
+        bookFilterCatalog = (BookFilterCatalog) intent.getSerializableExtra(Main.GIVE_LIST_OF_FILTERS);
+        createListView(bookFilterCatalog);
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra(GIVE_FILTER_BACK, filterLibrary);
+        resultIntent.putExtra(GIVE_FILTER_BACK, bookFilterCatalog);
         setResult(Activity.RESULT_OK, resultIntent);
     }
 
-    private void createListView(FilterLibrary filters){
+    private void createListView(BookFilterCatalog filters){
         listOfFilters = new ArrayList<>();
         ListView filterList = (ListView) findViewById(R.id.filterList);
 
@@ -104,15 +104,15 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
 
         switch (item.getItemId()) {
             case R.id.display_filter:
-                /*Book book = bookLibrary.getBooks().get(selectedFilterIndex);
 
-                Intent intent = new Intent(this, createBook.class);
-                intent.putExtra(GIVE_FILTER, book);
-                startActivityForResult(intent, 0);
-                */
+                Intent intent = new Intent(this, CreateFilter.class);
+                intent.putExtra(GIVE_FILTER_FOR_DISPLAY, bookFilterCatalog);
+                setResult(selectedFilterIndex, intent);
+                finish();
+
                 return true;
             case R.id.delete_filter:
-                filterLibrary.getFilters().remove(selectedFilterIndex);
+                bookFilterCatalog.getFilters().remove(selectedFilterIndex);
                 listOfFilters.remove(selectedFilterIndex);
                 listAdapter.notifyDataSetChanged();
                 Toast.makeText(this, "Filtre effacé" , Toast.LENGTH_SHORT).show();
@@ -127,7 +127,7 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         super.onActivityResult(requestCode, resultCode, data);
         if(data != null && data.hasExtra(CreateFilter.GIVE_FILTER_BACK)){
             BookFilter filter = (BookFilter) data.getSerializableExtra(CreateFilter.GIVE_FILTER_BACK);
-            filterLibrary.getFilters().set(selectedFilterIndex, filter);
+            bookFilterCatalog.getFilters().set(selectedFilterIndex, filter);
 
             Map<String, String> filterMap = new HashMap<>() ;
             filterMap.put("author", filter.getAuthor());

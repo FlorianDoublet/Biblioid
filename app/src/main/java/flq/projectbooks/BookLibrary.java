@@ -30,4 +30,14 @@ public class BookLibrary implements Serializable {
     public void DeleteBook(Book book){
         books.remove(book);
     }
+
+    public void UpdateBook( Book book){
+        int id = book.id;
+        for(int j = 0; j < books.size(); j++){
+           if(books.get(j).id == id){
+               books.set(j, book);
+           }
+        }
+
+    }
 }

@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class createBook extends ActionBarActivity {
+public class CreateBook extends ActionBarActivity {
 
     public final static String GIVE_BOOK_BACK = "flq.NEWBOOK";
     private Book book;
@@ -21,7 +21,7 @@ public class createBook extends ActionBarActivity {
         setContentView(R.layout.activity_create_book);
 
         Intent intent = getIntent();
-        book = (Book) intent.getSerializableExtra(displayBooks.GIVE_BOOK);
+        book = (Book) intent.getSerializableExtra(DisplayBooks.GIVE_BOOK);
 
         if(book.isNew()) {
             setTitle("Création d'un livre");

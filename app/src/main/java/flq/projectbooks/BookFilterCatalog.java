@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Created by doublet on 01/10/15.
  */
-public class FilterLibrary implements Serializable {
+public class BookFilterCatalog implements Serializable {
 
     List<BookFilter> filters;
 
-    public FilterLibrary() {
+    public BookFilterCatalog() {
         filters = new ArrayList<>();
     }
 
@@ -32,4 +32,5 @@ public class FilterLibrary implements Serializable {
     public void DeleteFilters(BookFilter filter){
         filters.remove(filter);
     }
+
 }

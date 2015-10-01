@@ -6,6 +6,8 @@ import java.io.Serializable;
  * Created by Doublet F. Delvallet Q. and Delvallet L. on 24/09/15.
  */
 public class Book implements Serializable {
+    static int nbLivre = 0;
+    protected int id;
     protected String title;
     protected String author;
     protected String isbn;
@@ -19,6 +21,8 @@ public class Book implements Serializable {
         this.isbn = isbn;
         this.image = image;
         this.isNew = false;
+        id = nbLivre;
+        nbLivre++;
     }
 
     public boolean isNew() {
@@ -28,6 +32,8 @@ public class Book implements Serializable {
     public Book(){
         super();
         this.isNew = true;
+        id = nbLivre;
+        nbLivre++;
     }
 
     public String getAuthor() {

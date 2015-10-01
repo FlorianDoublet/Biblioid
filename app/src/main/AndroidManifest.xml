@@ -17,12 +17,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".createBook"
+            android:name=".CreateBook"
             android:label="@string/title_activity_create_book"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:name=".displayBooks"
+            android:name=".DisplayBooks"
             android:label="@string/title_activity_display_books" >
         </activity>
         <activity

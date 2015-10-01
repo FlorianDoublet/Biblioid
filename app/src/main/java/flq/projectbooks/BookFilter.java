@@ -20,6 +20,9 @@ public class BookFilter implements Serializable {
 
     public BookFilter(){
         super();
+        this.title = "";
+        this.author = "";
+        this.isbn = "";
     }
 
     public String getAuthor() {
@@ -46,5 +49,19 @@ public class BookFilter implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public boolean IsSelected(Book book){
+        boolean returnValue = true;
+        if(!author.equals("") && !book.getAuthor().equals(author)){
+            returnValue = false;
+        }
+        if(!title.equals("") && !book.getTitle().equals(title)){
+            returnValue = false;
+        }
+        if(!isbn.equals("") && !book.getIsbn().equals(isbn)){
+            returnValue = false;
+        }
+        return returnValue;
     }
 }

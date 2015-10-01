@@ -19,10 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 
-public class displayBooks extends ActionBarActivity implements PopupMenu.OnMenuItemClickListener {
+public class DisplayBooks extends ActionBarActivity implements PopupMenu.OnMenuItemClickListener {
 
     public final static String GIVE_BOOKS_BACK = "flq.UPDATED_LIST_OF_BOOKS";
+    public final static String GIVE_FILTERED_BOOKS_BACK = "flq.UPDATED_FILTERED_LIST_OF_BOOKS";
     public final static String GIVE_BOOK = "flq.GIVE_BOOK";
+
 
     private int selectedBookIndex;
     private ListView bookList;
@@ -42,19 +44,28 @@ public class displayBooks extends ActionBarActivity implements PopupMenu.OnMenuI
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedBookIndex = position;
-                PopupMenu popupMenu = new PopupMenu(displayBooks.this, view);
-                popupMenu.setOnMenuItemClickListener(displayBooks.this);
+                PopupMenu popupMenu = new PopupMenu(DisplayBooks.this, view);
+                popupMenu.setOnMenuItemClickListener(DisplayBooks.this);
                 popupMenu.inflate(R.menu.bookclickpopup);
                 popupMenu.show();
 
                 return true;
             }
         });
-        bookLibrary = (BookLibrary) intent.getSerializableExtra(Main.GIVE_LIST_OF_BOOKS);
+        Intent resultIntent = new Intent();
+        if(intent.hasExtra(Main.GIVE_LIST_OF_BOOKS)){
+            bookLibrary = (BookLibrary) intent.getSerializableExtra(Main.GIVE_LIST_OF_BOOKS);
+            resultIntent.putExtra(GIVE_BOOKS_BACK, bookLibrary);
+        }
+        if(intent.hasExtra(Main.GIVE_FILTERED_LIST_OF_BOOKS)){
+            bookLibrary = (BookLibrary) intent.getSerializableExtra(Main.GIVE_FILTERED_LIST_OF_BOOKS);
+            resultIntent.putExtra(GIVE_FILTERED_BOOKS_BACK, bookLibrary);
+        }
+
         createListView(bookLibrary);
 
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(GIVE_BOOKS_BACK, bookLibrary);
+
+
         setResult(Activity.RESULT_OK, resultIntent);
     }
 
@@ -107,7 +118,7 @@ public class displayBooks extends ActionBarActivity implements PopupMenu.OnMenuI
             case R.id.edit_book:
                 Book book = bookLibrary.getBooks().get(selectedBookIndex);
 
-                Intent intent = new Intent(this, createBook.class);
+                Intent intent = new Intent(this, CreateBook.class);
                 intent.putExtra(GIVE_BOOK, book);
                 startActivityForResult(intent, 0);
 
@@ -126,8 +137,8 @@ public class displayBooks extends ActionBarActivity implements PopupMenu.OnMenuI
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data != null && data.hasExtra(createBook.GIVE_BOOK_BACK)){
-            Book book = (Book) data.getSerializableExtra(createBook.GIVE_BOOK_BACK);
+        if(data != null && data.hasExtra(CreateBook.GIVE_BOOK_BACK)){
+            Book book = (Book) data.getSerializableExtra(CreateBook.GIVE_BOOK_BACK);
             bookLibrary.getBooks().set(selectedBookIndex, book);
 
             Map<String, String> bookMap = new HashMap<>() ;
