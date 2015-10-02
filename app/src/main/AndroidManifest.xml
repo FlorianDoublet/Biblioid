@@ -31,7 +31,8 @@
         </activity>
         <activity
             android:name=".CreateFilter"
-            android:label="@string/title_activity_create_filter" >
+            android:label="@string/title_activity_create_filter"
+            android:windowSoftInputMode="adjustResize" >
         </activity>
     </application>
 

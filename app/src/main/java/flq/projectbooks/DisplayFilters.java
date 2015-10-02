@@ -22,6 +22,7 @@ import java.util.Map;
 public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMenuItemClickListener {
 
     public final static String GIVE_FILTER_BACK = "flq.UPDATED_LIST_OF_FILTER";
+    public final static String GIVE_EMPTY_FILTER = "flq.EMPTY_FILTER";
     public final static String GIVE_FILTER_FOR_DISPLAY = "flq.GIVE_FILTER_FOR_DISPLAY";
 
     private int selectedFilterIndex;
@@ -90,11 +91,14 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(item.getItemId()){
+            case  R.id.action_settings:
+                return true;
+            case R.id.create_filter_option:
+                Intent intent = new Intent(this, CreateFilter.class);
+                intent.putExtra(GIVE_EMPTY_FILTER, bookFilterCatalog.getNewFilters());
+                startActivityForResult(intent, 0);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -105,7 +109,7 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         switch (item.getItemId()) {
             case R.id.display_filter:
 
-                Intent intent = new Intent(this, CreateFilter.class);
+                Intent intent = getIntent();
                 intent.putExtra(GIVE_FILTER_FOR_DISPLAY, bookFilterCatalog);
                 setResult(selectedFilterIndex, intent);
                 finish();
@@ -127,13 +131,13 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         super.onActivityResult(requestCode, resultCode, data);
         if(data != null && data.hasExtra(CreateFilter.GIVE_FILTER_BACK)){
             BookFilter filter = (BookFilter) data.getSerializableExtra(CreateFilter.GIVE_FILTER_BACK);
-            bookFilterCatalog.getFilters().set(selectedFilterIndex, filter);
+            bookFilterCatalog.getFilters().add(filter);
 
             Map<String, String> filterMap = new HashMap<>() ;
             filterMap.put("author", filter.getAuthor());
             filterMap.put("title", filter.getTitle());
             filterMap.put("isbn", filter.getIsbn());
-            listOfFilters.set(selectedFilterIndex, filterMap);
+            listOfFilters.add(filterMap);
 
             listAdapter.notifyDataSetChanged();
         }
