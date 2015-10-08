@@ -25,3 +25,11 @@ proguard/
 
 # Log Files
 *.log
+
+.idea/gradle.xml
+.idea/libraries/appcompat_v7_22_1_1.xml
+.idea/libraries/support_annotations_22_1_1.xml
+.idea/libraries/support_v4_22_1_1.xml
+.idea/misc.xml
+.idea/workspace.xml
+app/app.iml
