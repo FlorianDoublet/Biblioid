@@ -12,15 +12,10 @@ import android.widget.EditText;
 
 public class CreateFilter extends ActionBarActivity {
 
-    public final static String GIVE_FILTER_BACK = "flq.NEWFILTER";
-    public BookFilter filter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_filter);
-        Intent intent = getIntent();
-        filter = (BookFilter) intent.getSerializableExtra(DisplayFilters.GIVE_EMPTY_FILTER);
     }
 
     @Override
@@ -46,6 +41,8 @@ public class CreateFilter extends ActionBarActivity {
     }
 
     public void filterCreation(View view){
+        BookFilter filter = new BookFilter();
+
         EditText title = (EditText) findViewById(R.id.filterTitle);
         EditText author = (EditText) findViewById(R.id.filterAuthor);
         EditText isbn = (EditText) findViewById(R.id.filterISBN);
@@ -54,10 +51,8 @@ public class CreateFilter extends ActionBarActivity {
         filter.setAuthor(author.getText().toString());
         filter.setIsbn(isbn.getText().toString());
 
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(GIVE_FILTER_BACK, filter);
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        BookFilterCatalog.getInstance().Add(filter);
 
+        finish();
     }
 }

@@ -21,16 +21,14 @@ import java.util.Map;
 
 public class DisplayBooks extends ActionBarActivity implements PopupMenu.OnMenuItemClickListener {
 
-    public final static String GIVE_BOOKS_BACK = "flq.UPDATED_LIST_OF_BOOKS";
-    public final static String GIVE_FILTERED_BOOKS_BACK = "flq.UPDATED_FILTERED_LIST_OF_BOOKS";
     public final static String GIVE_BOOK = "flq.GIVE_BOOK";
-
 
     private int selectedBookIndex;
     private ListView bookList;
     private List<Map<String, String>> listOfBooks ;
     private SimpleAdapter listAdapter;
     private BookLibrary bookLibrary ;
+    private BookFilter bookFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,27 +51,35 @@ public class DisplayBooks extends ActionBarActivity implements PopupMenu.OnMenuI
             }
         });
         Intent resultIntent = new Intent();
-        if(intent.hasExtra(Main.GIVE_LIST_OF_BOOKS)){
-            bookLibrary = (BookLibrary) intent.getSerializableExtra(Main.GIVE_LIST_OF_BOOKS);
-            resultIntent.putExtra(GIVE_BOOKS_BACK, bookLibrary);
-        }
-        if(intent.hasExtra(Main.GIVE_FILTERED_LIST_OF_BOOKS)){
-            bookLibrary = (BookLibrary) intent.getSerializableExtra(Main.GIVE_FILTERED_LIST_OF_BOOKS);
-            resultIntent.putExtra(GIVE_FILTERED_BOOKS_BACK, bookLibrary);
+
+        if(intent.hasExtra(DisplayFilters.GIVE_FILTER)){
+            bookFilter = (BookFilter) intent.getSerializableExtra(DisplayFilters.GIVE_FILTER);
+        } else {
+            bookLibrary = BookLibrary.getInstance();
         }
 
-        createListView(bookLibrary);
-
-
+        createListView();
 
         setResult(Activity.RESULT_OK, resultIntent);
     }
 
-    private void createListView(BookLibrary books){
+    private void createListView(){
+
+        if(bookFilter != null) {
+            BookLibrary filteredBooksLibrary = new BookLibrary();
+            for (int i = 0; i < BookLibrary.getInstance().getBookList().size(); i++) {
+                if (bookFilter.IsSelected(BookLibrary.getInstance().getBookList().get(i))) {
+                    filteredBooksLibrary.Add(BookLibrary.getInstance().getBookList().get(i));
+                }
+            }
+            bookLibrary = filteredBooksLibrary;
+        }
+
+
         listOfBooks = new ArrayList<>();
         ListView bookList = (ListView) findViewById(R.id.bookList);
 
-        for (Book book : books.getBooks()) {
+        for (Book book : bookLibrary.getBookList()) {
             Map<String, String> bookMap = new HashMap<>() ;
             bookMap.put("img", String.valueOf(R.drawable.picturebook));
             bookMap.put("author", book.getAuthor());
@@ -116,15 +122,14 @@ public class DisplayBooks extends ActionBarActivity implements PopupMenu.OnMenuI
 
         switch (item.getItemId()) {
             case R.id.edit_book:
-                Book book = bookLibrary.getBooks().get(selectedBookIndex);
-
+                Book book = bookLibrary.getBookList().get(selectedBookIndex);
                 Intent intent = new Intent(this, CreateBook.class);
                 intent.putExtra(GIVE_BOOK, book);
                 startActivityForResult(intent, 0);
 
                 return true;
             case R.id.delete_book:
-                bookLibrary.getBooks().remove(selectedBookIndex);
+                BookLibrary.getInstance().DeleteBookById(bookLibrary.getBookList().get(selectedBookIndex).id);
                 listOfBooks.remove(selectedBookIndex);
                 listAdapter.notifyDataSetChanged();
                 Toast.makeText(this, "Livre effacé" , Toast.LENGTH_SHORT).show();
@@ -137,20 +142,14 @@ public class DisplayBooks extends ActionBarActivity implements PopupMenu.OnMenuI
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if(data != null && data.hasExtra(CreateBook.GIVE_BOOK_BACK)){
             Book book = (Book) data.getSerializableExtra(CreateBook.GIVE_BOOK_BACK);
-            bookLibrary.getBooks().set(selectedBookIndex, book);
 
-            Map<String, String> bookMap = new HashMap<>() ;
-            bookMap.put("img", String.valueOf(R.drawable.picturebook));
-            bookMap.put("author", book.getAuthor());
-            bookMap.put("title", book.getTitle());
-            bookMap.put("isbn", book.getIsbn());
-            listOfBooks.set(selectedBookIndex, bookMap);
-
-            listAdapter.notifyDataSetChanged();
+            BookLibrary.getInstance().UpdateOrAddBook(book);
         }
-    }
 
+        createListView();
+    }
 
 }

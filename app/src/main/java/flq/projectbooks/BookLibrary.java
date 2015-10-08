@@ -9,18 +9,24 @@ import java.util.List;
  */
 public class BookLibrary implements Serializable {
 
-    List<Book> books;
+    private static BookLibrary books = new BookLibrary();
+
+    List<Book> bookList;
+
+    public static BookLibrary getInstance() {
+        return books;
+    }
 
     public BookLibrary() {
-        books = new ArrayList<>();
+        bookList = new ArrayList<>();
     }
 
     public void Add(Book book){
-        books.add(book);
+        bookList.add(book);
     }
 
-    public List<Book> getBooks(){
-        return books;
+    public List<Book> getBookList(){
+        return bookList;
     }
 
     public Book getNewBook(){
@@ -28,16 +34,27 @@ public class BookLibrary implements Serializable {
     }
 
     public void DeleteBook(Book book){
-        books.remove(book);
+        bookList.remove(book);
     }
 
-    public void UpdateBook( Book book){
+    public void DeleteBookById(int id){
+        for(int j = 0; j < bookList.size(); j++){
+            if(bookList.get(j).id == id){
+                bookList.remove(j);
+                return;
+            }
+        }
+    }
+
+    public void UpdateOrAddBook( Book book){
         int id = book.id;
-        for(int j = 0; j < books.size(); j++){
-           if(books.get(j).id == id){
-               books.set(j, book);
+        for(int j = 0; j < bookList.size(); j++){
+           if(bookList.get(j).id == id){
+               bookList.set(j, book);
+               return;
            }
         }
-
+        bookList.add(book);
     }
+
 }

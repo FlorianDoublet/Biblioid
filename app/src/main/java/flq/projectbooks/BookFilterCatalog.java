@@ -1,7 +1,5 @@
 package flq.projectbooks;
 
-import android.widget.Filter;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,18 +9,24 @@ import java.util.List;
  */
 public class BookFilterCatalog implements Serializable {
 
-    List<BookFilter> filters;
+    private static BookFilterCatalog bookFilters = new BookFilterCatalog();
 
-    public BookFilterCatalog() {
-        filters = new ArrayList<>();
+    List<BookFilter> bookFilterList;
+
+    public static BookFilterCatalog getInstance() {
+        return bookFilters;
+    }
+
+    private BookFilterCatalog() {
+        bookFilterList = new ArrayList<>();
     }
 
     public void Add(BookFilter filter){
-        filters.add(filter);
+        bookFilterList.add(filter);
     }
 
-    public List<BookFilter> getFilters(){
-        return filters;
+    public List<BookFilter> getBookFilterList(){
+        return bookFilterList;
     }
 
     public BookFilter getNewFilters(){
@@ -30,7 +34,7 @@ public class BookFilterCatalog implements Serializable {
     }
 
     public void DeleteFilters(BookFilter filter){
-        filters.remove(filter);
+        bookFilterList.remove(filter);
     }
 
 }

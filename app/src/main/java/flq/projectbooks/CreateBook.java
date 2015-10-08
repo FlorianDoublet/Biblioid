@@ -68,7 +68,7 @@ public class CreateBook extends ActionBarActivity {
         Intent resultIntent = new Intent();
         resultIntent.putExtra(GIVE_BOOK_BACK, book);
         setResult(Activity.RESULT_OK, resultIntent);
-        finish();
 
+        finish();
     }
 }
