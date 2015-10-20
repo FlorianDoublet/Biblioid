@@ -15,12 +15,13 @@ public class Book implements Serializable {
     protected String description;
     protected Boolean isNew;
 
-    public Book (String title, String author, String isbn, String image) {
+    public Book (String title, String author, String isbn, String image, String description) {
         super();
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.image = image;
+        this.description = description;
         this.isNew = false;
         id = nbLivre;
         nbLivre++;
