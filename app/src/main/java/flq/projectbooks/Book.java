@@ -12,6 +12,7 @@ public class Book implements Serializable {
     protected String author;
     protected String isbn;
     protected String image;
+    protected String description;
     protected Boolean isNew;
 
     public Book (String title, String author, String isbn, String image) {
@@ -52,6 +53,10 @@ public class Book implements Serializable {
         return title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setAuthor(String author) {
         this.author = author;
         this.isNew = false;
@@ -69,6 +74,11 @@ public class Book implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+        this.isNew = false;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
         this.isNew = false;
     }
 }
