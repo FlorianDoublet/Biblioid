@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Main extends FragmentActivity  {
+public class Main extends ActionBarActivity  {
 
     public final static String GIVE_BOOK = "flq.GIVE_BOOK";
 
