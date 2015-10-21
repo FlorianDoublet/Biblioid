@@ -1,6 +1,8 @@
 package flq.projectbooks;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,12 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Main extends ActionBarActivity {
+public class Main extends FragmentActivity  {
 
     public final static String GIVE_BOOK = "flq.GIVE_BOOK";
 
     protected BookLibrary books;
     protected BookFilterCatalog filters;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

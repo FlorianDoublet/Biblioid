@@ -25,4 +25,5 @@
         android:text="@string/bookfilterListButton"
         android:onClick="openDisplayFilterActivity"/>
 
+
 </LinearLayout>
