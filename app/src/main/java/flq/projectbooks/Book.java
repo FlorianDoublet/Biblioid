@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Doublet F. Delvallet Q. and Delvallet L. on 24/09/15.
  */
 public class Book implements Serializable {
-    static int nbLivre = 0;
+    /*static int nbLivre = 0;
     protected int id;
     protected String title;
     protected String author;
@@ -76,6 +76,73 @@ public class Book implements Serializable {
     public void setTitle(String title) {
         this.title = title;
         this.isNew = false;
+    }*/
+
+    private long id;
+    private String title;
+    private String author;
+    private String isbn;
+    private String image;
+    private String description;
+
+    public Book(){
+        id = -1;
+        title = "";
+        author = "";
+        isbn = "";
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return title;
     }
 
     public void setDescription(String description) {

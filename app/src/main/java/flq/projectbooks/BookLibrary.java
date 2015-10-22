@@ -1,5 +1,7 @@
 package flq.projectbooks;
 
+import android.content.Context;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +11,36 @@ import java.util.List;
  */
 public class BookLibrary implements Serializable {
 
-    private static BookLibrary books = new BookLibrary();
+    private BooksDataSource datasource ;
+    private static BookLibrary books ;
+
 
     List<Book> bookList;
+    private static Context context ;
 
     public static BookLibrary getInstance() {
         return books;
     }
 
-    public BookLibrary() {
+    public BookLibrary(){
         bookList = new ArrayList<>();
+        datasource = new BooksDataSource(context);
+        datasource.open();
+        bookList = datasource.getAllBooks();
+        datasource.close();
+    }
+
+    public BookLibrary(Context _context) {
+        context = _context;
+        books = new BookLibrary();
     }
 
     public void Add(Book book){
         bookList.add(book);
+
+        datasource.open();
+        datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription()); //Add book to database
+        datasource.close();
     }
 
     public List<Book> getBookList(){
@@ -39,22 +57,39 @@ public class BookLibrary implements Serializable {
 
     public void DeleteBookById(int id){
         for(int j = 0; j < bookList.size(); j++){
-            if(bookList.get(j).id == id){
+            if(bookList.get(j).getId() == id){
+                //Remove from database
+                Book temp = bookList.get(j);
+                datasource.open();
+                datasource.deleteBook(temp);
+                datasource.close();
+
+                //Remove from local list
                 bookList.remove(j);
+
                 return;
             }
         }
     }
 
-    public void UpdateOrAddBook( Book book){
-        int id = book.id;
-        for(int j = 0; j < bookList.size(); j++){
-           if(bookList.get(j).id == id){
-               bookList.set(j, book);
-               return;
-           }
+    public void UpdateOrAddBook(Book book){
+        long id = book.getId();
+        if(id != -1) {
+            for (int j = 0; j < bookList.size(); j++) {
+                if (bookList.get(j).getId() == id) {
+                    datasource.open();
+                    datasource.updateBook(book); //Update database
+                    datasource.close();
+                    bookList.set(j, book); //Update local list
+                    return;
+                }
+            }
+        }else {
+            datasource.open();
+            datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription()); //Add book to database
+            bookList = datasource.getAllBooks(); //Update books
+            datasource.close();
         }
-        bookList.add(book);
     }
 
 }

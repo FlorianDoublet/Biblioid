@@ -16,7 +16,6 @@ public class DisplayBooks extends ActionBarActivity  implements  BookList.OnBook
     private BookList fragmentList ;
     private BookInfo fragmentInfoBook ;
 
-
     @Override
     public void OnBookSelected(Book book) {
         fragmentInfoBook = new BookInfo();

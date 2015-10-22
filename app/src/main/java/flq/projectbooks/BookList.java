@@ -141,7 +141,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     private void createListView(View view){
 
         if(bookFilter != null) {
-            BookLibrary filteredBooksLibrary = new BookLibrary();
+            BookLibrary filteredBooksLibrary = new BookLibrary(view.getContext());
             for (int i = 0; i < BookLibrary.getInstance().getBookList().size(); i++) {
                 if (bookFilter.IsSelected(BookLibrary.getInstance().getBookList().get(i))) {
                     filteredBooksLibrary.Add(BookLibrary.getInstance().getBookList().get(i));
@@ -205,7 +205,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
                 return true;
             case R.id.delete_book:
-                BookLibrary.getInstance().DeleteBookById(bookLibrary.getBookList().get(selectedBookIndex).id);
+                BookLibrary.getInstance().DeleteBookById((int)bookLibrary.getBookList().get(selectedBookIndex).getId());
                 listOfBooks.remove(selectedBookIndex);
                 listAdapter.notifyDataSetChanged();
                 Toast.makeText(getActivity(), "Livre effacé", Toast.LENGTH_SHORT).show();
@@ -218,13 +218,6 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(data != null && data.hasExtra(CreateBook.GIVE_BOOK_BACK)){
-            Book book = (Book) data.getSerializableExtra(CreateBook.GIVE_BOOK_BACK);
-
-            BookLibrary.getInstance().UpdateOrAddBook(book);
-        }
-
         createListView(getView());
     }
 
