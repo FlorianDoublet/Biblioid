@@ -27,8 +27,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_TITLE + " text not null, "
             + COLUMN_AUTHOR + " text not null, "
             + COLUMN_ISBN + " text not null, "
-            + COLUMN_IMAGE + " text not null, "
-            + COLUMN_DESCRIPTION + " text not null "
+            + COLUMN_IMAGE + " text, "
+            + COLUMN_DESCRIPTION + " text "
             + " );";
 
     public MySQLiteHelper(Context context) {
@@ -48,5 +48,4 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS);
         onCreate(db);
     }
-
 }

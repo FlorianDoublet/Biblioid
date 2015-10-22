@@ -65,9 +65,13 @@ public class CreateBook extends ActionBarActivity {
         book.setAuthor(author.getText().toString());
         book.setIsbn(isbn.getText().toString());
 
-        Intent resultIntent = new Intent();
+       /* Intent resultIntent = new Intent();
         resultIntent.putExtra(GIVE_BOOK_BACK, book);
-        setResult(Activity.RESULT_OK, resultIntent);
+        setResult(Activity.RESULT_OK, resultIntent);*/
+
+
+        BookLibrary.getInstance().UpdateOrAddBook(book);
+
 
         finish();
     }

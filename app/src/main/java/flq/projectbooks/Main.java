@@ -25,8 +25,9 @@ public class Main extends ActionBarActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         books = new BookLibrary(this);
+
 
         //books = BookLibrary.getInstance();
         //books.getBookList().clear();

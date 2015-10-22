@@ -79,6 +79,12 @@ public class Book implements Serializable {
     private String image;
     private String description;
 
+    public Book(){
+        id = -1;
+        title = "";
+        author = "";
+        isbn = "";
+    }
 
     public String getTitle() {
         return title;

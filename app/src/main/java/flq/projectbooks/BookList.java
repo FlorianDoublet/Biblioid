@@ -218,13 +218,6 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(data != null && data.hasExtra(CreateBook.GIVE_BOOK_BACK)){
-            Book book = (Book) data.getSerializableExtra(CreateBook.GIVE_BOOK_BACK);
-
-            BookLibrary.getInstance().UpdateOrAddBook(book);
-        }
-
         createListView(getView());
     }
 

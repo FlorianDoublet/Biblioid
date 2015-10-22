@@ -16,13 +16,13 @@ public class BookLibrary implements Serializable {
 
 
     List<Book> bookList;
+    private static Context context ;
 
     public static BookLibrary getInstance() {
         return books;
     }
 
-    public BookLibrary(Context context) {
-        books = new BookLibrary(context);
+    public BookLibrary(){
         bookList = new ArrayList<>();
         datasource = new BooksDataSource(context);
         datasource.open();
@@ -30,8 +30,17 @@ public class BookLibrary implements Serializable {
         datasource.close();
     }
 
+    public BookLibrary(Context _context) {
+        context = _context;
+        books = new BookLibrary();
+    }
+
     public void Add(Book book){
         bookList.add(book);
+
+        datasource.open();
+        datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription()); //Add book to database
+        datasource.close();
     }
 
     public List<Book> getBookList(){
@@ -65,19 +74,22 @@ public class BookLibrary implements Serializable {
 
     public void UpdateOrAddBook(Book book){
         long id = book.getId();
-        for(int j = 0; j < bookList.size(); j++){
-           if(bookList.get(j).getId() == id){
-               datasource.open();
-               datasource.updateBook(book); //Update database
-               datasource.close();
-               bookList.set(j, book); //Update local list
-               return;
-           }
+        if(id != -1) {
+            for (int j = 0; j < bookList.size(); j++) {
+                if (bookList.get(j).getId() == id) {
+                    datasource.open();
+                    datasource.updateBook(book); //Update database
+                    datasource.close();
+                    bookList.set(j, book); //Update local list
+                    return;
+                }
+            }
+        }else {
+            datasource.open();
+            datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription()); //Add book to database
+            bookList = datasource.getAllBooks(); //Update books
+            datasource.close();
         }
-        datasource.open();
-        datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription()); //Add book to database
-        datasource.close();
-        bookList.add(book); //Add book to local list
     }
 
 }
