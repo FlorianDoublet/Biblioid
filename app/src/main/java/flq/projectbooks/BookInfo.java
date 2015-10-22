@@ -1,12 +1,14 @@
 package flq.projectbooks;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -56,8 +58,17 @@ public class BookInfo extends Fragment implements Serializable {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_info, container, false);
 
-        TextView textView = (TextView) view.findViewById(R.id.bookInfoTitle);
-        textView.setText(book.getTitle());
+        TextView textViewTitle = (TextView) view.findViewById(R.id.bookInfoTitle);
+        textViewTitle.setText(book.getTitle());
+
+        TextView textViewAuthor = (TextView) view.findViewById(R.id.bookInfoAuthor);
+        textViewAuthor.setText(book.getAuthor());
+
+        TextView textViewDescription = (TextView) view.findViewById(R.id.bookInfoDescription);
+        textViewDescription.setText(book.getDescription());
+
+        ImageView imageView = (ImageView) view.findViewById(R.id.bookInfoImage);
+        imageView.setImageResource(getResources().getIdentifier(book.getImage(), "drawable", view.getContext().getPackageName()));
 
         return view ;
     }
