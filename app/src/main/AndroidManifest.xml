@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name=".DisplayBooks"
-            android:label="@string/title_activity_display_books" >
+            android:label="@string/title_activity_display_books">
         </activity>
         <activity
             android:name=".DisplayFilters"

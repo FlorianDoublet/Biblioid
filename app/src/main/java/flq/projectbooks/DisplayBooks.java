@@ -2,8 +2,10 @@ package flq.projectbooks;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,15 +32,23 @@ public class DisplayBooks extends ActionBarActivity  implements  BookList.OnBook
 
     @Override
     public void OnBookSelected(Book book) {
+        fragmentInfoBook = new BookInfo();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BookInfo.ARG_PARAM1, book);
+        fragmentInfoBook.setArguments(bundle);
         if (findViewById(R.id.bookInfoContainer) != null) {
-            fragmentInfoBook = new BookInfo();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(BookInfo.ARG_PARAM1, book);
-            fragmentInfoBook.setArguments(bundle);
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.bookInfoContainer, fragmentInfoBook).commit();
+        } else {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.listContainer, fragmentInfoBook);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
