@@ -145,8 +145,4 @@ public class Book implements Serializable {
         return title;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-        this.isNew = false;
-    }
 }
