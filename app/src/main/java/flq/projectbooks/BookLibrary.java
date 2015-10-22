@@ -25,7 +25,9 @@ public class BookLibrary implements Serializable {
         books = new BookLibrary(context);
         bookList = new ArrayList<>();
         datasource = new BooksDataSource(context);
+        datasource.open();
         bookList = datasource.getAllBooks();
+        datasource.close();
     }
 
     public void Add(Book book){
@@ -49,7 +51,9 @@ public class BookLibrary implements Serializable {
             if(bookList.get(j).getId() == id){
                 //Remove from database
                 Book temp = bookList.get(j);
+                datasource.open();
                 datasource.deleteBook(temp);
+                datasource.close();
 
                 //Remove from local list
                 bookList.remove(j);
@@ -63,12 +67,16 @@ public class BookLibrary implements Serializable {
         long id = book.getId();
         for(int j = 0; j < bookList.size(); j++){
            if(bookList.get(j).getId() == id){
+               datasource.open();
                datasource.updateBook(book); //Update database
+               datasource.close();
                bookList.set(j, book); //Update local list
                return;
            }
         }
+        datasource.open();
         datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription()); //Add book to database
+        datasource.close();
         bookList.add(book); //Add book to local list
     }
 
