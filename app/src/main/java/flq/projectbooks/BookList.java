@@ -29,7 +29,7 @@ import java.util.Map;
  * Use the {@link BookList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListener {
+public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListener, Serializable  {
     public static final String ARG_PARAM1 = "param1";
 
 

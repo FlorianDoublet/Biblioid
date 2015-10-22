@@ -9,13 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.Serializable;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link BookInfo#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookInfo extends Fragment {
+public class BookInfo extends Fragment implements Serializable {
     public static final String ARG_PARAM1 = "param1";
 
 

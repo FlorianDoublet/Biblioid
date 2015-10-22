@@ -1,25 +1,12 @@
 package flq.projectbooks;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class DisplayBooks extends ActionBarActivity  implements  BookList.OnBookSelected
@@ -42,13 +29,22 @@ public class DisplayBooks extends ActionBarActivity  implements  BookList.OnBook
                     .replace(R.id.bookInfoContainer, fragmentInfoBook).commit();
         } else {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.listContainer, fragmentInfoBook);
             transaction.addToBackStack(null);
+            transaction.replace(R.id.listContainer, fragmentInfoBook);
             transaction.commit();
         }
     }
 
+    static final String STATE_FRAGMENT_LIST = "bookList";
+    static final String STATE_FRAGMENT_BOOK = "bookInfo";
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putSerializable(STATE_FRAGMENT_LIST, fragmentList);
+        savedInstanceState.putSerializable(STATE_FRAGMENT_BOOK, fragmentInfoBook);
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +53,23 @@ public class DisplayBooks extends ActionBarActivity  implements  BookList.OnBook
 
         if (findViewById(R.id.listContainer) != null) {
             if (savedInstanceState != null) {
+
+                fragmentList = (BookList) savedInstanceState.getSerializable(STATE_FRAGMENT_LIST);
+                fragmentInfoBook = (BookInfo) savedInstanceState.getSerializable(STATE_FRAGMENT_BOOK);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                getSupportFragmentManager().popBackStack();
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    transaction.replace(R.id.listContainer, fragmentList);
+                }else{
+                    transaction.replace(R.id.listContainer, fragmentList);
+                    if(fragmentInfoBook != null) {
+                        transaction.replace(R.id.bookInfoContainer, fragmentInfoBook);
+                    }
+                }
+                transaction.commit();
+
                 return;
             }
             fragmentList = new BookList();
@@ -68,11 +81,9 @@ public class DisplayBooks extends ActionBarActivity  implements  BookList.OnBook
                 bundle.putSerializable(BookList.ARG_PARAM1, bookFilter);
                 fragmentList.setArguments(bundle);
             }
-
-
-
+            
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.listContainer, fragmentList).commit();
+                    .replace(R.id.listContainer, fragmentList).commit();
         }
     }
 }
