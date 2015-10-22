@@ -13,8 +13,6 @@ public class BookLibrary implements Serializable {
 
     private BooksDataSource datasource ;
     private static BookLibrary books ;
-
-
     List<Book> bookList;
     private static Context context ;
 
