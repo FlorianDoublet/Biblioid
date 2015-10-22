@@ -1,5 +1,7 @@
 package flq.projectbooks;
 
+import android.content.Context;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,9 @@ import java.util.List;
  */
 public class BookLibrary implements Serializable {
 
-    private static BookLibrary books = new BookLibrary();
+    private BooksDataSource datasource ;
+    private static BookLibrary books ;
+
 
     List<Book> bookList;
 
@@ -17,8 +21,11 @@ public class BookLibrary implements Serializable {
         return books;
     }
 
-    public BookLibrary() {
+    public BookLibrary(Context context) {
+        books = new BookLibrary(context);
         bookList = new ArrayList<>();
+        datasource = new BooksDataSource(context);
+        bookList = datasource.getAllBooks();
     }
 
     public void Add(Book book){
@@ -39,22 +46,30 @@ public class BookLibrary implements Serializable {
 
     public void DeleteBookById(int id){
         for(int j = 0; j < bookList.size(); j++){
-            if(bookList.get(j).id == id){
+            if(bookList.get(j).getId() == id){
+                //Remove from database
+                Book temp = bookList.get(j);
+                datasource.deleteBook(temp);
+
+                //Remove from local list
                 bookList.remove(j);
+
                 return;
             }
         }
     }
 
-    public void UpdateOrAddBook( Book book){
-        int id = book.id;
+    public void UpdateOrAddBook(Book book){
+        long id = book.getId();
         for(int j = 0; j < bookList.size(); j++){
-           if(bookList.get(j).id == id){
-               bookList.set(j, book);
+           if(bookList.get(j).getId() == id){
+               datasource.updateBook(book); //Update database
+               bookList.set(j, book); //Update local list
                return;
            }
         }
-        bookList.add(book);
+        datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription()); //Add book to database
+        bookList.add(book); //Add book to local list
     }
 
 }

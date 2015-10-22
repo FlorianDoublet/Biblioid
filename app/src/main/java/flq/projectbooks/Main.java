@@ -15,26 +15,26 @@ import java.util.List;
 
 public class Main extends ActionBarActivity  {
 
-    public final static String GIVE_BOOK = "flq.GIVE_BOOK";
+    //Ask the CreateBook activity to start with an empty book
+    public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
 
     protected BookLibrary books;
     protected BookFilterCatalog filters;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        books = BookLibrary.getInstance();
-        books.getBookList().clear();
-        books.Add(new Book("Harry Pot De Fleur à l'école des poulets", "J.K. Brownie", "1451", null));
+        books = new BookLibrary(this);
+
+        //books = BookLibrary.getInstance();
+        //books.getBookList().clear();
+        /*books.Add(new Book("Harry Pot De Fleur à l'école des poulets", "J.K. Brownie", "1451", null));
         books.Add(new Book("Harry Pot De Fleur et le poulailler secret", "J.K. Brownie", "1452", null));
         books.Add(new Book("Le Seigneur Des Panneaux", "J.R.R. Trollkien", "45187", null));
         books.Add(new Book("Fhamlette", "William Cestpire", "0218", null));
-        books.Add(new Book("Les Sirops d'érable", "Victor Jus Go", "45187", null));
+        books.Add(new Book("Les Sirops d'érable", "Victor Jus Go", "45187", null));*/
 
         filters = BookFilterCatalog.getInstance();
 
@@ -66,7 +66,7 @@ public class Main extends ActionBarActivity  {
 
     public void openCreateBookActivity(View view) {
         Intent intent = new Intent(this, CreateBook.class);
-        intent.putExtra(GIVE_BOOK, books.getNewBook());
+        intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
         startActivity(intent);
     }
 

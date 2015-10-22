@@ -21,12 +21,12 @@ public class CreateBook extends ActionBarActivity {
         setContentView(R.layout.activity_create_book);
 
         Intent intent = getIntent();
-        book = (Book) intent.getSerializableExtra(DisplayBooks.GIVE_BOOK);
-
-        if(book.isNew()) {
-            setTitle("Création d'un livre");
-        } else {
+        if(intent.hasExtra(DisplayBooks.GIVE_BOOK)) {
             setTitle("Modification d'un livre");
+            book = (Book) intent.getSerializableExtra(DisplayBooks.GIVE_BOOK);
+        } else {
+            setTitle("Création d'un livre");
+            book = (Book) intent.getSerializableExtra(Main.ASK_NEW_BOOK);
         }
 
         ((TextView)findViewById(R.id.bookTitle)).setText(book.getTitle());
