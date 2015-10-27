@@ -2,6 +2,10 @@ package flq.projectbooks;
 
 import android.content.Context;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +17,6 @@ public class BookLibrary implements Serializable {
 
     private BooksDataSource datasource ;
     private static BookLibrary books ;
-
-
     List<Book> bookList;
     private static Context context ;
 
@@ -37,7 +39,6 @@ public class BookLibrary implements Serializable {
 
     public void Add(Book book){
         bookList.add(book);
-
         datasource.open();
         datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription()); //Add book to database
         datasource.close();

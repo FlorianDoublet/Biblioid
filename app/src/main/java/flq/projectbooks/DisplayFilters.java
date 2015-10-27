@@ -104,7 +104,7 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
 
         switch (item.getItemId()) {
             case R.id.display_filter:
-                BookFilter bookFilter = BookFilterCatalog.getInstance().getBookFilterList().get(selectedFilterIndex);
+                BookFilter bookFilter = bookFilterCatalog.getBookFilterList().get(selectedFilterIndex);
 
                 Intent intent = new Intent(this, DisplayBooks.class);
                 intent.putExtra(GIVE_FILTER, bookFilter);
@@ -112,10 +112,10 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
 
                 return true;
             case R.id.delete_filter:
-                bookFilterCatalog.getBookFilterList().remove(selectedFilterIndex);
+                BookFilterCatalog.getInstance().deleteFilterById((int) bookFilterCatalog.getBookFilterList().get(selectedFilterIndex).getId());
                 listOfFilters.remove(selectedFilterIndex);
                 listAdapter.notifyDataSetChanged();
-                Toast.makeText(this, "Filtre effacé" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Filtre effacé", Toast.LENGTH_SHORT).show();
 
                 return true;
         }

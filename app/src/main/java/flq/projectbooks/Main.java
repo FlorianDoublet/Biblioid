@@ -25,21 +25,16 @@ public class Main extends ActionBarActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+        //this.deleteDatabase("books.db");
         books = new BookLibrary(this);
+        filters = new BookFilterCatalog(this);
 
-
-        //books = BookLibrary.getInstance();
-        //books.getBookList().clear();
         /*books.Add(new Book("Harry Pot De Fleur à l'école des poulets", "J.K. Brownie", "1451", null));
         books.Add(new Book("Harry Pot De Fleur et le poulailler secret", "J.K. Brownie", "1452", null));
         books.Add(new Book("Le Seigneur Des Panneaux", "J.R.R. Trollkien", "45187", null));
         books.Add(new Book("Fhamlette", "William Cestpire", "0218", null));
         books.Add(new Book("Les Sirops d'érable", "Victor Jus Go", "45187", null));*/
 
-        filters = BookFilterCatalog.getInstance();
-
-        filters.Add(new BookFilter("", "J.K. Brownie", ""));
 
     }
 
