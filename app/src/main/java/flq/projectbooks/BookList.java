@@ -140,8 +140,10 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
     private void createListView(View view){
 
+
         if(bookFilter != null) {
-            BookLibrary filteredBooksLibrary = new BookLibrary(view.getContext());
+
+            FilteredBookLibrary filteredBooksLibrary = new FilteredBookLibrary();
             for (int i = 0; i < BookLibrary.getInstance().getBookList().size(); i++) {
                 if (bookFilter.isSelected(BookLibrary.getInstance().getBookList().get(i))) {
                     filteredBooksLibrary.Add(BookLibrary.getInstance().getBookList().get(i));
