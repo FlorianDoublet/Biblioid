@@ -39,8 +39,8 @@ public class DisplayBooks extends ActionBarActivity  implements  BookList.OnBook
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putSerializable(STATE_FRAGMENT_LIST, fragmentList);
-        savedInstanceState.putSerializable(STATE_FRAGMENT_BOOK, fragmentInfoBook);
+        savedInstanceState.putParcelable(STATE_FRAGMENT_LIST, fragmentList);
+        savedInstanceState.putParcelable(STATE_FRAGMENT_BOOK, fragmentInfoBook);
 
         super.onSaveInstanceState(savedInstanceState);
     }

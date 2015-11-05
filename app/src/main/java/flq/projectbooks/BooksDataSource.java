@@ -6,13 +6,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Quentin on 22/10/2015.
  */
-public class BooksDataSource {
+public class BooksDataSource{
 
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;

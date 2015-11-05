@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +21,21 @@ import java.io.Serializable;
  * Use the {@link BookInfo#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookInfo extends Fragment implements Serializable {
+public class BookInfo extends Fragment implements Parcelable {
     public static final String ARG_PARAM1 = "param1";
 
 
     private Book book;
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags){
+
+    }
+
+    @Override
+    public int describeContents(){
+        return 0;
+    }
 
     /**
      * Use this factory method to create a new instance of

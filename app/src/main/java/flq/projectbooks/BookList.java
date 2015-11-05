@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,7 +31,7 @@ import java.util.Map;
  * Use the {@link BookList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListener, Serializable  {
+public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListener, Parcelable {
     public static final String ARG_PARAM1 = "param1";
 
 
@@ -42,6 +44,15 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     private BookLibrary bookLibrary ;
     private BookFilter bookFilter;
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags){
+
+    }
+
+    @Override
+    public int describeContents(){
+        return 0;
+    }
 
     /**
      *     /**
@@ -139,8 +150,6 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
 
     private void createListView(View view){
-
-
         if(bookFilter != null) {
 
             FilteredBookLibrary filteredBooksLibrary = new FilteredBookLibrary();
