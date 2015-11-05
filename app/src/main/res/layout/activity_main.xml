@@ -25,5 +25,31 @@
         android:text="@string/bookfilterListButton"
         android:onClick="openDisplayFilterActivity"/>
 
+    <Button android:id="@+id/scan_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/scan"
+        android:onClick="openScannerActivity"/>
+
+    <TextView
+        android:id="@+id/scan_format"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/scan_button"
+        tools:text="scan_format"/>
+    <TextView
+        android:id="@+id/scan_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/scan_format"
+        tools:text="scan_format"/>
+
+
+
 
 </LinearLayout>

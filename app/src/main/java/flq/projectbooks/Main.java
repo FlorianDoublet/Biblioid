@@ -8,9 +8,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class Main extends ActionBarActivity  {
@@ -60,6 +64,10 @@ public class Main extends ActionBarActivity  {
         return super.onOptionsItemSelected(item);
     }
 
+    public void openScannerActivity(View view){
+        new IntentIntegrator(this).initiateScan();
+    }
+
     public void openCreateBookActivity(View view) {
         Intent intent = new Intent(this, CreateBook.class);
         intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
@@ -74,5 +82,17 @@ public class Main extends ActionBarActivity  {
     public void openDisplayFilterActivity(View view) {
         Intent intent = new Intent(this, DisplayFilters.class);
         startActivity(intent);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(data.hasExtra(("SCAN_RESULT"))) {
+            String ISBN = data.getStringExtra("SCAN_RESULT");
+            ((TextView)findViewById(R.id.scan_content)).setText(ISBN);
+
+            String bookSearchString = ISBN;
+
+
+            new GetBookInfo().execute(bookSearchString);
+        }
     }
 }
