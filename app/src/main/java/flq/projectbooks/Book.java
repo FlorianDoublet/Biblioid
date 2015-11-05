@@ -18,6 +18,8 @@ public class Book implements Serializable {
         title = "";
         author = "";
         isbn = "";
+        image = "picturebook" ;
+        description = "";
     }
 
     public String getTitle() {
