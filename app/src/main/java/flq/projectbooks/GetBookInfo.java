@@ -52,7 +52,7 @@ public class GetBookInfo extends AsyncTask<String, Void, Void> {
 
         String key = "" ;
 
-        String apiUrlString =   "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbns[0] + "&key=" + key;
+        String apiUrlString =   "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbns[0] ;
 
         try{
             HttpURLConnection connection = null;
