@@ -2,41 +2,44 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="flq.projectbooks.BookInfo"
     android:padding="7dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-        <TextView android:id="@+id/bookInfoTitle"
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Titre"
-            android:gravity="center_horizontal"
-            android:textSize="30dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView android:id="@+id/bookInfoAuthor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Auteur"
-            android:gravity="center_horizontal"
-            android:textSize="20dp"
-            />
 
-        <ImageView
-            android:id="@+id/bookInfoImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:src="@drawable/picturebook"/>
+            <TextView android:id="@+id/bookInfoTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Titre"
+                android:gravity="center_horizontal"
+                android:textSize="30dp"/>
 
-        <TextView android:id="@+id/bookInfoDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Je suis une longue description qui sers a voir comment je suis placé sur l'écran. C'est cool non ?"
-            android:gravity="center_horizontal"
-            />
+            <TextView android:id="@+id/bookInfoAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Auteur"
+                android:gravity="center_horizontal"
+                android:textSize="20dp"
+                />
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/bookInfoImage"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                tools:src="@drawable/picturebook"/>
 
+            <TextView android:id="@+id/bookInfoDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Je suis une longue description qui sers a voir comment je suis placé sur l'écran. C'est cool non ?"
+                android:gravity="center_horizontal"
+                />
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

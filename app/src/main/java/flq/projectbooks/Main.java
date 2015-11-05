@@ -87,12 +87,7 @@ public class Main extends ActionBarActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(data.hasExtra(("SCAN_RESULT"))) {
             String ISBN = data.getStringExtra("SCAN_RESULT");
-            ((TextView)findViewById(R.id.scan_content)).setText(ISBN);
-
-            String bookSearchString = ISBN;
-
-
-            new GetBookInfo().execute(bookSearchString);
+            new GetBookInfo(getApplicationContext()).execute(ISBN);
         }
     }
 }
