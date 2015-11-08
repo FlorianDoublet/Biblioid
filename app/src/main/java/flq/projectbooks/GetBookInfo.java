@@ -118,6 +118,7 @@ public class GetBookInfo extends AsyncTask<String, Void, Void> {
                 newBook.setTitle(title);
                 newBook.setAuthor(author);
 
+
                 BookLibrary.getInstance().Add(newBook);
                 Handler handler = new Handler(mContext.getMainLooper());
                 handler.post(new Runnable() {
