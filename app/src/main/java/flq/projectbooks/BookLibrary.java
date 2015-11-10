@@ -73,6 +73,12 @@ public class BookLibrary implements Serializable {
         }
     }
 
+    public void updateLocalList() {
+        datasource.open();
+        bookList = datasource.getAllBooks();
+        datasource.close();
+    }
+
     public void UpdateOrAddBook(Book book){
         long id = book.getId();
         if(id != -1) {
@@ -85,7 +91,7 @@ public class BookLibrary implements Serializable {
                     return;
                 }
             }
-        }else {
+        } else {
             datasource.open();
             datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription()); //Add book to database
             bookList = datasource.getAllBooks(); //Update books

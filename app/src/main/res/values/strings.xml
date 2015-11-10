@@ -20,7 +20,11 @@
     <string name="display_filter">Appliquer le filtre</string>
     <string name="delete_filter">Supprimer le filtre</string>
     <string name="btnCreatFilter">create filter</string>
-    <string name="bookCreationDescription">Description :</string>
+	<string name="bookCreationDescription">Description :</string>
     <string name="scan">Scanner un livre</string>
-
+    <string name="BookInfoTitle">Titre du livre</string>
+    <string name="exportDatabaseButton">Exporter les données</string>
+    <string name="importDatabaseButton">Importer les données</string>
+    <string name="title_activity_folder_chooser">FolderChooser</string>
+    <string name="title_activity_choose_file">ChooseFile</string>
 </resources>
