@@ -2,6 +2,8 @@ package flq.projectbooks;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -79,7 +81,13 @@ public class BookInfo extends Fragment implements Parcelable {
         textViewDescription.setText(book.getDescription());
 
         ImageView imageView = (ImageView) view.findViewById(R.id.bookInfoImage);
-        imageView.setImageResource(getResources().getIdentifier(book.getImage(), "drawable", view.getContext().getPackageName()));
+        if(book.getImage() != null) {
+            imageView.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeByteArray(book.getImage(), 0, book.getImage().length)));
+        }else{
+            imageView.getLayoutParams().height = 0;
+            imageView.requestLayout();
+        }
+
 
         return view ;
     }

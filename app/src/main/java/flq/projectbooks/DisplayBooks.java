@@ -53,8 +53,8 @@ public class DisplayBooks extends ActionBarActivity  implements  BookList.OnBook
         if (findViewById(R.id.listContainer) != null) {
             if (savedInstanceState != null) {
 
-                fragmentList = (BookList) savedInstanceState.getSerializable(STATE_FRAGMENT_LIST);
-                fragmentInfoBook = (BookInfo) savedInstanceState.getSerializable(STATE_FRAGMENT_BOOK);
+                fragmentList = (BookList) savedInstanceState.getParcelable(STATE_FRAGMENT_LIST);
+                fragmentInfoBook = (BookInfo) savedInstanceState.getParcelable(STATE_FRAGMENT_BOOK);
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 

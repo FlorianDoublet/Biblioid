@@ -21,5 +21,6 @@
     <string name="delete_filter">Supprimer le filtre</string>
     <string name="btnCreatFilter">create filter</string>
     <string name="bookCreationDescription">Description :</string>
+    <string name="scan">Scanner un livre</string>
 
 </resources>

@@ -33,7 +33,7 @@ public class BooksDataSource{
         dbHelper.close();
     }
 
-    public Book createBook(String title, String author, String isbn, String image, String description) {
+    public Book createBook(String title, String author, String isbn, byte[] image, String description) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_TITLE, title);
@@ -95,7 +95,7 @@ public class BooksDataSource{
         book.setTitle(cursor.getString(1));
         book.setAuthor(cursor.getString(2));
         book.setIsbn(cursor.getString(3));
-        book.setImage(cursor.getString(4));
+        book.setImage(cursor.getBlob(4));
         book.setDescription(cursor.getString(5));
         return book;
     }
