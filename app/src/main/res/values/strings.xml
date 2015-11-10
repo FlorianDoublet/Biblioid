@@ -21,8 +21,8 @@
     <string name="delete_filter">Supprimer le filtre</string>
     <string name="btnCreatFilter">create filter</string>
     <string name="BookInfoTitle">Titre du livre</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment1">Hello blank fragment 1</string>
-    <string name="hello_blank_fragment2">Hello blank fragment 2</string>
+    <string name="exportDatabaseButton">Exporter les données</string>
+    <string name="importDatabaseButton">Importer les données</string>
+    <string name="title_activity_folder_chooser">FolderChooser</string>
+    <string name="title_activity_choose_file">ChooseFile</string>
 </resources>

@@ -72,4 +72,10 @@ public class BookFilterCatalog implements Serializable {
         }
     }
 
+    public void updateLocalList() {
+        datasource.open();
+        bookFilterList = datasource.getAllBookFilters();
+        datasource.close();
+    }
+
 }
