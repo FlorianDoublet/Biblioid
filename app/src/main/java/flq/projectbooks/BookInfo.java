@@ -1,12 +1,18 @@
 package flq.projectbooks;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -17,12 +23,21 @@ import java.io.Serializable;
  * Use the {@link BookInfo#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookInfo extends Fragment implements Serializable {
+public class BookInfo extends Fragment implements Parcelable {
     public static final String ARG_PARAM1 = "param1";
 
 
     private Book book;
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags){
+
+    }
+
+    @Override
+    public int describeContents(){
+        return 0;
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -56,8 +71,23 @@ public class BookInfo extends Fragment implements Serializable {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_info, container, false);
 
-        TextView textView = (TextView) view.findViewById(R.id.bookInfoTitle);
-        textView.setText(book.getTitle());
+        TextView textViewTitle = (TextView) view.findViewById(R.id.bookInfoTitle);
+        textViewTitle.setText(book.getTitle());
+
+        TextView textViewAuthor = (TextView) view.findViewById(R.id.bookInfoAuthor);
+        textViewAuthor.setText(book.getAuthor());
+
+        TextView textViewDescription = (TextView) view.findViewById(R.id.bookInfoDescription);
+        textViewDescription.setText(book.getDescription());
+
+        ImageView imageView = (ImageView) view.findViewById(R.id.bookInfoImage);
+        if(book.getImage() != null) {
+            imageView.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeByteArray(book.getImage(), 0, book.getImage().length)));
+        }else{
+            imageView.getLayoutParams().height = 0;
+            imageView.requestLayout();
+        }
+
 
         return view ;
     }

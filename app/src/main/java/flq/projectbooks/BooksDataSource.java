@@ -6,13 +6,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Quentin on 22/10/2015.
  */
-public class BooksDataSource {
+public class BooksDataSource{
 
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
@@ -32,7 +33,7 @@ public class BooksDataSource {
         dbHelper.close();
     }
 
-    public Book createBook(String title, String author, String isbn, String image, String description) {
+    public Book createBook(String title, String author, String isbn, byte[] image, String description) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_TITLE, title);
@@ -94,7 +95,7 @@ public class BooksDataSource {
         book.setTitle(cursor.getString(1));
         book.setAuthor(cursor.getString(2));
         book.setIsbn(cursor.getString(3));
-        book.setImage(cursor.getString(4));
+        book.setImage(cursor.getBlob(4));
         book.setDescription(cursor.getString(5));
         return book;
     }

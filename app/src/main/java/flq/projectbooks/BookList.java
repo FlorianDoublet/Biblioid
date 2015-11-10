@@ -2,8 +2,13 @@ package flq.projectbooks;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.SimpleAdapter;
@@ -29,7 +35,7 @@ import java.util.Map;
  * Use the {@link BookList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListener, Serializable  {
+public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListener, Parcelable {
     public static final String ARG_PARAM1 = "param1";
 
 
@@ -37,11 +43,20 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
     private int selectedBookIndex;
     private ListView bookList;
-    private List<Map<String, String>> listOfBooks ;
+    private List<Map<String, Object>> listOfBooks ;
     private SimpleAdapter listAdapter;
     private BookLibrary bookLibrary ;
     private BookFilter bookFilter;
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags){
+
+    }
+
+    @Override
+    public int describeContents(){
+        return 0;
+    }
 
     /**
      *     /**
@@ -139,8 +154,6 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
 
     private void createListView(View view){
-
-
         if(bookFilter != null) {
 
             FilteredBookLibrary filteredBooksLibrary = new FilteredBookLibrary();
@@ -157,8 +170,13 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         ListView bookList = (ListView) view.findViewById(R.id.bookList);
 
         for (Book book : bookLibrary.getBookList()) {
-            Map<String, String> bookMap = new HashMap<>() ;
-            bookMap.put("img", String.valueOf(R.drawable.picturebook));
+            Map<String, Object> bookMap = new HashMap<>() ;
+            if(book.getImage() != null){
+                byte[] img = book.getImage();
+                bookMap.put("img", new BitmapDrawable(BitmapFactory.decodeByteArray(img, 0, img.length)));
+            }else{
+                bookMap.put("img", String.valueOf(R.drawable.picturebook));
+            }
             bookMap.put("author", book.getAuthor());
             bookMap.put("title", book.getTitle());
             bookMap.put("isbn", book.getIsbn());
@@ -168,6 +186,25 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         listAdapter = new SimpleAdapter(getActivity().getBaseContext(), listOfBooks, R.layout.book_detail,
                 new String[] {"img", "author", "title", "isbn"},
                 new int[] {R.id.img, R.id.author, R.id.title, R.id.isbn});
+
+        listAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+
+            @Override
+            public boolean setViewValue(View view, Object data, String textRepresentation) {
+                if(view.getId() == R.id.img ) {
+                    if( data.getClass() != String.class) {
+                        ImageView imageView = (ImageView) view;
+                        Drawable drawable = (Drawable) data;
+                        imageView.setImageDrawable(drawable);
+                    }else{
+                        ImageView imageView = (ImageView) view;
+                        imageView.setImageResource(getResources().getIdentifier(data.toString(), "drawable", "flq.projectbooks"));
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
 
         bookList.setAdapter(listAdapter);

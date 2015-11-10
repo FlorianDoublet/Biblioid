@@ -12,20 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
+import android.widget.TextView;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-/*
-
-
-https://github.com/spacecowboy/NoNonsense-FilePicker
-https://github.com/passy/Android-DirectoryChooser
-
-
- */
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class Main extends ActionBarActivity  {
 
@@ -76,6 +70,10 @@ public class Main extends ActionBarActivity  {
         return super.onOptionsItemSelected(item);
     }
 
+    public void openScannerActivity(View view){
+        new IntentIntegrator(this).initiateScan();
+    }
+
     public void openCreateBookActivity(View view) {
         Intent intent = new Intent(this, CreateBook.class);
         intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
@@ -119,7 +117,7 @@ public class Main extends ActionBarActivity  {
         MySQLiteHelper db = new MySQLiteHelper(this);
 
 
-        if (requestCode == FILE_CODE_IMPORT && resultCode == Activity.RESULT_OK) {
+        if (data != null && requestCode == FILE_CODE_IMPORT && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
 
             try {
@@ -133,7 +131,8 @@ public class Main extends ActionBarActivity  {
             }
 
         }
-        if (requestCode == FILE_CODE_EXPORT && resultCode == Activity.RESULT_OK) {
+		
+        if (data != null && requestCode == FILE_CODE_EXPORT && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
 
             try {
@@ -143,5 +142,10 @@ public class Main extends ActionBarActivity  {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
+		
+		if(data != null && data.hasExtra(("SCAN_RESULT"))) {
+            String ISBN = data.getStringExtra("SCAN_RESULT");
+            new GetBookInfo(getApplicationContext()).execute(ISBN);
+		}
     }
 }

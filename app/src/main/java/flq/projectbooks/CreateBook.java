@@ -32,6 +32,7 @@ public class CreateBook extends ActionBarActivity {
         ((TextView)findViewById(R.id.bookTitle)).setText(book.getTitle());
         ((TextView)findViewById(R.id.bookISBN)).setText(book.getIsbn());
         ((TextView)findViewById(R.id.bookAuthor)).setText(book.getAuthor());
+        ((TextView)findViewById(R.id.bookDescription)).setText(book.getDescription());
     }
 
     @Override
@@ -60,10 +61,12 @@ public class CreateBook extends ActionBarActivity {
         EditText title = (EditText) findViewById(R.id.bookTitle);
         EditText author = (EditText) findViewById(R.id.bookAuthor);
         EditText isbn = (EditText) findViewById(R.id.bookISBN);
+        EditText description = (EditText) findViewById(R.id.bookDescription);
 
         book.setTitle(title.getText().toString());
         book.setAuthor(author.getText().toString());
         book.setIsbn(isbn.getText().toString());
+        book.setDescription(description.getText().toString());
 
         BookLibrary.getInstance().UpdateOrAddBook(book);
 

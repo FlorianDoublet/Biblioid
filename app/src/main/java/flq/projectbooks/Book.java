@@ -10,7 +10,7 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private String isbn;
-    private String image;
+    private byte[] image;
     private String description;
 
     public Book(){
@@ -18,6 +18,7 @@ public class Book implements Serializable {
         title = "";
         author = "";
         isbn = "";
+        description = "";
     }
 
     public String getTitle() {
@@ -44,11 +45,11 @@ public class Book implements Serializable {
         this.isbn = isbn;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

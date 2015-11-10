@@ -12,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.io.Serializable;
+
 
 /**
  * Created by Quentin on 22/10/2015.
@@ -37,7 +39,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_TITLE + " text not null, "
             + COLUMN_AUTHOR + " text not null, "
             + COLUMN_ISBN + " text not null, "
-            + COLUMN_IMAGE + " text, "
+            + COLUMN_IMAGE + " BLOB, "
             + COLUMN_DESCRIPTION + " text "
             + " );";
 
