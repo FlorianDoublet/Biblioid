@@ -7,117 +7,127 @@
     android:orientation="vertical"
     tools:context="flq.projectbooks.CreateBook">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1">
-
-        <TextView android:text="@string/bookTitle"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            />
+            android:layout_gravity="fill"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/bookTitle"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            />
-    </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
 
+                <TextView android:text="@string/bookTitle"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1">
-
-        <TextView android:text="@string/bookAuthor"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            />
-
-        <EditText
-            android:id="@+id/bookAuthor"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1">
-
-        <TextView android:text="@string/bookISBN"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            />
-
-        <EditText
-            android:id="@+id/bookISBN"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="100"
-            />
-
-        <Button
-            android:id="@+id/loadISBN"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loadISBN"
-            android:layout_weight="1"
-            android:onClick="loadISBN"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1">
-
-        <TextView android:text="@string/bookCreationDescription"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            />
-
-        <EditText
-            android:id="@+id/bookDescription"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1">
-
-        <Button
-            android:text="@string/btnPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="takePhoto"/>
-
-        <ImageView
-            android:id="@+id/bookThumbnail"
-            android:layout_width="100px"
-            android:layout_height="250px" />
-
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/bookTitle"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    />
+            </LinearLayout>
 
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
 
-    <Button
-        android:text="@string/btnOK"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:onClick="bookCreation"/>
+                <TextView android:text="@string/bookAuthor"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
 
+                <EditText
+                    android:id="@+id/bookAuthor"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
+
+                <TextView android:text="@string/bookISBN"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_weight="1"
+					/>
+
+				<EditText
+					android:id="@+id/bookISBN"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_weight="100"
+					/>
+
+				<Button
+					android:id="@+id/loadISBN"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/loadISBN"
+					android:layout_weight="1"
+					android:onClick="loadISBN"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
+
+                <TextView android:text="@string/bookCreationDescription"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
+
+                <EditText
+                    android:id="@+id/bookDescription"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
+
+                <Button
+                    android:text="@string/btnPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="takePhoto"/>
+
+                <ImageView
+                    android:id="@+id/bookThumbnail"
+                    android:layout_width="100px"
+                    android:layout_height="250px" />
+
+            </LinearLayout>
+
+
+
+            <Button
+                android:text="@string/btnOK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="bookCreation"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

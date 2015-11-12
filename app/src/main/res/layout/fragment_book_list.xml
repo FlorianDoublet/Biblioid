@@ -6,5 +6,6 @@
         android:id="@+id/bookList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="3dp"
         ></ListView>
 </FrameLayout>
