@@ -37,7 +37,7 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.deleteDatabase("books.db");
+        //this.deleteDatabase("books.db");
         books = new BookLibrary(this);
         filters = new BookFilterCatalog(this);
 
