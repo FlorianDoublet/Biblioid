@@ -9,12 +9,13 @@ public class BookFilter implements Serializable {
     private long id;
     private String title;
     private String author;
-    private String isbn;
+    private String description;
 
     public BookFilter(){
         id = -1;
         title = "";
         author = "";
+        description = "";
     }
 
     public String getTitle() {
@@ -33,12 +34,12 @@ public class BookFilter implements Serializable {
         this.author = author;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public String getDescription() {
+        return description;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setDescription(String isbn) {
+        this.description = description;
     }
 
     public long getId() {
@@ -51,13 +52,13 @@ public class BookFilter implements Serializable {
 
     public boolean isSelected(Book book){
         boolean returnValue = true;
-        if(!author.equals("") && !book.getAuthor().equals(author)){
+        if(!author.equals("") && !book.getAuthor().contains(author)){
             returnValue = false;
         }
-        if(!title.equals("") && !book.getTitle().equals(title)){
+        if(!title.equals("") && !book.getTitle().contains(title)){
             returnValue = false;
         }
-        if(!isbn.equals("") && !book.getIsbn().equals(isbn)){
+        if(!description.equals("") && !book.getDescription().contains(description)){
             returnValue = false;
         }
         return returnValue;

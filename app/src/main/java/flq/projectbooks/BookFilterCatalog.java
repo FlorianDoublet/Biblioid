@@ -36,7 +36,7 @@ public class BookFilterCatalog implements Serializable {
     public void Add(BookFilter filter){
         //Add in the database
         datasource.open();
-        datasource.createFilter(filter.getTitle(), filter.getAuthor(), filter.getIsbn());
+        datasource.createFilter(filter.getTitle(), filter.getAuthor(), filter.getDescription());
         datasource.close();
 
         //Add in the local list

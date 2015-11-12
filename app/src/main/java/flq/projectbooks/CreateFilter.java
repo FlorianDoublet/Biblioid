@@ -45,11 +45,11 @@ public class CreateFilter extends ActionBarActivity {
 
         EditText title = (EditText) findViewById(R.id.filterTitle);
         EditText author = (EditText) findViewById(R.id.filterAuthor);
-        EditText isbn = (EditText) findViewById(R.id.filterISBN);
+        EditText isbn = (EditText) findViewById(R.id.filterDescription);
 
         filter.setTitle(title.getText().toString());
         filter.setAuthor(author.getText().toString());
-        filter.setIsbn(isbn.getText().toString());
+        filter.setDescription(isbn.getText().toString());
 
         BookFilterCatalog.getInstance().Add(filter);
 

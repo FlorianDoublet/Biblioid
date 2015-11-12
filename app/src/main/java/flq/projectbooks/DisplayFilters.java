@@ -74,13 +74,13 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
             Map<String, String> filterMap = new HashMap<>() ;
             filterMap.put("author", filter.getAuthor());
             filterMap.put("title", filter.getTitle());
-            filterMap.put("isbn", filter.getIsbn());
+            filterMap.put("description", filter.getDescription());
             listOfFilters.add(filterMap);
         }
 
         listAdapter = new SimpleAdapter(this.getBaseContext(), listOfFilters, R.layout.filter_detail,
-                new String[] {"img", "author", "title", "isbn"},
-                new int[] {R.id.img, R.id.author, R.id.title, R.id.isbn});
+                new String[] {"img", "author", "title", "description"},
+                new int[] {R.id.img, R.id.author, R.id.title, R.id.description});
 
 
         filterList.setAdapter(listAdapter);
