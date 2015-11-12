@@ -37,6 +37,17 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
 
         filterList = (ListView) findViewById(R.id.filterList);
 
+        filterList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BookFilter bookFilter = bookFilterCatalog.getBookFilterList().get(selectedFilterIndex);
+
+                Intent intent = new Intent(DisplayFilters.this, DisplayBooks.class);
+                intent.putExtra(GIVE_FILTER, bookFilter);
+                startActivity(intent);
+            }
+        });
+
         filterList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -103,14 +114,6 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
     public boolean onMenuItemClick(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.display_filter:
-                BookFilter bookFilter = bookFilterCatalog.getBookFilterList().get(selectedFilterIndex);
-
-                Intent intent = new Intent(this, DisplayBooks.class);
-                intent.putExtra(GIVE_FILTER, bookFilter);
-                startActivity(intent);
-
-                return true;
             case R.id.delete_filter:
                 BookFilterCatalog.getInstance().deleteFilterById((int) bookFilterCatalog.getBookFilterList().get(selectedFilterIndex).getId());
                 listOfFilters.remove(selectedFilterIndex);
