@@ -80,6 +80,28 @@
             />
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1">
+
+        <Button
+            android:text="@string/btnPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="takePhoto"/>
+
+        <ImageView
+            android:id="@+id/bookThumbnail"
+            android:layout_width="100px"
+            android:layout_height="250px" />
+
+    </LinearLayout>
+
+
+
     <Button
         android:text="@string/btnOK"
         android:layout_width="wrap_content"

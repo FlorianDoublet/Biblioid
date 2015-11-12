@@ -2,16 +2,22 @@ package flq.projectbooks;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.ByteArrayOutputStream;
 
 public class CreateBook extends ActionBarActivity {
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     public final static String GIVE_BOOK_BACK = "flq.NEWBOOK";
     private Book book;
 
@@ -71,5 +77,28 @@ public class CreateBook extends ActionBarActivity {
         BookLibrary.getInstance().UpdateOrAddBook(book);
 
         finish();
+    }
+
+    public void takePhoto(View view) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+            book.setImage(stream.toByteArray());
+
+            ImageView bookThumbnail = (ImageView) findViewById(R.id.bookThumbnail);
+            bookThumbnail.setImageBitmap(imageBitmap);
+        }
     }
 }
