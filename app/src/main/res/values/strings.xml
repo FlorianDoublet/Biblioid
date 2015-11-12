@@ -28,4 +28,5 @@
     <string name="title_activity_folder_chooser">FolderChooser</string>
     <string name="title_activity_choose_file">ChooseFile</string>
     <string name="btnPhoto">Prendre une photo</string>
+    <string name="loadISBN">Charger livre</string>
 </resources>

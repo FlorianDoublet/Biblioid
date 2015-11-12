@@ -3,6 +3,8 @@ package flq.projectbooks;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -15,11 +17,12 @@ import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 
-public class CreateBook extends ActionBarActivity {
+public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncResponse {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public final static String GIVE_BOOK_BACK = "flq.NEWBOOK";
     private Book book;
+    protected GetBookInfo asyncTask ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,9 @@ public class CreateBook extends ActionBarActivity {
         ((TextView)findViewById(R.id.bookISBN)).setText(book.getIsbn());
         ((TextView)findViewById(R.id.bookAuthor)).setText(book.getAuthor());
         ((TextView)findViewById(R.id.bookDescription)).setText(book.getDescription());
+        if(book.getImage() != null) {
+            ((ImageView) findViewById(R.id.bookThumbnail)).setImageDrawable(new BitmapDrawable(BitmapFactory.decodeByteArray(book.getImage(), 0, book.getImage().length)));
+        }
     }
 
     @Override
@@ -83,6 +89,25 @@ public class CreateBook extends ActionBarActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    public void loadISBN(View view){
+        EditText isbn = (EditText) findViewById(R.id.bookISBN);
+        asyncTask = new GetBookInfo(getApplicationContext()) ; //.execute(ISBN);
+        asyncTask.delegate = this;
+        asyncTask.execute(isbn.getText().toString());
+    }
+
+    @Override
+    public void processFinish(Book output){
+        this.book = output;
+        ((TextView)findViewById(R.id.bookTitle)).setText(book.getTitle());
+        ((TextView)findViewById(R.id.bookISBN)).setText(book.getIsbn());
+        ((TextView)findViewById(R.id.bookAuthor)).setText(book.getAuthor());
+        ((TextView)findViewById(R.id.bookDescription)).setText(book.getDescription());
+        if(book.getImage() != null) {
+            ((ImageView) findViewById(R.id.bookThumbnail)).setImageDrawable(new BitmapDrawable(BitmapFactory.decodeByteArray(book.getImage(), 0, book.getImage().length)));
         }
     }
 

@@ -2,6 +2,7 @@ package flq.projectbooks;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
@@ -36,15 +37,30 @@ import java.util.HashMap;
 /**
  * Created by doublet on 05/11/15.
  */
-public class GetBookInfo extends AsyncTask<String, Void, Void> {
+public class GetBookInfo extends AsyncTask<String, Void, Book> {
 
     private Context mContext;
     public GetBookInfo (Context context){
         mContext = context;
     }
 
+
+    public interface AsyncResponse {
+        void processFinish(Book output);
+    }
+
+    public AsyncResponse delegate = null;
+
     @Override
-    protected Void doInBackground(String... isbns) {
+    protected void onPostExecute(Book result) {
+        if(result != null){
+            delegate.processFinish(result);
+        }
+
+    }
+
+    @Override
+    protected Book doInBackground(String... isbns) {
         // Stop if cancelled
         if(isCancelled()){
             return null;
@@ -115,18 +131,11 @@ public class GetBookInfo extends AsyncTask<String, Void, Void> {
                     newBook.setDescription(description);
                 }
 
+                newBook.setIsbn(isbns[0]);
                 newBook.setTitle(title);
                 newBook.setAuthor(author);
 
-
-                BookLibrary.getInstance().Add(newBook);
-                Handler handler = new Handler(mContext.getMainLooper());
-                handler.post(new Runnable() {
-
-                    public void run() {
-                        Toast.makeText(mContext, "Livre ajouté", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                return newBook;
             }else{
                 Handler handler = new Handler(mContext.getMainLooper());
                 handler.post(new Runnable() {
@@ -137,8 +146,7 @@ public class GetBookInfo extends AsyncTask<String, Void, Void> {
                 });
             }
 
-
-            return null; //return responseJson;
+            return null;
         } catch (SocketTimeoutException e) {
             Log.w(getClass().getName(), "Connection timed out. Returning null");
             return null;

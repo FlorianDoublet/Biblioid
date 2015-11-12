@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class Main extends ActionBarActivity  {
+public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse {
 
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
@@ -31,6 +31,7 @@ public class Main extends ActionBarActivity  {
 
     protected BookLibrary books;
     protected BookFilterCatalog filters;
+    protected GetBookInfo asyncTask ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +146,17 @@ public class Main extends ActionBarActivity  {
 		
 		if(data != null && data.hasExtra(("SCAN_RESULT"))) {
             String ISBN = data.getStringExtra("SCAN_RESULT");
-            new GetBookInfo(getApplicationContext()).execute(ISBN);
+            asyncTask = new GetBookInfo(getApplicationContext()) ; //.execute(ISBN);
+            asyncTask.delegate = this;
+            asyncTask.execute(ISBN);
 		}
     }
+
+    @Override
+    public void processFinish(Book output){
+        Intent intent = new Intent(this, CreateBook.class);
+        intent.putExtra(DisplayBooks.GIVE_BOOK, output);
+        startActivityForResult(intent, 0);
+    }
+
 }

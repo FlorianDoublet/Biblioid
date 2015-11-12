@@ -53,13 +53,24 @@
         <TextView android:text="@string/bookISBN"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_weight="1"
             />
 
         <EditText
             android:id="@+id/bookISBN"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_weight="100"
             />
+
+        <Button
+            android:id="@+id/loadISBN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loadISBN"
+            android:layout_weight="1"
+            android:onClick="loadISBN"/>
+
     </LinearLayout>
 
     <LinearLayout
