@@ -17,11 +17,8 @@
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
 
-
-    <color name="primary_dark">#808080</color>
-    <color name="primary">#C0C0C0</color>
-    <color name="accent">#008080</color>
-
-
+    <color name="primary_dark">#984d20</color>
+    <color name="primary">#984d20</color>
+    <color name="accent">#984d20</color>
 
 </resources>
