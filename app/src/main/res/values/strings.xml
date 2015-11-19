@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">ProjectBooks</string>
-
+    <string name="app_name">Biblioid</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_create_book">Création d\'un livre</string>
