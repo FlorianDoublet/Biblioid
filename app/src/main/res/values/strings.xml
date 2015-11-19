@@ -29,4 +29,9 @@
     <string name="title_activity_choose_file">ChooseFile</string>
     <string name="btnPhoto">Prendre une photo</string>
     <string name="loadISBN">Charger livre</string>
+    <string name="db_hint">books</string>
+    <string name="dialog_export">Choisissez le nom de l\'export</string>
+    <string name="dialog_export_ok">OK</string>
+    <string name="dialog_export_cancel">Annuler</string>
+    <string name="action_raz">Remise à zéro</string>
 </resources>
