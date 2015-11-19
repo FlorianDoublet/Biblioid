@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
-import java.io.Serializable;
 
 
 /**
@@ -73,6 +72,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void dropDatabase(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_FILTERS);
+        onCreate(db);
+    }
+
     public boolean importDatabase(String dbPath) throws IOException {
 
         // Close the SQLiteOpenHelper so it will
@@ -110,24 +115,27 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void backupDatabase(String dbPath) throws IOException {
+    public void backupDatabase(String dbPath, String filename) throws IOException {
 
         if (isSDCardWriteable()) {
-            // Open your local db as the input stream
+            //Ouvre la bdd local en tant que flux sortant
             String inFileName = DB_FILEPATH;
             File dbFile = new File(inFileName);
             FileInputStream fis = new FileInputStream(dbFile);
 
-            String outFileName = dbPath + "/books.db";
-            // Open the empty db as the output stream
+            String outFileName = dbPath + "/" + filename;
+
+            //Ouvre la bdd vide en tant que flux sortant
             OutputStream output = new FileOutputStream(outFileName);
-            // transfer bytes from the inputfile to the outputfile
+
+            //Transfert du flux entrant vers le flux sortant
             byte[] buffer = new byte[1024];
             int length;
             while ((length = fis.read(buffer)) > 0) {
                 output.write(buffer, 0, length);
             }
-            // Close the streams
+
+            //Ferme
             output.flush();
             output.close();
             fis.close();

@@ -1,27 +1,24 @@
 package flq.projectbooks;
 
 import android.app.Activity;
-import android.content.ClipData;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.TextView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
 
-public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse {
+public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse, NoticeDialogFragment.NoticeDialogListener {
 
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
@@ -32,16 +29,17 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
     protected BookLibrary books;
     protected BookFilterCatalog filters;
     protected GetBookInfo asyncTask ;
+    private Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //this.deleteDatabase("books.db");
+
+        //this.deleteDatabase("books.db"); //Effacer la bdd en cas de bug
         books = new BookLibrary(this);
         filters = new BookFilterCatalog(this);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -51,7 +49,11 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_raz) {
+            this.deleteDatabase("books.db");
+            Toast.makeText(this, "Données remises à zéro", Toast.LENGTH_LONG).show();
+            BookLibrary.getInstance().updateLocalList();
+            BookFilterCatalog.getInstance().updateLocalList();
             return true;
         }
 
@@ -79,14 +81,13 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
     }
 
     public void exportDatabase(View view) {
-        Intent i = new Intent(this, FilePickerActivity.class);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
+        Intent intent = new Intent(this, FilePickerActivity.class);
+        intent.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+        intent.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
+        intent.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
+        intent.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
 
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
-
-        startActivityForResult(i, FILE_CODE_EXPORT);
+        startActivityForResult(intent, FILE_CODE_EXPORT);
     }
 
     public void importDatabase(View view) {
@@ -104,36 +105,32 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         MySQLiteHelper db = new MySQLiteHelper(this);
 
-
         if (data != null && requestCode == FILE_CODE_IMPORT && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
+            uri = data.getData();
 
             try {
                 db.importDatabase(uri.getPath());
                 Toast.makeText(this, "Données chargées.", Toast.LENGTH_LONG).show();
                 BookLibrary.getInstance().updateLocalList();
                 BookFilterCatalog.getInstance().updateLocalList();
+
             } catch (IOException e) {
-                //Toast.makeText(this, "Erreur, impossible d'importer les données.", Toast.LENGTH_LONG).show();
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Erreur, impossible d'importer les données.", Toast.LENGTH_LONG).show();
             }
 
         }
 		
         if (data != null && requestCode == FILE_CODE_EXPORT && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
+            uri = data.getData();
 
-            try {
-                db.backupDatabase(uri.getPath());
-                Toast.makeText(this, "Données sauvegardées.", Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+            DialogFragment newFragment = new NoticeDialogFragment();
+            newFragment.show(getFragmentManager(), "NoticeDialogFragment");
+
         }
 		
 		if(data != null && data.hasExtra(("SCAN_RESULT"))) {
             String ISBN = data.getStringExtra("SCAN_RESULT");
-            asyncTask = new GetBookInfo(getApplicationContext()) ; //.execute(ISBN);
+            asyncTask = new GetBookInfo(getApplicationContext()) ;
             asyncTask.delegate = this;
             asyncTask.execute(ISBN);
 		}
@@ -144,6 +141,40 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
         Intent intent = new Intent(this, CreateBook.class);
         intent.putExtra(DisplayBooks.GIVE_BOOK, output);
         startActivityForResult(intent, 0);
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        Dialog d = dialog.getDialog();
+        EditText editText = (EditText) d.findViewById(R.id.db_name);
+        String fileName = editText.getText().toString();
+
+        if(fileName.equals("")) {
+            fileName = "books.db";
+        } else {
+            fileName = fileName + ".db";
+        }
+
+        try {
+            db.backupDatabase(uri.getPath(), fileName);
+            Toast.makeText(this, "Données sauvegardées.", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            Toast.makeText(this, "Erreur, impossible d'exporter les données.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        dialog.dismiss();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
 }
