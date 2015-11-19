@@ -106,6 +106,81 @@
                 android:layout_height="0px"
                 android:layout_weight="1">
 
+                <TextView android:text="@string/bookCreationDatePublication"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
+
+                <EditText
+                    android:id="@+id/bookDatePublication"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:inputType="date"
+                    android:hint="JJ/MM/AAAA"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
+
+                <TextView android:text="@string/bookEditeur"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
+
+                <EditText
+                    android:id="@+id/bookEditeur"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
+
+                <TextView android:text="@string/bookCategorie"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
+
+                <EditText
+                    android:id="@+id/bookCategorie"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
+
+                <TextView android:text="@string/bookNbPages"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
+
+                <EditText
+                    android:id="@+id/bookNbPages"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:inputType="number"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
+
                 <Button
                     android:text="@string/btnPhoto"
                     android:layout_width="wrap_content"

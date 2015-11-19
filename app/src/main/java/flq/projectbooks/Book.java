@@ -12,6 +12,10 @@ public class Book implements Serializable {
     private String isbn;
     private byte[] image;
     private String description;
+    private String datePublication;
+    private String editor;
+    private String category;
+    private int nbPages;
 
     public Book(){
         id = -1;
@@ -19,6 +23,10 @@ public class Book implements Serializable {
         author = "";
         isbn = "";
         description = "";
+        datePublication = "";
+        editor = "";
+        category = "";
+        nbPages = 0;
     }
 
     public String getTitle() {
@@ -67,6 +75,37 @@ public class Book implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getDatePublication() {return datePublication;
+    }
+
+    public void setDatePublication(String datePublication) {
+        this.datePublication = datePublication;
+    }
+
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getNbPages() {
+        return nbPages;
+    }
+
+    public void setNbPages(int nbPages) {
+        this.nbPages = nbPages;
     }
 
     @Override

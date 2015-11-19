@@ -103,7 +103,7 @@ public class GetBookInfo extends AsyncTask<String, Void, Book> {
                     if (author == "") {
                         author += arr.getString(i);
                     } else {
-                        author += " , " + arr.getString(i);
+                        author += ", " + arr.getString(i);
                     }
                 }
 
@@ -118,6 +118,34 @@ public class GetBookInfo extends AsyncTask<String, Void, Book> {
                     String description = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("description");
                     newBook.setDescription(description);
                 }
+
+                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("publishedDate")) {
+                    String datePub = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("publishedDate");
+                    newBook.setDatePublication(datePub);
+                }
+
+                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("publisher")) {
+                    String editor = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("publisher");
+                    newBook.setEditor(editor);
+                }
+                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("categories")) {
+                    String category = "" ;
+                    JSONArray arrCategory = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getJSONArray("categories");
+                    for (int i = 0; i < arrCategory.length(); i++) {
+                        if (category == "") {
+                            category += arrCategory.getString(i);
+                        } else {
+                            category += ", " + arrCategory.getString(i);
+                        }
+                    }
+                    newBook.setCategory(category);
+                }
+
+                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("pageCount")) {
+                    String nbPages = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("pageCount");
+                    newBook.setNbPages(Integer.parseInt(nbPages));
+                }
+
 
                 newBook.setIsbn(isbns[0]);
                 newBook.setTitle(title);

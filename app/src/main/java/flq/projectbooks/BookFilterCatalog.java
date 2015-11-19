@@ -36,7 +36,7 @@ public class BookFilterCatalog implements Serializable {
     public void Add(BookFilter filter){
         //Add in the database
         datasource.open();
-        datasource.createFilter(filter.getName(), filter.getTitle(), filter.getAuthor(), filter.getDescription());
+        datasource.createFilter(filter.getName(), filter.getTitle(), filter.getAuthor(), filter.getDescription(), filter.getDatePublication(), filter.getEditor(), filter.getCategory(), filter.getNbPages());
         datasource.close();
 
         //Add in the local list
@@ -92,7 +92,7 @@ public class BookFilterCatalog implements Serializable {
             }
         } else {
             datasource.open();
-            datasource.createFilter(filter.getName(), filter.getTitle(), filter.getAuthor(), filter.getDescription()); //Add book to database
+            datasource.createFilter(filter.getName(), filter.getTitle(), filter.getAuthor(), filter.getDescription(), filter.getDatePublication(), filter.getEditor(), filter.getCategory(), filter.getNbPages()); //Add book to database
             bookFilterList = datasource.getAllBookFilters(); //Update books
             datasource.close();
         }

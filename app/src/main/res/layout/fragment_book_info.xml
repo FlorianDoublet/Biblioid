@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="flq.projectbooks.BookInfo"
-    android:padding="7dp">
+    android:padding="1dp">
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -17,21 +17,56 @@
                 android:layout_height="wrap_content"
                 tools:text="Titre"
                 android:gravity="center_horizontal"
-                android:textSize="30dp"/>
-
+                android:textSize="40dp"/>
             <TextView android:id="@+id/bookInfoAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Auteur"
+                tools:text="Auteurs"
+                android:gravity="center_horizontal"
+                android:textSize="30dp"
+                />
+
+            <TextView android:id="@+id/bookInfoDatePublication"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="JJ/MM/AAAA"
                 android:gravity="center_horizontal"
                 android:textSize="20dp"
                 />
+
+                <TextView android:id="@+id/bookInfoEditor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Editeur"
+                    android:gravity="center_horizontal"
+                    android:textSize="20dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="20dp"
+                    />
+
+
+            <TextView android:id="@+id/bookInfoCategorie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Genres"
+                android:gravity="center_horizontal"
+                android:textSize="20dp"
+                />
+            <TextView android:id="@+id/bookInfoNbPages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="0 Pages"
+                android:gravity="center_horizontal"
+                android:textSize="15dp"
+                />
+
 
             <ImageView
                 android:id="@+id/bookInfoImage"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                tools:src="@drawable/picturebook"/>
+                tools:src="@drawable/picturebook"
+                android:padding="16dp"/>
 
             <TextView android:id="@+id/bookInfoDescription"
                 android:layout_width="match_parent"
