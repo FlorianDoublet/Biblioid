@@ -42,6 +42,11 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         ((TextView)findViewById(R.id.bookISBN)).setText(book.getIsbn());
         ((TextView)findViewById(R.id.bookAuthor)).setText(book.getAuthor());
         ((TextView)findViewById(R.id.bookDescription)).setText(book.getDescription());
+        ((TextView)findViewById(R.id.bookDatePublication)).setText(book.getDatePublication());
+        ((TextView)findViewById(R.id.bookEditeur)).setText(book.getEditor());
+        ((TextView)findViewById(R.id.bookCategorie)).setText(book.getCategory());
+        ((TextView)findViewById(R.id.bookNbPages)).setText(String.valueOf(book.getNbPages()));
+
         if(book.getImage() != null) {
             ((ImageView) findViewById(R.id.bookThumbnail)).setImageDrawable(new BitmapDrawable(BitmapFactory.decodeByteArray(book.getImage(), 0, book.getImage().length)));
         }
@@ -67,12 +72,19 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         EditText author = (EditText) findViewById(R.id.bookAuthor);
         EditText isbn = (EditText) findViewById(R.id.bookISBN);
         EditText description = (EditText) findViewById(R.id.bookDescription);
+        EditText datePub = (EditText) findViewById(R.id.bookDatePublication);
+        EditText editor = (EditText) findViewById(R.id.bookEditeur);
+        EditText category =  (EditText) findViewById(R.id.bookCategorie);
+        EditText nbPages = (EditText) findViewById(R.id.bookNbPages);
 
         book.setTitle(title.getText().toString());
         book.setAuthor(author.getText().toString());
         book.setIsbn(isbn.getText().toString());
         book.setDescription(description.getText().toString());
-
+        book.setDatePublication(datePub.getText().toString());
+        book.setEditor(editor.getText().toString());
+        book.setCategory(category.getText().toString());
+        book.setNbPages(Integer.parseInt(nbPages.getText().toString()));
         BookLibrary.getInstance().UpdateOrAddBook(book);
 
         finish();
@@ -99,6 +111,11 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         ((TextView)findViewById(R.id.bookISBN)).setText(book.getIsbn());
         ((TextView)findViewById(R.id.bookAuthor)).setText(book.getAuthor());
         ((TextView)findViewById(R.id.bookDescription)).setText(book.getDescription());
+        ((TextView)findViewById(R.id.bookDatePublication)).setText(book.getDatePublication());
+        ((TextView)findViewById(R.id.bookEditeur)).setText(book.getEditor());
+        ((TextView)findViewById(R.id.bookCategorie)).setText(book.getCategory());
+        ((TextView)findViewById(R.id.bookNbPages)).setText(String.valueOf(book.getNbPages()));
+
         if(book.getImage() != null) {
             ((ImageView) findViewById(R.id.bookThumbnail)).setImageDrawable(new BitmapDrawable(BitmapFactory.decodeByteArray(book.getImage(), 0, book.getImage().length)));
         }

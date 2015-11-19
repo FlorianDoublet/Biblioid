@@ -11,6 +11,11 @@ public class BookFilter implements Serializable {
     private String title;
     private String author;
     private String description;
+    private String datePublication;
+    private String editor;
+    private String category;
+    private int nbPages;
+
 
     public BookFilter(){
         id = -1;
@@ -18,7 +23,43 @@ public class BookFilter implements Serializable {
         title = "";
         author = "";
         description = "";
+        datePublication = "";
+        editor = "";
+        category = "";
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
+    }
+
+    public String getDatePublication() {
+        return datePublication;
+    }
+
+    public void setDatePublication(String datePublication) {
+        this.datePublication = datePublication;
+    }
+
+    public int getNbPages() {
+        return nbPages;
+    }
+
+    public void setNbPages(int nbPages) {
+        this.nbPages = nbPages;
+    }
+
 
     public String getName() {
         return name;

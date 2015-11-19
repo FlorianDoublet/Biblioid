@@ -29,4 +29,8 @@
     <string name="loadISBN">Charger livre</string>
     <string name="nameFilter">Nom du filtre:</string>
     <string name="update_filter">Modifier le filtre</string>
+    <string name="bookNbPages">Nombre de pages :</string>
+    <string name="bookEditeur">Editeur :</string>
+    <string name="bookCategorie">Genre :</string>
+    <string name="bookCreationDatePublication">Date de publication :</string>
 </resources>

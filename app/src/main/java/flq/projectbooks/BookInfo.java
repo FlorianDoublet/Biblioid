@@ -75,10 +75,22 @@ public class BookInfo extends Fragment implements Parcelable {
         textViewTitle.setText(book.getTitle());
 
         TextView textViewAuthor = (TextView) view.findViewById(R.id.bookInfoAuthor);
-        textViewAuthor.setText(book.getAuthor());
+        textViewAuthor.setText("Par " + book.getAuthor());
 
         TextView textViewDescription = (TextView) view.findViewById(R.id.bookInfoDescription);
         textViewDescription.setText(book.getDescription());
+
+        TextView textViewDatePub = (TextView) view.findViewById(R.id.bookInfoDatePublication);
+        textViewDatePub.setText("le " + book.getDatePublication());
+
+        TextView textViewCategory = (TextView) view.findViewById(R.id.bookInfoCategorie);
+        textViewCategory.setText("Genre : " + book.getCategory());
+
+        TextView textViewEditor = (TextView) view.findViewById(R.id.bookInfoEditor);
+        textViewEditor.setText("Editeur : " + book.getEditor());
+
+        TextView textViewNbPages = (TextView) view.findViewById(R.id.bookInfoNbPages);
+        textViewNbPages.setText(String.valueOf(book.getNbPages()) + " pages");
 
         ImageView imageView = (ImageView) view.findViewById(R.id.bookInfoImage);
         if(book.getImage() != null) {

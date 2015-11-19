@@ -34,6 +34,10 @@ public class CreateFilter extends ActionBarActivity {
         ((TextView)findViewById(R.id.filterTitle)).setText(filter.getTitle());
         ((TextView)findViewById(R.id.filterAuthor)).setText(filter.getAuthor());
         ((TextView)findViewById(R.id.filterDescription)).setText(filter.getDescription());
+        ((TextView)findViewById(R.id.filterDatePublication)).setText(filter.getDatePublication());
+        ((TextView)findViewById(R.id.filterEditeur)).setText(filter.getEditor());
+        ((TextView)findViewById(R.id.filterCategorie)).setText(filter.getCategory());
+        ((TextView)findViewById(R.id.filterNbPages)).setText(String.valueOf(filter.getNbPages()));
     }
 
     @Override
@@ -58,12 +62,19 @@ public class CreateFilter extends ActionBarActivity {
         EditText title = (EditText) findViewById(R.id.filterTitle);
         EditText author = (EditText) findViewById(R.id.filterAuthor);
         EditText isbn = (EditText) findViewById(R.id.filterDescription);
+        EditText datePub = (EditText) findViewById(R.id.filterDatePublication);
+        EditText editor = (EditText) findViewById(R.id.filterEditeur);
+        EditText category =  (EditText) findViewById(R.id.filterCategorie);
+        EditText nbPages = (EditText) findViewById(R.id.filterNbPages);
 
         filter.setName(name.getText().toString());
         filter.setTitle(title.getText().toString());
         filter.setAuthor(author.getText().toString());
         filter.setDescription(isbn.getText().toString());
-
+        filter.setDatePublication(datePub.getText().toString());
+        filter.setEditor(editor.getText().toString());
+        filter.setCategory(category.getText().toString());
+        filter.setNbPages(Integer.parseInt(nbPages.getText().toString()));
         BookFilterCatalog.getInstance().UpdateOrAddFilter(filter);
 
         finish();
