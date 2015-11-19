@@ -40,6 +40,7 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         filterList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedFilterIndex = position;
                 BookFilter bookFilter = bookFilterCatalog.getBookFilterList().get(selectedFilterIndex);
 
                 Intent intent = new Intent(DisplayFilters.this, DisplayBooks.class);

@@ -40,21 +40,8 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
         //this.deleteDatabase("books.db");
         books = new BookLibrary(this);
         filters = new BookFilterCatalog(this);
-
-        /*books.Add(new Book("Harry Pot De Fleur à l'école des poulets", "J.K. Brownie", "1451", null));
-        books.Add(new Book("Harry Pot De Fleur et le poulailler secret", "J.K. Brownie", "1452", null));
-        books.Add(new Book("Le Seigneur Des Panneaux", "J.R.R. Trollkien", "45187", null));
-        books.Add(new Book("Fhamlette", "William Cestpire", "0218", null));
-        books.Add(new Book("Les Sirops d'érable", "Victor Jus Go", "45187", null));*/
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
