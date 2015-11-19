@@ -7,15 +7,25 @@ import java.io.Serializable;
  */
 public class BookFilter implements Serializable {
     private long id;
+    private String name;
     private String title;
     private String author;
     private String description;
 
     public BookFilter(){
         id = -1;
+        name = "";
         title = "";
         author = "";
         description = "";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTitle() {
@@ -38,7 +48,7 @@ public class BookFilter implements Serializable {
         return description;
     }
 
-    public void setDescription(String isbn) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -62,5 +72,15 @@ public class BookFilter implements Serializable {
             returnValue = false;
         }
         return returnValue;
+    }
+
+    public FilteredBookLibrary getFilteredLibrary(){
+        FilteredBookLibrary filteredBooksLibrary = new FilteredBookLibrary();
+        for (int i = 0; i < BookLibrary.getInstance().getBookList().size(); i++) {
+            if (this.isSelected(BookLibrary.getInstance().getBookList().get(i))) {
+                filteredBooksLibrary.Add(BookLibrary.getInstance().getBookList().get(i));
+            }
+        }
+        return filteredBooksLibrary;
     }
 }

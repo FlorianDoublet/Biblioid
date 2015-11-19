@@ -23,6 +23,24 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
+                <TextView android:text="@string/nameFilter"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
+
+                <EditText
+                    android:id="@+id/filterName"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
                 <TextView android:text="@string/bookTitle"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
@@ -73,7 +91,7 @@
             </LinearLayout>
 
             <Button
-                android:text="@string/btnCreatFilter"
+                android:text="@string/btnOK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

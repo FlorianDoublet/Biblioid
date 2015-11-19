@@ -18,7 +18,6 @@
     <string name="title_activity_create_filter">Créer un filtre</string>
     <string name="display_filter">Appliquer le filtre</string>
     <string name="delete_filter">Supprimer le filtre</string>
-    <string name="btnCreatFilter">create filter</string>
 	<string name="bookCreationDescription">Description :</string>
     <string name="scan">Scanner un livre</string>
     <string name="BookInfoTitle">Titre du livre</string>
@@ -33,4 +32,6 @@
     <string name="dialog_export_ok">OK</string>
     <string name="dialog_export_cancel">Annuler</string>
     <string name="action_raz">Remise à zéro</string>
+    <string name="nameFilter">Nom du filtre:</string>
+    <string name="update_filter">Modifier le filtre</string>
 </resources>
