@@ -1,6 +1,5 @@
 package flq.projectbooks;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -73,15 +72,22 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
 
         for (BookFilter filter : filters.getBookFilterList()) {
             Map<String, String> filterMap = new HashMap<>() ;
-            filterMap.put("author", filter.getAuthor());
-            filterMap.put("title", filter.getTitle());
-            filterMap.put("description", filter.getDescription());
+            filterMap.put("name", filter.getName());
+
+            String nbLivreString ;
+            int size = filter.getFilteredLibrary().getBookList().size();
+            if(size > 1) {
+                nbLivreString = size + " livres";
+            }else{
+                nbLivreString = size + " livre";
+            }
+            filterMap.put("nbLivre", nbLivreString );
             listOfFilters.add(filterMap);
         }
 
         listAdapter = new SimpleAdapter(this.getBaseContext(), listOfFilters, R.layout.filter_detail,
-                new String[] {"img", "author", "title", "description"},
-                new int[] {R.id.img, R.id.author, R.id.title, R.id.description});
+                new String[] {"name", "nbLivre"},
+                new int[] {R.id.name, R.id.nbLivre});
 
 
         filterList.setAdapter(listAdapter);
@@ -100,8 +106,6 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()){
-            case  R.id.action_settings:
-                return true;
             case R.id.create_filter_option:
                 Intent intent = new Intent(this, CreateFilter.class);
                 intent.putExtra(GIVE_EMPTY_FILTER, bookFilterCatalog.getNewFilters());
@@ -115,6 +119,13 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
     public boolean onMenuItemClick(MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.update_filter:
+                BookFilter filter = bookFilterCatalog.getBookFilterList().get(selectedFilterIndex) ;
+                Intent intent = new Intent(this, CreateFilter.class);
+                intent.putExtra(DisplayFilters.GIVE_FILTER, filter);
+                startActivityForResult(intent, 0);
+
+                return true;
             case R.id.delete_filter:
                 BookFilterCatalog.getInstance().deleteFilterById((int) bookFilterCatalog.getBookFilterList().get(selectedFilterIndex).getId());
                 listOfFilters.remove(selectedFilterIndex);

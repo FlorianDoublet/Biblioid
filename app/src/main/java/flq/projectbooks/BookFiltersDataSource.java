@@ -17,7 +17,7 @@ public class BookFiltersDataSource {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
     private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
-            MySQLiteHelper.COLUMN_TITLE, MySQLiteHelper.COLUMN_AUTHOR, MySQLiteHelper.COLUMN_DESCRIPTION};
+            MySQLiteHelper.COLUMN_FILTER_NAME, MySQLiteHelper.COLUMN_TITLE, MySQLiteHelper.COLUMN_AUTHOR, MySQLiteHelper.COLUMN_DESCRIPTION};
 
     public BookFiltersDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -31,9 +31,10 @@ public class BookFiltersDataSource {
         dbHelper.close();
     }
 
-    public BookFilter createFilter(String title, String author, String isbn) {
+    public BookFilter createFilter(String name, String title, String author, String isbn) {
         ContentValues values = new ContentValues();
 
+        values.put(MySQLiteHelper.COLUMN_FILTER_NAME, name);
         values.put(MySQLiteHelper.COLUMN_TITLE, title);
         values.put(MySQLiteHelper.COLUMN_AUTHOR, author);
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, isbn);
@@ -52,6 +53,7 @@ public class BookFiltersDataSource {
     public int updateBookFilter(BookFilter filter){
         ContentValues values = new ContentValues();
 
+        values.put(MySQLiteHelper.COLUMN_FILTER_NAME, filter.getName());
         values.put(MySQLiteHelper.COLUMN_TITLE, filter.getTitle());
         values.put(MySQLiteHelper.COLUMN_AUTHOR, filter.getAuthor());
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, filter.getDescription());
@@ -86,9 +88,10 @@ public class BookFiltersDataSource {
     private BookFilter cursorToBookFilter(Cursor cursor) {
         BookFilter filter = new BookFilter();
         filter.setId(cursor.getLong(0));
-        filter.setTitle(cursor.getString(1));
-        filter.setAuthor(cursor.getString(2));
-        filter.setDescription(cursor.getString(3));
+        filter.setName(cursor.getString(1));
+        filter.setTitle(cursor.getString(2));
+        filter.setAuthor(cursor.getString(3));
+        filter.setDescription(cursor.getString(4));
         return filter;
     }
 
