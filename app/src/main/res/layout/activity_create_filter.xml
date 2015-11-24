@@ -73,41 +73,69 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
                 android:layout_weight="1">
 
-                <TextView android:text="@string/bookCreationDescription"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
-
-                <EditText
-                    android:id="@+id/filterDescription"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    />
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                    <TextView android:text="@string/bookCreationDescription"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
+
+                    <EditText
+                        android:id="@+id/filterDescription"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        />
+                </LinearLayout>
 
                 <TextView android:text="@string/bookCreationDatePublication"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     />
-
-                <EditText
-                    android:id="@+id/filterDatePublication"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:inputType="date"
-                    android:hint="JJ/MM/AAAA"
-                    />
+                    android:layout_height="match_parent">
+
+                    <TextView android:text="entre le "
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
+
+                    <EditText
+                        android:id="@+id/filterDatePublicationMin"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0px"
+                        android:layout_weight="1"
+                        android:inputType="date"
+                        android:hint="JJ/MM/AAAA"
+                        />
+
+                    <TextView android:text=" et le "
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
+
+                    <EditText
+                        android:id="@+id/filterDatePublicationMax"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0px"
+                        android:layout_weight="1"
+                        android:inputType="date"
+                        android:hint="JJ/MM/AAAA"
+                        />
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -157,10 +185,30 @@
                     android:layout_width="wrap_content"
                     />
 
-                <EditText
-                    android:id="@+id/filterNbPages"
+                <TextView android:text=" entre "
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
+                    />
+
+
+                <EditText
+                    android:id="@+id/filterNbPagesMin"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:hint="0"
+                    android:inputType="number"
+                    />
+
+                <TextView android:text=" et "
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    />
+
+                <EditText
+                    android:id="@+id/filterNbPagesMax"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:hint="0"
                     android:inputType="number"
                     />
             </LinearLayout>
