@@ -1,10 +1,13 @@
-package flq.projectbooks;
+package flq.projectbooks.libraries;
 
 import android.content.Context;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import flq.projectbooks.BookFilter;
+import flq.projectbooks.bdd.BookFiltersDataSource;
 
 /**
  * Created by doublet on 01/10/15.

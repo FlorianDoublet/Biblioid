@@ -1,4 +1,4 @@
-package flq.projectbooks;
+package flq.projectbooks.bdd;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import flq.projectbooks.BookFilter;
 
 /**
  * Created by Quentin on 22/10/2015.

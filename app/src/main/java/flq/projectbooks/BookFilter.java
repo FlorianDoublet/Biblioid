@@ -3,6 +3,9 @@ package flq.projectbooks;
 
 import java.io.Serializable;
 
+import flq.projectbooks.libraries.BookLibrary;
+import flq.projectbooks.libraries.FilteredBookLibrary;
+
 /**
  * Created by doublet on 01/10/15.
  */

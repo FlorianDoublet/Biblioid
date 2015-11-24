@@ -1,10 +1,8 @@
-package flq.projectbooks;
+package flq.projectbooks.fragments;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,7 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.Serializable;
+import flq.projectbooks.Book;
+import flq.projectbooks.R;
 
 
 /**

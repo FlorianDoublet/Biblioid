@@ -1,4 +1,4 @@
-package flq.projectbooks;
+package flq.projectbooks.activities;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -7,6 +7,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import flq.projectbooks.BookFilter;
+import flq.projectbooks.R;
+import flq.projectbooks.libraries.BookFilterCatalog;
 
 
 public class CreateFilter extends ActionBarActivity {
