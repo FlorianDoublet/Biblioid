@@ -1,13 +1,17 @@
 package flq.projectbooks.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +48,7 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //this.deleteDatabase("books.db"); //Effacer la bdd en cas de bug
+        //this.deleteDatabase("books.db"); //Effacer la bdd en cas de bug ou en cas de conflit de versions.
         books = new BookLibrary(this);
         filters = new BookFilterCatalog(this);
     }
@@ -58,10 +62,7 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_raz) {
-            this.deleteDatabase("books.db");
-            Toast.makeText(this, "Données remises à zéro", Toast.LENGTH_LONG).show();
-            BookLibrary.getInstance().updateLocalList();
-            BookFilterCatalog.getInstance().updateLocalList();
+            confirmDialogRAZ(this);
             return true;
         }
 
@@ -183,6 +184,43 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    private void confirmDialogRAZ(Context context){
+        final AlertDialog alert = new AlertDialog.Builder(
+                new ContextThemeWrapper(context,android.R.style.Theme_Dialog))
+                .create();
+        alert.setTitle("Attention");
+        alert.setMessage("Voulez-vous vraiment effacer les données ?");
+        alert.setCancelable(false);
+        alert.setCanceledOnTouchOutside(false);
+
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, "Oui",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        eraseDatabase();
+
+                        alert.dismiss();
+                    }
+                });
+
+        alert.setButton(DialogInterface.BUTTON_NEGATIVE, "Non",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        alert.dismiss();
+
+                    }
+                });
+
+        alert.show();
+    }
+
+    void eraseDatabase() {
+        deleteDatabase("books.db");
+        Toast.makeText(this, "Données remises à zéro", Toast.LENGTH_LONG).show();
+        BookLibrary.getInstance().updateLocalList();
+        BookFilterCatalog.getInstance().updateLocalList();
     }
 
 }
