@@ -1,5 +1,6 @@
 package flq.projectbooks;
 
+
 import java.io.Serializable;
 
 /**
@@ -11,10 +12,12 @@ public class BookFilter implements Serializable {
     private String title;
     private String author;
     private String description;
-    private String datePublication;
+    private String datePublicationMin;
+    private String datePublicationMax;
     private String editor;
     private String category;
-    private int nbPages;
+    private int nbPagesMin;
+    private int nbPagesMax;
 
 
     public BookFilter(){
@@ -23,9 +26,12 @@ public class BookFilter implements Serializable {
         title = "";
         author = "";
         description = "";
-        datePublication = "";
+        datePublicationMin = "";
+        datePublicationMax = "";
         editor = "";
         category = "";
+        nbPagesMin = 0;
+        nbPagesMax = 0;
     }
 
     public String getCategory() {
@@ -44,20 +50,29 @@ public class BookFilter implements Serializable {
         this.editor = editor;
     }
 
-    public String getDatePublication() {
-        return datePublication;
+    public String getDatePublicationMin() {
+        return datePublicationMin;
     }
 
-    public void setDatePublication(String datePublication) {
-        this.datePublication = datePublication;
+    public String getDatePublicationMax() {
+        return datePublicationMax;
     }
 
-    public int getNbPages() {
-        return nbPages;
+    public void setDatePublications(String datePublicationMin, String datePublicationMax) {
+        this.datePublicationMin = datePublicationMin;
+        this.datePublicationMax = datePublicationMax;
     }
 
-    public void setNbPages(int nbPages) {
-        this.nbPages = nbPages;
+    public int getNbPagesMin() {
+        return nbPagesMin;
+    }
+    public int getNbPagesMax() {
+        return nbPagesMax;
+    }
+
+    public void setNbPages(int nbPagesMin, int nbPagesMax) {
+        this.nbPagesMin = nbPagesMin;
+        this.nbPagesMax = nbPagesMax;
     }
 
 
@@ -112,6 +127,24 @@ public class BookFilter implements Serializable {
         if(!description.equals("") && !book.getDescription().contains(description)){
             returnValue = false;
         }
+
+        if(!category.equals("") && !book.getCategory().contains(category)){
+            returnValue = false;
+        }
+
+        if(!editor.equals("") && !book.getEditor().contains(editor)){
+            returnValue = false;
+        }
+
+        if(!datePublicationMin.equals("") && !datePublicationMax.equals("")) {
+            if((yearFromString(datePublicationMin) > yearFromString(book.getDatePublication()) || yearFromString(datePublicationMax) < yearFromString(book.getDatePublication())))
+                returnValue = false;
+        }
+
+        if(nbPagesMax != 0 && ((book.getNbPages() < nbPagesMin) || (book.getNbPages() > nbPagesMax))){
+            returnValue = false;
+        }
+
         return returnValue;
     }
 
@@ -123,5 +156,14 @@ public class BookFilter implements Serializable {
             }
         }
         return filteredBooksLibrary;
+    }
+
+    private int yearFromString(String date){
+
+        if(date.length() > 4){
+            String full_date[] = date.split("/");
+            date = full_date[2];
+        }
+        return Integer.parseInt(date);
     }
 }

@@ -28,9 +28,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_FILTER_NAME = "name";
     public static final String COLUMN_DATE_PUBLICATION = "datePublication";
+    public static final String COLUMN_DATE_PUBLICATION_MIN = "datePublicationMin";
+    public static final String COLUMN_DATE_PUBLICATION_MAX = "datePublicationMax";
     public static final String COLUMN_EDITOR = "editor";
     public static final String COLUMN_CATEGORY= "category";
     public static final String COLUMN_NB_PAGES = "nbPages";
+    public static final String COLUMN_NB_PAGES_MIN = "nbPagesMin";
+    public static final String COLUMN_NB_PAGES_MAX = "nbPagesMax";
 
     private static final String DATABASE_NAME = "books.db";
     private static final int DATABASE_VERSION = 1;
@@ -49,7 +53,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_EDITOR + " text ,"
             + COLUMN_CATEGORY + " text ,"
             + COLUMN_NB_PAGES + " integer "
-
             + " );";
 
     private static final String DATABASE_CREATE_BOOK_FILTERS = "create table "
@@ -59,10 +62,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_TITLE + " text not null, "
             + COLUMN_AUTHOR + " text not null, "
             + COLUMN_DESCRIPTION + " text not null ,"
-            + COLUMN_DATE_PUBLICATION + " text ,"
+            + COLUMN_DATE_PUBLICATION_MIN + " text ,"
+            + COLUMN_DATE_PUBLICATION_MAX + " text ,"
             + COLUMN_EDITOR + " text ,"
             + COLUMN_CATEGORY + " text ,"
-            + COLUMN_NB_PAGES + " integer "
+            + COLUMN_NB_PAGES_MIN + " integer ,"
+            + COLUMN_NB_PAGES_MAX + " integer "
             + " );";
 
     public MySQLiteHelper(Context context) {

@@ -21,10 +21,12 @@ public class BookFiltersDataSource {
             MySQLiteHelper.COLUMN_TITLE,
             MySQLiteHelper.COLUMN_AUTHOR,
             MySQLiteHelper.COLUMN_DESCRIPTION,
-            MySQLiteHelper.COLUMN_DATE_PUBLICATION,
+            MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN,
+            MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX,
             MySQLiteHelper.COLUMN_EDITOR,
             MySQLiteHelper.COLUMN_CATEGORY,
-            MySQLiteHelper.COLUMN_NB_PAGES};
+            MySQLiteHelper.COLUMN_NB_PAGES_MIN,
+            MySQLiteHelper.COLUMN_NB_PAGES_MAX};
 
     public BookFiltersDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -38,17 +40,19 @@ public class BookFiltersDataSource {
         dbHelper.close();
     }
 
-    public BookFilter createFilter(String name, String title, String author, String isbn, String datePublication, String editor, String category, int nbPages) {
+    public BookFilter createFilter(String name, String title, String author, String isbn, String datePublicationMin, String datePublicationMax, String editor, String category, int nbPagesMin, int nbPagesMax) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_FILTER_NAME, name);
         values.put(MySQLiteHelper.COLUMN_TITLE, title);
         values.put(MySQLiteHelper.COLUMN_AUTHOR, author);
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, isbn);
-        values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION, datePublication);
+        values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN, datePublicationMin);
+        values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX, datePublicationMax);
         values.put(MySQLiteHelper.COLUMN_EDITOR, editor);
         values.put(MySQLiteHelper.COLUMN_CATEGORY, category);
-        values.put(MySQLiteHelper.COLUMN_NB_PAGES, nbPages);
+        values.put(MySQLiteHelper.COLUMN_NB_PAGES_MIN, nbPagesMin);
+        values.put(MySQLiteHelper.COLUMN_NB_PAGES_MAX, nbPagesMax);
 
         long insertId = database.insert(MySQLiteHelper.TABLE_BOOK_FILTERS, null,
                 values);
@@ -68,10 +72,12 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_TITLE, filter.getTitle());
         values.put(MySQLiteHelper.COLUMN_AUTHOR, filter.getAuthor());
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, filter.getDescription());
-        values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION, filter.getDatePublication());
+        values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN, filter.getDatePublicationMin());
+        values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX, filter.getDatePublicationMax());
         values.put(MySQLiteHelper.COLUMN_EDITOR, filter.getEditor());
         values.put(MySQLiteHelper.COLUMN_CATEGORY, filter.getCategory());
-        values.put(MySQLiteHelper.COLUMN_NB_PAGES, filter.getNbPages());
+        values.put(MySQLiteHelper.COLUMN_NB_PAGES_MIN, filter.getNbPagesMin());
+        values.put(MySQLiteHelper.COLUMN_NB_PAGES_MAX, filter.getNbPagesMax());
         return database.update(MySQLiteHelper.TABLE_BOOK_FILTERS, values, MySQLiteHelper.COLUMN_ID + " = " +filter.getId(), null);
     }
 
@@ -107,10 +113,10 @@ public class BookFiltersDataSource {
         filter.setTitle(cursor.getString(2));
         filter.setAuthor(cursor.getString(3));
         filter.setDescription(cursor.getString(4));
-        filter.setDatePublication(cursor.getString(5));
-        filter.setEditor(cursor.getString(6));
-        filter.setCategory(cursor.getString(7));
-        filter.setNbPages(cursor.getInt(8));
+        filter.setDatePublications(cursor.getString(5), cursor.getString(6));
+        filter.setEditor(cursor.getString(7));
+        filter.setCategory(cursor.getString(8));
+        filter.setNbPages(cursor.getInt(9), cursor.getInt(10));
         return filter;
     }
 
