@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:theme">
         <activity
-            android:name=".Main"
+            android:name=".activities.Main"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,19 +25,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateBook"
+            android:name=".activities.CreateBook"
             android:label="@string/title_activity_create_book" >
         </activity>
         <activity
-            android:name=".DisplayBooks"
+            android:name=".activities.DisplayBooks"
             android:label="@string/title_activity_display_books" >
         </activity>
         <activity
-            android:name=".DisplayFilters"
+            android:name=".activities.DisplayFilters"
             android:label="@string/title_activity_display_filters" >
         </activity>
         <activity
-            android:name=".CreateFilter"
+            android:name=".activities.CreateFilter"
             android:label="@string/title_activity_create_filter" >
         </activity>
 

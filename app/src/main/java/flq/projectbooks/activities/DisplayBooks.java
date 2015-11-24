@@ -1,15 +1,20 @@
-package flq.projectbooks;
+package flq.projectbooks.activities;
 
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 
+import flq.projectbooks.Book;
+import flq.projectbooks.BookFilter;
+import flq.projectbooks.fragments.BookInfo;
+import flq.projectbooks.fragments.BookList;
+import flq.projectbooks.R;
 
-public class DisplayBooks extends ActionBarActivity  implements  BookList.OnBookSelected
+
+public class DisplayBooks extends ActionBarActivity  implements BookList.OnBookSelected
 {
 
     public final static String GIVE_BOOK = "flq.GIVE_BOOK";

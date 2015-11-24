@@ -1,6 +1,8 @@
-package flq.projectbooks;
+package flq.projectbooks.libraries;
 
 import java.util.ArrayList;
+
+import flq.projectbooks.Book;
 
 /**
  * Created by flori on 27/10/2015.

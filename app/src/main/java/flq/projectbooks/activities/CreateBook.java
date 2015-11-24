@@ -1,6 +1,5 @@
-package flq.projectbooks;
+package flq.projectbooks.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+
+import flq.projectbooks.Book;
+import flq.projectbooks.utilities.GetBookInfo;
+import flq.projectbooks.R;
+import flq.projectbooks.libraries.BookLibrary;
 
 public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncResponse {
 

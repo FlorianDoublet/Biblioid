@@ -1,17 +1,15 @@
-package flq.projectbooks;
+package flq.projectbooks.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +20,17 @@ import android.widget.PopupMenu;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import flq.projectbooks.Book;
+import flq.projectbooks.BookFilter;
+import flq.projectbooks.R;
+import flq.projectbooks.activities.CreateBook;
+import flq.projectbooks.activities.DisplayBooks;
+import flq.projectbooks.libraries.BookLibrary;
 
 
 /**

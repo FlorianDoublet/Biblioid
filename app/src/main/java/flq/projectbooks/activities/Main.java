@@ -1,4 +1,4 @@
-package flq.projectbooks;
+package flq.projectbooks.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,6 +17,14 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.IOException;
+
+import flq.projectbooks.Book;
+import flq.projectbooks.fragments.NoticeDialogFragment;
+import flq.projectbooks.utilities.GetBookInfo;
+import flq.projectbooks.R;
+import flq.projectbooks.bdd.MySQLiteHelper;
+import flq.projectbooks.libraries.BookFilterCatalog;
+import flq.projectbooks.libraries.BookLibrary;
 
 public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse, NoticeDialogFragment.NoticeDialogListener {
 

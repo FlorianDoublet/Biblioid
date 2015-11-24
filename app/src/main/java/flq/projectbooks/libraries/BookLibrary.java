@@ -1,14 +1,13 @@
-package flq.projectbooks;
+package flq.projectbooks.libraries;
 
 import android.content.Context;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import flq.projectbooks.Book;
+import flq.projectbooks.bdd.BooksDataSource;
 
 /**
  * Created by Doublet F. Delvallet Q. and Delvallet L. on 24/09/15.

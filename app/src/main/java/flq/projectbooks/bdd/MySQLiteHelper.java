@@ -1,4 +1,4 @@
-package flq.projectbooks;
+package flq.projectbooks.bdd;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

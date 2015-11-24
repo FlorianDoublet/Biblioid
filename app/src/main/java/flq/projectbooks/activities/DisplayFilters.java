@@ -1,4 +1,4 @@
-package flq.projectbooks;
+package flq.projectbooks.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import flq.projectbooks.BookFilter;
+import flq.projectbooks.R;
+import flq.projectbooks.libraries.BookFilterCatalog;
 
 
 public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMenuItemClickListener {

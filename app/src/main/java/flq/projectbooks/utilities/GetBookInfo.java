@@ -1,4 +1,4 @@
-package flq.projectbooks;
+package flq.projectbooks.utilities;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -21,6 +21,9 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+
+import flq.projectbooks.Book;
+import flq.projectbooks.libraries.BookLibrary;
 
 /**
  * Created by doublet on 05/11/15.
