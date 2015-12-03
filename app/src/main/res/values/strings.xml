@@ -38,4 +38,5 @@
     <string name="bookEditeur">Editeur :</string>
     <string name="bookCategorie">Genre :</string>
     <string name="bookCreationDatePublication">Date de publication :</string>
+    <string name="btnModif">Modifier</string>
 </resources>

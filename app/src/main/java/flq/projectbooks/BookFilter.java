@@ -164,8 +164,17 @@ public class BookFilter implements Serializable {
     private int yearFromString(String date){
 
         if(date.length() > 4){
-            String full_date[] = date.split("/");
-            date = full_date[2];
+            String full_date[] ;
+            if(date.contains("/")) {
+                full_date = date.split("/");
+            }else {
+                full_date = date.split("-");
+            }
+            if(full_date[0].length() == 4) {
+                date = full_date[0];
+            }else{
+                date = full_date[2];
+            }
         }
         return Integer.parseInt(date);
     }

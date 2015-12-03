@@ -172,6 +172,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
                 byte[] img = book.getImage();
                 bookMap.put("img", new BitmapDrawable(BitmapFactory.decodeByteArray(img, 0, img.length)));
             }else{
+
                 bookMap.put("img", String.valueOf(R.drawable.picturebook));
             }
             bookMap.put("author", book.getAuthor());

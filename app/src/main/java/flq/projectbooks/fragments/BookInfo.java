@@ -2,6 +2,7 @@ package flq.projectbooks.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class BookInfo extends Fragment implements Parcelable {
 
 
     private Book book;
+    private Menu menu;
 
     @Override
     public void writeToParcel(Parcel dest, int flags){
@@ -74,28 +76,11 @@ public class BookInfo extends Fragment implements Parcelable {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_book_info, menu);
-        super.onCreateOptionsMenu(menu, inflater);
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch(item.getItemId()){
-            case R.id.modif_book_option:
-                Intent intent = new Intent(getActivity(), CreateBook.class);
-                intent.putExtra(DisplayBooks.GIVE_BOOK, book);
-                startActivityForResult(intent, 0);
-
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void modifBook(){
+        Intent intent = new Intent(getActivity(), CreateBook.class);
+        intent.putExtra(DisplayBooks.GIVE_BOOK, book);
+        startActivityForResult(intent, 0);
     }
 
     @Override
@@ -177,12 +162,15 @@ public class BookInfo extends Fragment implements Parcelable {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
     }
+
+
 
 
 }

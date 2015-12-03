@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.View;
 
 import flq.projectbooks.Book;
 import flq.projectbooks.BookFilter;
@@ -28,7 +30,6 @@ public class DisplayBooks extends ActionBarActivity  implements BookList.OnBookS
         bundle.putSerializable(BookInfo.ARG_PARAM1, book);
         fragmentInfoBook.setArguments(bundle);
         if (findViewById(R.id.bookInfoContainer) != null) {
-
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.bookInfoContainer, fragmentInfoBook).commit();
         } else {
@@ -50,6 +51,7 @@ public class DisplayBooks extends ActionBarActivity  implements BookList.OnBookS
         super.onSaveInstanceState(savedInstanceState);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,18 +64,17 @@ public class DisplayBooks extends ActionBarActivity  implements BookList.OnBookS
                 fragmentInfoBook = (BookInfo) savedInstanceState.getParcelable(STATE_FRAGMENT_BOOK);
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
                 getSupportFragmentManager().popBackStack();
                 if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     transaction.replace(R.id.listContainer, fragmentList);
                 }else{
+                    invalidateOptionsMenu();
                     transaction.replace(R.id.listContainer, fragmentList);
                     if(fragmentInfoBook != null) {
                         transaction.replace(R.id.bookInfoContainer, fragmentInfoBook);
                     }
                 }
                 transaction.commit();
-
                 return;
             }
             fragmentList = new BookList();
@@ -90,4 +91,9 @@ public class DisplayBooks extends ActionBarActivity  implements BookList.OnBookS
                     .replace(R.id.listContainer, fragmentList).commit();
         }
     }
+
+    public void modifBook(View view){
+        fragmentInfoBook.modifBook();
+    }
+
 }

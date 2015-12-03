@@ -80,6 +80,14 @@
                 android:gravity="center_horizontal"
                 />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="modifBook"
+                android:text="@string/btnModif"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"/>
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
