@@ -241,7 +241,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
                 return true;
             case R.id.delete_book:
-                BookLibrary.getInstance().DeleteBookById((int)bookLibrary.getBookList().get(selectedBookIndex).getId());
+                BookLibrary.getInstance().deleteBookById((int)bookLibrary.getBookList().get(selectedBookIndex).getId());
                 listOfBooks.remove(selectedBookIndex);
                 listAdapter.notifyDataSetChanged();
                 Toast.makeText(getActivity(), "Livre effacé", Toast.LENGTH_SHORT).show();

@@ -51,11 +51,20 @@ public class BookLibrary implements Serializable {
         return new Book();
     }
 
-    public void DeleteBook(Book book){
+    public void deleteBook(Book book){
         bookList.remove(book);
     }
 
-    public void DeleteBookById(int id){
+    public Book getBookById(long id){
+        for(int j = 0; j < bookList.size(); j++){
+            if(bookList.get(j).getId() == id){
+                return  bookList.get(j);
+            }
+        }
+        return null;
+    }
+
+    public void deleteBookById(int id){
         for(int j = 0; j < bookList.size(); j++){
             if(bookList.get(j).getId() == id){
                 //Remove from database
@@ -78,7 +87,7 @@ public class BookLibrary implements Serializable {
         datasource.close();
     }
 
-    public void UpdateOrAddBook(Book book){
+    public void updateOrAddBook(Book book){
         long id = book.getId();
         if(id != -1) {
             for (int j = 0; j < bookList.size(); j++) {

@@ -88,7 +88,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         book.setEditor(editor.getText().toString());
         book.setCategory(category.getText().toString());
         book.setNbPages(Integer.parseInt(nbPages.getText().toString()));
-        BookLibrary.getInstance().UpdateOrAddBook(book);
+        BookLibrary.getInstance().updateOrAddBook(book);
 
         finish();
     }
