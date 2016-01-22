@@ -3,6 +3,7 @@ package flq.projectbooks.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,9 +12,12 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -46,7 +50,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     private OnBookSelected mBookListener;
 
     private int selectedBookIndex;
-    private ListView bookList;
+    private GridView gridViewBooks;
     private List<Map<String, Object>> listOfBooks ;
     private SimpleAdapter listAdapter;
     private BookLibrary bookLibrary ;
@@ -91,14 +95,16 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
 
-        bookList = (ListView) view.findViewById(R.id.bookList);
+        gridViewBooks = (GridView) view.findViewById(R.id.gridViewBooks);
 
-        bookList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+        gridViewBooks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedBookIndex = position;
@@ -111,7 +117,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
             }
         });
 
-        bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridViewBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -120,14 +126,9 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         });
 
         bookLibrary = BookLibrary.getInstance();
-        createListView(view);
-
+        createGridView(view);
         return view;
     }
-
-
-
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -156,15 +157,11 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         public void OnBookSelected(Book book);
     }
 
-
-    private void createListView(View view){
+    private void createGridView(View view){
         if(bookFilter != null) {
             bookLibrary = bookFilter.getFilteredLibrary();
         }
-
-
         listOfBooks = new ArrayList<>();
-        ListView bookList = (ListView) view.findViewById(R.id.bookList);
 
         for (Book book : bookLibrary.getBookList()) {
             Map<String, Object> bookMap = new HashMap<>() ;
@@ -182,8 +179,74 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         }
 
         listAdapter = new SimpleAdapter(getActivity().getBaseContext(), listOfBooks, R.layout.book_detail,
+                new String[] {"img", "title"},
+                new int[] {R.id.img, R.id.text});
+
+        listAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+
+            @Override
+            public boolean setViewValue(View view, Object data, String textRepresentation) {
+                if (view.getId() == R.id.img) {
+                    if (data.getClass() != String.class) {
+                        ImageView imageView = (ImageView) view;
+                        Drawable drawable = (Drawable) data;
+                        imageView.setImageDrawable(drawable);
+                    } else {
+                        ImageView imageView = (ImageView) view;
+                        imageView.setImageResource(getResources().getIdentifier(data.toString(), "drawable", "flq.projectbooks"));
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        //gridViewBooks.setAdapter(new listAdapter(this));
+        gridViewBooks.setAdapter(listAdapter);
+    }
+
+    private void createListView(View view, int bookListCode, boolean evenBooks){
+        if(bookFilter != null) {
+            bookLibrary = bookFilter.getFilteredLibrary();
+        }
+
+
+        listOfBooks = new ArrayList<>();
+        ListView bookList = (ListView) view.findViewById(bookListCode);
+
+
+        List<Book> subList = new ArrayList<Book>();
+        List<Book> tempBookList = bookLibrary.getBookList();
+
+        if(evenBooks){
+            for(int i = 0; i < tempBookList.size(); i += 2){
+                subList.add(tempBookList.get(i));
+            }
+        }else{
+            for(int i = 1; i < tempBookList.size()-1; i += 2){
+                subList.add(tempBookList.get(i));
+            }
+        }
+
+        for (Book book : subList) {
+            Map<String, Object> bookMap = new HashMap<>() ;
+            if(book.getImage() != null){
+                byte[] img = book.getImage();
+                bookMap.put("img", new BitmapDrawable(BitmapFactory.decodeByteArray(img, 0, img.length)));
+            }else{
+
+                bookMap.put("img", String.valueOf(R.drawable.picturebook));
+            }
+            bookMap.put("author", book.getAuthor());
+            bookMap.put("title", book.getTitle());
+            bookMap.put("isbn", book.getIsbn());
+            listOfBooks.add(bookMap);
+        }
+
+        listAdapter = new SimpleAdapter(getActivity().getBaseContext(), listOfBooks, R.layout.book_detail,
                 new String[] {"img", "author", "title", "isbn"},
-                new int[] {R.id.img, R.id.author, R.id.title, R.id.isbn});
+                new int[] {R.id.img});
 
         listAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
 
@@ -255,7 +318,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        createListView(getView());
+        createGridView(this.getView());
     }
 
 }
