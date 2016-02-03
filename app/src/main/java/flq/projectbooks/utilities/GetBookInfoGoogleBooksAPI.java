@@ -28,26 +28,10 @@ import flq.projectbooks.libraries.BookLibrary;
 /**
  * Created by doublet on 05/11/15.
  */
-public class GetBookInfoGoogleBooksAPI extends AsyncTask<String, Void, Book> {
+public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
 
-    private Context mContext;
     public GetBookInfoGoogleBooksAPI(Context context){
-        mContext = context;
-    }
-
-
-    public interface AsyncResponse {
-        void processFinish(Book output);
-    }
-
-    public AsyncResponse delegate = null;
-
-    @Override
-    protected void onPostExecute(Book result) {
-        if(result != null){
-            delegate.processFinish(result);
-        }
-
+        super(context);
     }
 
     @Override

@@ -67,7 +67,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     }
 
     /**
-     *     /**
+     *
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *

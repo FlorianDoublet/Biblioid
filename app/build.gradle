@@ -33,6 +33,11 @@ dependencies {
     compile 'com.google.zxing:core:3.2.0'
     compile 'com.google.apis:google-api-services-books:v1-rev74-1.20.0'
 
+    compile 'com.amazonaws:aws-android-sdk-core:2.+'
+    compile 'com.amazonaws:aws-android-sdk-cognito:2.+'
+    compile 'com.amazonaws:aws-android-sdk-s3:2.+'
+    compile 'com.amazonaws:aws-android-sdk-ddb:2.+'
+
 }
 
 repositories {

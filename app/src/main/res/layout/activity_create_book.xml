@@ -5,204 +5,403 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="flq.projectbooks.activities.CreateBook">
+    tools:context="flq.projectbooks.activities.CreateBook"
+    android:id="@+id/bookCreationLayout"
+    android:background="#C0000000">
 
-    <ScrollView
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/coverView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/picturebook"
+            android:onClick="hideCover"/>
+
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:id="@+id/topMenuCreateBook"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:background="#C0000000">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="✔"
+                android:onClick="bookCreation"/>
+        </LinearLayout>
+
+
+        <ScrollView
+            android:id="@+id/scrollViewCreateBook"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_below="@id/topMenuCreateBook">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill"
+                android:orientation="vertical"
+                android:background="#B0000000">
 
-                <TextView android:text="@string/bookTitle"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
-
-                <EditText
-                    android:id="@+id/bookTitle"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
+                    <TextView android:text="@string/bookISBN"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                    <EditText
+                        android:id="@+id/bookISBN"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="100"
+                        />
 
-                <TextView android:text="@string/bookAuthor"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
+                    <Button
+                        android:id="@+id/loadISBN"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/loadISBN"
+                        android:layout_weight="1"
+                        android:onClick="loadSource"/>
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/bookAuthor"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:id="@+id/layoutTitre"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="8">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                    <TextView android:text="@string/bookTitle"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
 
-                <TextView android:text="@string/bookISBN"
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					android:layout_weight="1"
-					/>
+                    <EditText
+                        android:id="@+id/bookTitle"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="8"
+                        />
 
-				<EditText
-					android:id="@+id/bookISBN"
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					android:layout_weight="100"
-					/>
+                    <ImageButton
+                        android:id="@+id/bookTitleImageButton"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/googlelogo"
+                        android:scaleType="centerCrop"
+                        android:onClick="changeTitleSource"
+                        android:visibility="gone"/>
 
-				<Button
-					android:id="@+id/loadISBN"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/loadISBN"
-					android:layout_weight="1"
-					android:onClick="loadISBN"/>
-            </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/bookTitleImageButtonLock"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/unlock"
+                        android:scaleType="centerCrop"
+                        android:onClick="lockTitleSource"
+                        android:visibility="gone"/>
+                </LinearLayout>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
 
-                <TextView android:text="@string/bookCreationDescription"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
 
-                <EditText
-                    android:id="@+id/bookDescription"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="8">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                    <TextView android:text="@string/bookAuthor"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
 
-                <TextView android:text="@string/bookCreationDatePublication"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
+                    <EditText
+                        android:id="@+id/bookAuthor"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="8"
+                        />
 
-                <EditText
-                    android:id="@+id/bookDatePublication"
-                    android:layout_height="wrap_content"
+                    <ImageButton
+                        android:id="@+id/bookAuthorImageButton"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/googlelogo"
+                        android:scaleType="centerCrop"
+                        android:onClick="changeAuthorSource"
+                        android:visibility="gone"/>
+
+                    <ImageButton
+                        android:id="@+id/bookAuthorImageButtonLock"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/unlock"
+                        android:scaleType="centerCrop"
+                        android:onClick="lockAuthorSource"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:inputType="date"
-                    android:hint="JJ/MM/AAAA"
-                    />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="8">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                    <TextView android:text="@string/bookCreationDescription"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
 
-                <TextView android:text="@string/bookEditeur"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
+                    <EditText
+                        android:id="@+id/bookDescription"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="8"
+                        />
 
-                <EditText
-                    android:id="@+id/bookEditeur"
-                    android:layout_height="wrap_content"
+                    <ImageButton
+                        android:id="@+id/bookDescriptionImageButton"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/googlelogo"
+                        android:scaleType="centerCrop"
+                        android:onClick="changeDescriptionSource"
+                        android:visibility="gone"/>
+
+
+                    <ImageButton
+                        android:id="@+id/bookDescriptionImageButtonLock"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/unlock"
+                        android:scaleType="centerCrop"
+                        android:onClick="lockDescriptionSource"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="8">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                    <TextView android:text="@string/bookCreationDatePublication"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
 
-                <TextView android:text="@string/bookCategorie"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
+                    <EditText
+                        android:id="@+id/bookDatePublication"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:inputType="date"
+                        android:hint="JJ/MM/AAAA"
+                        android:layout_weight="8"
+                        />
 
-                <EditText
-                    android:id="@+id/bookCategorie"
-                    android:layout_height="wrap_content"
+                    <ImageButton
+                        android:id="@+id/bookDatePublicationImageButton"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/googlelogo"
+                        android:scaleType="centerCrop"
+                        android:onClick="changeDatePublicationSource"
+                        android:visibility="gone"/>
+
+                    <ImageButton
+                        android:id="@+id/bookDatePublicationImageButtonLock"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/unlock"
+                        android:scaleType="centerCrop"
+                        android:onClick="lockDatePublicationSource"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="8">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                    <TextView android:text="@string/bookEditeur"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
 
-                <TextView android:text="@string/bookNbPages"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
+                    <EditText
+                        android:id="@+id/bookEditeur"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="8"
+                        />
 
-                <EditText
-                    android:id="@+id/bookNbPages"
-                    android:layout_height="wrap_content"
+                    <ImageButton
+                        android:id="@+id/bookPublisherImageButton"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/googlelogo"
+                        android:scaleType="centerCrop"
+                        android:onClick="changePublisherSource"
+                        android:visibility="gone"/>
+
+                    <ImageButton
+                        android:id="@+id/bookPublisherImageButtonLock"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/unlock"
+                        android:scaleType="centerCrop"
+                        android:onClick="lockPublisherSource"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:inputType="number"
-                    />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="8">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                    <TextView android:text="@string/bookCategorie"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
+
+                    <EditText
+                        android:id="@+id/bookCategorie"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="8"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/bookCategoryImageButton"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/googlelogo"
+                        android:scaleType="centerCrop"
+                        android:onClick="changeCategorySource"
+                        android:visibility="gone"/>
+
+                    <ImageButton
+                        android:id="@+id/bookCategoryImageButtonLock"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/unlock"
+                        android:scaleType="centerCrop"
+                        android:onClick="lockCategorySource"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="8">
+
+                    <TextView android:text="@string/bookNbPages"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        />
+
+                    <EditText
+                        android:id="@+id/bookNbPages"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:inputType="number"
+                        android:layout_weight="8"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/bookNbPagesImageButton"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/googlelogo"
+                        android:scaleType="centerCrop"
+                        android:onClick="changeNbPagesSource"
+                        android:visibility="gone"/>
+
+                    <ImageButton
+                        android:id="@+id/bookNbPagesImageButtonLock"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/unlock"
+                        android:scaleType="centerCrop"
+                        android:onClick="lockNbPagesSource"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:text="@string/seeCover"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="left"
+                        android:onClick="seeCover"/>
+
+                    <Button
+                        android:text="@string/btnPhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="left"
+                        android:onClick="takePhoto"/>
+
+                    <ImageButton
+                        android:id="@+id/bookImageImageButton"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/googlelogo"
+                        android:scaleType="centerCrop"
+                        android:onClick="changeImageSource"
+                        android:visibility="gone"/>
+
+                    <ImageButton
+                        android:id="@+id/bookImageImageButtonLock"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/unlock"
+                        android:scaleType="centerCrop"
+                        android:onClick="lockImageSource"
+                        android:visibility="gone"/>
+                </LinearLayout>
 
                 <Button
-                    android:text="@string/btnPhoto"
+                    android:text="@string/btnOK"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:onClick="takePhoto"/>
-
-                <ImageView
-                    android:id="@+id/bookThumbnail"
-                    android:layout_width="100px"
-                    android:layout_height="250px" />
-
+                    android:onClick="bookCreation"/>
             </LinearLayout>
-
-
-
-            <Button
-                android:text="@string/btnOK"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="bookCreation"/>
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+    </RelativeLayout>
 </LinearLayout>
