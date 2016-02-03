@@ -59,8 +59,8 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
     // use xml-uk.amznxslt.com for xslt requests, or ecs.amazonaws.co.uk for others
     private String endpoint = "webservices.amazon.com"; // must be lowercase
     // change this so reads from properties file
-    private String awsAccessKeyId = "";
-    private String awsSecretKey = "";
+    private String k = "";
+    private String sec = "";
     private SecretKeySpec secretKeySpec = null;
     private Mac mac = null;
 
@@ -75,6 +75,16 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
             return null;
         }
 
+        k = "QUtJQUlXV0JGNE43VDdQWkIzNFE=" ;
+        sec = "cVEzNzF6Q3ZoaWVkdk1STjhFdk9MOW11ZXhrYjdYSDRnbEYvY0lZOA==" ;
+
+        // Decode data on other side, by processing encoded data
+        byte[] valueDecoded = Base64.decodeBase64(k);
+        k = new String(valueDecoded);
+
+        // Decode data on other side, by processing encoded data
+        byte[] valueDecoded2 = Base64.decodeBase64(sec);
+        sec = new String(valueDecoded2);
 
         try {
             initAPI();
@@ -221,7 +231,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
 
 
     public void initAPI() throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
-        byte[] secretyKeyBytes = awsSecretKey.getBytes(UTF8_CHARSET);
+        byte[] secretyKeyBytes = sec.getBytes(UTF8_CHARSET);
         secretKeySpec =
                 new SecretKeySpec(secretyKeyBytes, HMAC_SHA256_ALGORITHM);
         mac = Mac.getInstance(HMAC_SHA256_ALGORITHM);
@@ -229,7 +239,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
     }
 
     public String sign(Map<String, String> params) {
-        params.put("AWSAccessKeyId", awsAccessKeyId);
+        params.put("AWSAccessKeyId", k);
         params.put("Timestamp", timestamp());
 
         SortedMap<String, String> sortedParamMap =
