@@ -9,7 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import flq.projectbooks.Author;
 import flq.projectbooks.Book;
+import flq.projectbooks.libraries.AuthorLibrary;
 
 /**
  * Created by Quentin on 22/10/2015.
@@ -20,7 +22,6 @@ public class BooksDataSource{
     private MySQLiteHelper dbHelper;
     private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_TITLE,
-            MySQLiteHelper.COLUMN_AUTHOR,
             MySQLiteHelper.COLUMN_ISBN,
             MySQLiteHelper.COLUMN_IMAGE,
             MySQLiteHelper.COLUMN_DESCRIPTION,
@@ -41,11 +42,10 @@ public class BooksDataSource{
         dbHelper.close();
     }
 
-    public Book createBook(String title, String author, String isbn, byte[] image, String description, String datePublication, String editor, String category, int nbPages) {
+    public Book createBook(String title, String isbn, byte[] image, String description, String datePublication, String editor, String category, int nbPages) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_TITLE, title);
-        values.put(MySQLiteHelper.COLUMN_AUTHOR, author);
         values.put(MySQLiteHelper.COLUMN_ISBN, isbn);
         values.put(MySQLiteHelper.COLUMN_IMAGE, image);
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, description);
@@ -69,7 +69,6 @@ public class BooksDataSource{
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_TITLE, book.getTitle());
-        values.put(MySQLiteHelper.COLUMN_AUTHOR, book.getAuthor());
         values.put(MySQLiteHelper.COLUMN_ISBN, book.getIsbn());
         values.put(MySQLiteHelper.COLUMN_IMAGE, book.getImage());
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, book.getDescription());
@@ -101,6 +100,12 @@ public class BooksDataSource{
         }
 
         cursor.close();
+
+        //used to fill the Authors Array
+        for(Book book : comments){
+            book.setAuthors(getAllAuthorFromABook(book));
+        }
+
         return comments;
     }
 
@@ -109,15 +114,35 @@ public class BooksDataSource{
         Book book = new Book();
         book.setId(cursor.getLong(0));
         book.setTitle(cursor.getString(1));
-        book.setAuthor(cursor.getString(2));
-        book.setIsbn(cursor.getString(3));
-        book.setImage(cursor.getBlob(4));
-        book.setDescription(cursor.getString(5));
-        book.setDatePublication(cursor.getString(6));
-        book.setEditor(cursor.getString(7));
-        book.setCategory(cursor.getString(8));
-        book.setNbPages(cursor.getInt(9));
+        book.setIsbn(cursor.getString(2));
+        book.setImage(cursor.getBlob(3));
+        book.setDescription(cursor.getString(4));
+        book.setDatePublication(cursor.getString(5));
+        book.setEditor(cursor.getString(6));
+        book.setCategory(cursor.getString(7));
+        book.setNbPages(cursor.getInt(8));
         return book;
     }
+
+    public boolean booksAuhorsIdExist(long book_id, long author_id){
+        return LinkTablesDataSource.booksAuhorsIdExist(database, book_id, author_id);
+    }
+
+    public List<Author> getAllAuthorFromABook(Book book){
+        return LinkTablesDataSource.getAllAuthorFromABook(database, book);
+    }
+
+    public long createBooksAuthors(long book_id, long author_id) {
+        return LinkTablesDataSource.createBooksAuthors(database, book_id, author_id);
+    }
+
+    public void deleteBooksAuthors(long book_id, long author_id){
+
+        System.out.println("Link deleted with book_id: " + book_id + " and author_id " + author_id);
+        database.delete(MySQLiteHelper.TABLE_BOOKS_AUTHORS, MySQLiteHelper.COLUMN_BOOK_ID
+                + " = " + book_id + " and " + MySQLiteHelper.COLUMN_AUTHOR_ID + " = " + author_id , null);
+    }
+
+
 
 }

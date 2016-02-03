@@ -1,11 +1,13 @@
 package flq.projectbooks.libraries;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import flq.projectbooks.Author;
 import flq.projectbooks.BookFilter;
 import flq.projectbooks.bdd.BookFiltersDataSource;
 
@@ -39,7 +41,7 @@ public class BookFilterCatalog implements Serializable {
     public void Add(BookFilter filter){
         //Add in the database
         datasource.open();
-        datasource.createFilter(filter.getName(), filter.getTitle(), filter.getAuthor(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getCategory(), filter.getNbPagesMin(), filter.getNbPagesMax());
+        datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getCategory(), filter.getNbPagesMin(), filter.getNbPagesMax());
         datasource.close();
 
         //Add in the local list
@@ -81,7 +83,7 @@ public class BookFilterCatalog implements Serializable {
         datasource.close();
     }
 
-    public void UpdateOrAddFilter(BookFilter filter){
+    public long updateOrAddFilter(BookFilter filter){
         long id = filter.getId();
         if(id != -1) {
             for (int j = 0; j < bookFilterList.size(); j++) {
@@ -90,15 +92,42 @@ public class BookFilterCatalog implements Serializable {
                     datasource.updateBookFilter(filter); //Update database
                     datasource.close();
                     bookFilterList.set(j, filter); //Update local list
-                    return;
                 }
             }
         } else {
             datasource.open();
-            datasource.createFilter(filter.getName(), filter.getTitle(), filter.getAuthor(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getCategory(), filter.getNbPagesMin(), filter.getNbPagesMax()); //Add book to database
+            filter = datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getCategory(), filter.getNbPagesMin(), filter.getNbPagesMax()); //Add book to database
             bookFilterList = datasource.getAllBookFilters(); //Update books
             datasource.close();
         }
+        return filter.getId();
+    }
+
+    public boolean checkIfBookFiltersAuthorLinkExist(long book_filter_id, long author_id){
+        datasource.open();
+        Boolean bool = datasource.bookFiltersAuhorsIdExist(book_filter_id, author_id);
+        datasource.close();
+        return bool;
+    }
+
+    public long addBookFiltersAuthorsLink(long book_id, long author_id){
+        datasource.open();
+        long inserted_id = datasource.createBookFiltersAuthors(book_id, author_id);
+        datasource.close();
+        return inserted_id;
+    }
+
+    public void deleteBookFilterAuthorsLink(long book_filter_id, long author_id){
+        datasource.open();
+        datasource.deleteBookFilterAuthors(book_filter_id, author_id);
+        datasource.close();
+    }
+
+    public List<Author> getAllAuthorFromABookFilter(BookFilter filter){
+        datasource.open();
+        List<Author> authors = datasource.getAllAuthorFromABookFilter(filter);
+        datasource.close();
+        return authors;
     }
 
 }
