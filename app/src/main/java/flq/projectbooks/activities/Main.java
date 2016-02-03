@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import flq.projectbooks.Book;
 import flq.projectbooks.fragments.NoticeDialogFragment;
+import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
 import flq.projectbooks.libraries.AuthorLibrary;
 import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.R;
@@ -31,7 +32,7 @@ import flq.projectbooks.bdd.MySQLiteHelper;
 import flq.projectbooks.libraries.BookFilterCatalog;
 import flq.projectbooks.libraries.BookLibrary;
 
-public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse, NoticeDialogFragment.NoticeDialogListener {
+public class Main extends ActionBarActivity implements GetBookInfoGoogleBooksAPI.AsyncResponse, NoticeDialogFragment.NoticeDialogListener {
 
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
@@ -143,7 +144,7 @@ public class Main extends ActionBarActivity implements GetBookInfo.AsyncResponse
 		
 		if(data != null && data.hasExtra(("SCAN_RESULT"))) {
             String ISBN = data.getStringExtra("SCAN_RESULT");
-            asyncTask = new GetBookInfo(getApplicationContext()) ;
+            asyncTask = new GetBookInfoGoogleBooksAPI(getApplicationContext()) ;
             asyncTask.delegate = this;
             asyncTask.execute(ISBN);
 		}
