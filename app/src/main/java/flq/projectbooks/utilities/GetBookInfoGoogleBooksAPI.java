@@ -1,7 +1,6 @@
 package flq.projectbooks.utilities;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,34 +20,37 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-import flq.projectbooks.Book;
-import flq.projectbooks.libraries.BookLibrary;
+import flq.projectbooks.data.Author;
+import flq.projectbooks.data.Book;
+import flq.projectbooks.data.libraries.BookLibrary;
 
 /**
  * Created by doublet on 05/11/15.
  */
 public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
 
-    public GetBookInfoGoogleBooksAPI(Context context){
+    public GetBookInfoGoogleBooksAPI(Context context) {
         super(context);
     }
 
     @Override
     protected Book doInBackground(String... isbns) {
         // Stop if cancelled
-        if(isCancelled()){
+        if (isCancelled()) {
             return null;
         }
 
-        String key = "" ;
+        String key = "";
 
-        String apiUrlString =   "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbns[0] ;
+        String apiUrlString = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbns[0];
 
-        try{
+        try {
             HttpURLConnection connection = null;
             // Build Connection.
-            try{
+            try {
                 URL url = new URL(apiUrlString);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
@@ -62,7 +64,7 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
                 e.printStackTrace();
             }
             int responseCode = connection.getResponseCode();
-            if(responseCode != 200){
+            if (responseCode != 200) {
                 Log.w(getClass().getName(), "GoogleBooksAPI request failed. Response Code: " + responseCode);
                 connection.disconnect();
                 return null;
@@ -72,7 +74,7 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
             StringBuilder builder = new StringBuilder();
             BufferedReader responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line = responseReader.readLine();
-            while (line != null){
+            while (line != null) {
                 builder.append(line);
                 line = responseReader.readLine();
             }
@@ -82,41 +84,40 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
             // Close connection and return response code.
             connection.disconnect();
 
-            if(responseJson.getInt("totalItems") >= 1) {
+            if (responseJson.getInt("totalItems") >= 1) {
+                Book newBook = BookLibrary.getInstance().getNewBook();
                 String title = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("title");
                 JSONArray arr = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getJSONArray("authors");
-                String author = "";
+                List<Author> authors = new ArrayList<Author>();
                 for (int i = 0; i < arr.length(); i++) {
-                    if (author == "") {
-                        author += arr.getString(i);
-                    } else {
-                        author += ", " + arr.getString(i);
-                    }
+                    Author author = new Author(arr.getString(i));
+                    authors.add(author);
                 }
+                newBook.setAuthors(authors);
 
-                Book newBook = BookLibrary.getInstance().getNewBook();
-                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("imageLinks")){
+
+                if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("imageLinks")) {
                     InputStream is = (InputStream) new URL(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getJSONObject("imageLinks").getString("thumbnail")).getContent();
                     byte[] image = ByteStreams.toByteArray(is);
                     newBook.setImage(image);
                 }
 
-                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("description")) {
+                if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("description")) {
                     String description = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("description");
                     newBook.setDescription(description);
                 }
 
-                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("publishedDate")) {
+                if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("publishedDate")) {
                     String datePub = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("publishedDate");
                     newBook.setDatePublication(datePub);
                 }
 
-                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("publisher")) {
+                if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("publisher")) {
                     String editor = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("publisher");
                     newBook.setEditor(editor);
                 }
-                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("categories")) {
-                    String category = "" ;
+                if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("categories")) {
+                    String category = "";
                     JSONArray arrCategory = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getJSONArray("categories");
                     for (int i = 0; i < arrCategory.length(); i++) {
                         if (category == "") {
@@ -128,7 +129,7 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
                     newBook.setCategory(category);
                 }
 
-                if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("pageCount")) {
+                if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("pageCount")) {
                     String nbPages = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("pageCount");
                     newBook.setNbPages(Integer.parseInt(nbPages));
                 }
@@ -136,10 +137,8 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
 
                 newBook.setIsbn(isbns[0]);
                 newBook.setTitle(title);
-                newBook.setAuthor(author);
-
                 return newBook;
-            }else{
+            } else {
                 Handler handler = new Handler(mContext.getMainLooper());
                 handler.post(new Runnable() {
 
@@ -153,7 +152,7 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
         } catch (SocketTimeoutException e) {
             Log.w(getClass().getName(), "Connection timed out. Returning null");
             return null;
-        } catch (IOException e){
+        } catch (IOException e) {
             Log.d(getClass().getName(), "IOException when connecting to Google Books API.");
             e.printStackTrace();
             return null;

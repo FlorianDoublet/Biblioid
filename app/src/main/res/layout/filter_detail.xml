@@ -7,30 +7,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:layout_weight="1">
+        android:paddingLeft="10dp">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="6"
+            android:padding="15dp"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:padding="15dp"
-            tools:text="Nom du filtre"/>
+            tools:text="Nom du filtre" />
 
         <TextView
             android:id="@+id/nbLivre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
+            android:padding="0dp"
             android:textSize="13sp"
             android:textStyle="italic"
-            android:padding="0dp"
-            tools:text="3 livre(s)"/>
-
+            tools:text="3 livre(s)" />
 
 
     </LinearLayout>

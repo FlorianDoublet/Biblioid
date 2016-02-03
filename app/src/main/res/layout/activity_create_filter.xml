@@ -1,16 +1,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="flq.projectbooks.activities.CreateFilter"
-    android:orientation="vertical">
+    tools:context=".UI.activities.CreateFilter">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -18,120 +21,115 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <TextView android:text="@string/nameFilter"
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    />
+                    android:layout_height="wrap_content"
+                    android:text="@string/nameFilter" />
 
                 <EditText
                     android:id="@+id/filterName"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <TextView android:text="@string/bookTitle"
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    />
+                    android:layout_height="wrap_content"
+                    android:text="@string/bookTitle" />
 
                 <EditText
                     android:id="@+id/filterTitle"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <TextView android:text="@string/bookAuthor"
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    />
+                    android:layout_height="wrap_content"
+                    android:text="@string/bookAuthor" />
 
                 <EditText
                     android:id="@+id/filterAuthor"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                    <TextView android:text="@string/bookCreationDescription"
-                        android:layout_height="wrap_content"
+                    <TextView
                         android:layout_width="wrap_content"
-                        />
+                        android:layout_height="wrap_content"
+                        android:text="@string/bookCreationDescription" />
 
                     <EditText
                         android:id="@+id/filterDescription"
-                        android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <TextView android:text="@string/bookCreationDatePublication"
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    />
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:text="@string/bookCreationDatePublication" />
 
-                    <TextView android:text="entre le "
-                        android:layout_height="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
                         android:layout_width="wrap_content"
-                        />
+                        android:layout_height="wrap_content"
+                        android:text="entre le " />
 
                     <EditText
                         android:id="@+id/filterDatePublicationMin"
-                        android:layout_height="wrap_content"
                         android:layout_width="0px"
-                        android:layout_weight="1"
-                        android:inputType="date"
-                        android:hint="JJ/MM/AAAA"
-                        />
-
-                    <TextView android:text=" et le "
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="JJ/MM/AAAA"
+                        android:inputType="date" />
+
+                    <TextView
                         android:layout_width="wrap_content"
-                        />
+                        android:layout_height="wrap_content"
+                        android:text=" et le " />
 
                     <EditText
                         android:id="@+id/filterDatePublicationMax"
-                        android:layout_height="wrap_content"
                         android:layout_width="0px"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:inputType="date"
                         android:hint="JJ/MM/AAAA"
-                        />
+                        android:inputType="date" />
 
                 </LinearLayout>
 
@@ -139,86 +137,82 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <TextView android:text="@string/bookEditeur"
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    />
+                    android:layout_height="wrap_content"
+                    android:text="@string/bookEditeur" />
 
                 <EditText
                     android:id="@+id/filterEditeur"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <TextView android:text="@string/bookCategorie"
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    />
+                    android:layout_height="wrap_content"
+                    android:text="@string/bookCategorie" />
 
                 <EditText
                     android:id="@+id/filterCategorie"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <TextView android:text="@string/bookNbPages"
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    />
+                    android:layout_height="wrap_content"
+                    android:text="@string/bookNbPages" />
 
-                <TextView android:text=" entre "
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    />
+                    android:layout_height="wrap_content"
+                    android:text=" entre " />
 
 
                 <EditText
                     android:id="@+id/filterNbPagesMin"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:hint="0"
-                    android:inputType="number"
-                    />
+                    android:inputType="number" />
 
-                <TextView android:text=" et "
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    />
+                    android:layout_height="wrap_content"
+                    android:text=" et " />
 
                 <EditText
                     android:id="@+id/filterNbPagesMax"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:hint="0"
-                    android:inputType="number"
-                    />
+                    android:inputType="number" />
             </LinearLayout>
 
             <Button
-                android:text="@string/btnOK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="filterCreation"/>
+                android:onClick="filterCreation"
+                android:text="@string/btnOK" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

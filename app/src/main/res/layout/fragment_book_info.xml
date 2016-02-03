@@ -1,92 +1,100 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="flq.projectbooks.fragments.BookInfo"
-    android:padding="1dp">
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="1dp"
+    tools:context=".UI.fragments.BookInfo">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
 
-            <TextView android:id="@+id/bookInfoTitle"
+            <TextView
+                android:id="@+id/bookInfoTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Titre"
                 android:gravity="center_horizontal"
+                android:paddingBottom="4dp"
                 android:textSize="40dp"
-                android:paddingBottom="4dp"/>
+                tools:text="Titre" />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0.5dp"
-                android:visibility="visible"
-                android:background="@android:color/darker_gray"/>
-            <TextView android:id="@+id/bookInfoAuthor"
+                android:background="@android:color/darker_gray"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/bookInfoAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Auteurs"
                 android:gravity="center_horizontal"
-                android:textSize="25dp"
                 android:paddingTop="4dp"
-                />
-            <TextView android:id="@+id/bookInfoDatePublication"
+                android:textSize="25dp"
+                tools:text="Auteurs" />
+
+            <TextView
+                android:id="@+id/bookInfoDatePublication"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="JJ/MM/AAAA"
                 android:gravity="center_horizontal"
                 android:textSize="20dp"
-                />
+                tools:text="JJ/MM/AAAA" />
 
-                <TextView android:id="@+id/bookInfoEditor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Editeur"
-                    android:gravity="center_horizontal"
-                    android:textSize="20dp"
-                    android:paddingRight="16dp"
-                    />
-
-
-            <TextView android:id="@+id/bookInfoCategorie"
+            <TextView
+                android:id="@+id/bookInfoEditor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Genres"
+                android:gravity="center_horizontal"
+                android:paddingRight="16dp"
+                android:textSize="20dp"
+                tools:text="Editeur" />
+
+
+            <TextView
+                android:id="@+id/bookInfoCategorie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textSize="20dp"
-                />
-            <TextView android:id="@+id/bookInfoNbPages"
+                tools:text="Genres" />
+
+            <TextView
+                android:id="@+id/bookInfoNbPages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="0 Pages"
                 android:gravity="center_horizontal"
                 android:textSize="15dp"
-                />
+                tools:text="0 Pages" />
 
 
             <ImageView
                 android:id="@+id/bookInfoImage"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                tools:src="@drawable/picturebook"
-                android:padding="16dp"/>
+                android:padding="16dp"
+                tools:src="@drawable/picturebook" />
 
-            <TextView android:id="@+id/bookInfoDescription"
+            <TextView
+                android:id="@+id/bookInfoDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Je suis une longue description qui sers a voir comment je suis placé sur l'écran. C'est cool non ?"
                 android:gravity="center_horizontal"
-                />
+                tools:text="Je suis une longue description qui sers a voir comment je suis placé sur l'écran. C'est cool non ?" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="modifBook"
-                android:text="@string/btnModif"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:onClick="modifBook"
+                android:text="@string/btnModif" />
 
         </LinearLayout>
     </ScrollView>

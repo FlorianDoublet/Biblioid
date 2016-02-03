@@ -1,21 +1,16 @@
 package flq.projectbooks.utilities;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
 
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.common.io.ByteStreams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,9 +27,11 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TimeZone;
@@ -46,32 +43,30 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import flq.projectbooks.Book;
-import flq.projectbooks.libraries.BookLibrary;
+import flq.projectbooks.data.Author;
+import flq.projectbooks.data.Book;
+import flq.projectbooks.data.libraries.BookLibrary;
 
 /**
  * Created by doublet on 05/11/15.
  */
 public class GetBookInfoAmazonAPI extends GetBookInfo {
 
-    public GetBookInfoAmazonAPI(Context context){
-        super(context);
-    }
-
     private static final String UTF8_CHARSET = "UTF-8";
     private static final String HMAC_SHA256_ALGORITHM = "HmacSHA256";
     private static final String REQUEST_URI = "/onca/xml";
     private static final String REQUEST_METHOD = "GET";
-
     // use xml-uk.amznxslt.com for xslt requests, or ecs.amazonaws.co.uk for others
     private String endpoint = "webservices.amazon.com"; // must be lowercase
-
     // change this so reads from properties file
     private String awsAccessKeyId = "";
     private String awsSecretKey = "";
-
     private SecretKeySpec secretKeySpec = null;
     private Mac mac = null;
+
+    public GetBookInfoAmazonAPI(Context context) {
+        super(context);
+    }
 
     @Override
     protected Book doInBackground(String... isbns) {
@@ -91,9 +86,9 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
             myparams.put("SearchIndex", "All");
             myparams.put("IdType", "ISBN");
             myparams.put("AssociateTag", "biblioid-21");
-           // myparams.put("ItemId",  "2070615367");//
+            // myparams.put("ItemId",  "2070615367");//
             //myparams.put("ItemId",  "0449001245");
-            myparams.put("ItemId",  isbns[0]);
+            myparams.put("ItemId", isbns[0]);
             String apiUrlString = sign(myparams);
 
             HttpURLConnection connection = null;
@@ -114,7 +109,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
             StringBuilder builder = new StringBuilder();
             BufferedReader responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line = responseReader.readLine();
-            while (line != null){
+            while (line != null) {
                 builder.append(line);
                 line = responseReader.readLine();
             }
@@ -131,7 +126,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
             Document xmlResponse = xmlbuilder.parse(is);
 
 
-            if(xmlResponse.getElementsByTagName("Item").getLength() > 0){
+            if (xmlResponse.getElementsByTagName("Item").getLength() > 0) {
                 String title = ""; //OK
                 String author = ""; //OK
                 String datePublication = ""; //OK
@@ -141,20 +136,21 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                 String description = ""; //OK
 
 
-                Node itemNode =  xmlResponse.getElementsByTagName("Item").item(0);
+                Node itemNode = xmlResponse.getElementsByTagName("Item").item(0);
                 Book newBook = BookLibrary.getInstance().getNewBook();
 
-                for(int i = 0; i < itemNode.getChildNodes().getLength(); i++){
+                List<Author> authors = new ArrayList<>();
+                for (int i = 0; i < itemNode.getChildNodes().getLength(); i++) {
                     Node item = itemNode.getChildNodes().item(i);
                     String test = item.getNodeName();
-                    switch(item.getNodeName()){
-                        case "ItemAttributes" :
-                            for(int j = 0; j < item.getChildNodes().getLength(); j++) {
+                    switch (item.getNodeName()) {
+                        case "ItemAttributes":
+                            for (int j = 0; j < item.getChildNodes().getLength(); j++) {
                                 Node itemAttribute = item.getChildNodes().item(j);
                                 switch (itemAttribute.getNodeName()) {
                                     case "Author":
                                         //Ici faire addAuthor plutot, vu que y'a plusieurs auteurs
-                                        author = itemAttribute.getTextContent();
+                                        authors.add(new Author(itemAttribute.getTextContent()));
                                         break;
                                     case "Publisher":
                                         publisher = itemAttribute.getTextContent();
@@ -192,7 +188,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
 
                 newBook.setIsbn(isbns[0]);
                 newBook.setTitle(title);
-                newBook.setAuthor(author);
+                newBook.setAuthors(authors);
                 newBook.setCategory(category);
                 newBook.setDatePublication(datePublication);
                 newBook.setEditor(publisher);
@@ -214,7 +210,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }  catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SAXException e) {
             e.printStackTrace();
@@ -277,8 +273,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
         return timestamp;
     }
 
-    private String canonicalize(SortedMap<String, String> sortedParamMap)
-    {
+    private String canonicalize(SortedMap<String, String> sortedParamMap) {
         if (sortedParamMap.isEmpty()) {
             return "";
         }
@@ -312,19 +307,6 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
         }
         return out;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

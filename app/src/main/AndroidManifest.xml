@@ -6,7 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -16,8 +18,8 @@
         android:theme="@style/AppTheme"
         tools:replace="android:theme">
         <activity
-            android:name=".activities.Main"
-            android:label="@string/app_name" >
+            android:name=".UI.activities.Main"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,21 +27,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.CreateBook"
-            android:label="@string/title_activity_create_book" >
-        </activity>
+            android:name=".UI.activities.CreateBook"
+            android:label="@string/title_activity_create_book"></activity>
         <activity
-            android:name=".activities.DisplayBooks"
-            android:label="@string/title_activity_display_books" >
-        </activity>
+            android:name=".UI.activities.DisplayBooks"
+            android:label="@string/title_activity_display_books"></activity>
         <activity
-            android:name=".activities.DisplayFilters"
-            android:label="@string/title_activity_display_filters" >
-        </activity>
+            android:name=".UI.activities.DisplayFilters"
+            android:label="@string/title_activity_display_filters"></activity>
         <activity
-            android:name=".activities.CreateFilter"
-            android:label="@string/title_activity_create_filter" >
-        </activity>
+            android:name=".UI.activities.CreateFilter"
+            android:label="@string/title_activity_create_filter"></activity>
 
         <activity
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
