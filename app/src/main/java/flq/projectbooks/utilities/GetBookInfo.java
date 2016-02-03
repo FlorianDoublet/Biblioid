@@ -21,7 +21,10 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import flq.projectbooks.Author;
 import flq.projectbooks.Book;
 import flq.projectbooks.libraries.BookLibrary;
 
@@ -52,6 +55,7 @@ public class GetBookInfo extends AsyncTask<String, Void, Book> {
 
     @Override
     protected Book doInBackground(String... isbns) {
+
         // Stop if cancelled
         if(isCancelled()){
             return null;
@@ -99,18 +103,19 @@ public class GetBookInfo extends AsyncTask<String, Void, Book> {
             connection.disconnect();
 
             if(responseJson.getInt("totalItems") >= 1) {
+                Book newBook = BookLibrary.getInstance().getNewBook();
+
                 String title = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("title");
                 JSONArray arr = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getJSONArray("authors");
-                String author = "";
+                //create the list of authors and add it into the book
+                List<Author> authors = new ArrayList<Author>();
                 for (int i = 0; i < arr.length(); i++) {
-                    if (author == "") {
-                        author += arr.getString(i);
-                    } else {
-                        author += ", " + arr.getString(i);
-                    }
+                    Author author = new Author(arr.getString(i));
+                    authors.add(author);
                 }
+                newBook.setAuthors(authors);
 
-                Book newBook = BookLibrary.getInstance().getNewBook();
+
                 if(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("imageLinks")){
                     InputStream is = (InputStream) new URL(responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getJSONObject("imageLinks").getString("thumbnail")).getContent();
                     byte[] image = ByteStreams.toByteArray(is);
@@ -152,7 +157,6 @@ public class GetBookInfo extends AsyncTask<String, Void, Book> {
 
                 newBook.setIsbn(isbns[0]);
                 newBook.setTitle(title);
-                newBook.setAuthor(author);
 
                 return newBook;
             }else{

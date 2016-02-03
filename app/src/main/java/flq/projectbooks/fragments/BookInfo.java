@@ -18,6 +18,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
+import flq.projectbooks.Author;
 import flq.projectbooks.Book;
 import flq.projectbooks.R;
 import flq.projectbooks.activities.CreateBook;
@@ -98,12 +101,18 @@ public class BookInfo extends Fragment implements Parcelable {
         textViewTitle.setText(book.getTitle());
 
         TextView textViewAuthor = (TextView) view.findViewById(R.id.bookInfoAuthor);
-        if(!book.getAuthor().equals("")){
-            textViewAuthor.setText("Par " + book.getAuthor());
-        }else{
-            textViewAuthor.setHeight(0);
-        }
 
+        List<Author> authors = book.getAuthors();
+        String author_s = "";
+        if(authors != null){
+            for(int i = 0; i < authors.size(); i++){
+                if(i == 0){
+                    author_s += "Par " + authors.get(i).getName();
+                } else
+                    author_s += ", " + authors.get(i).getName();
+            }
+        }
+        textViewAuthor.setText(author_s);
 
         TextView textViewDescription = (TextView) view.findViewById(R.id.bookInfoDescription);
         textViewDescription.setText(book.getDescription());

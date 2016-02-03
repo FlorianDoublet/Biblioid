@@ -1,6 +1,8 @@
 package flq.projectbooks;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Doublet F. Delvallet Q. and Delvallet L. on 24/09/15.
@@ -8,7 +10,7 @@ import java.io.Serializable;
 public class Book implements Serializable {
     private long id;
     private String title;
-    private String author;
+    private List<Author> authors;
     private String isbn;
     private byte[] image;
     private String description;
@@ -20,7 +22,7 @@ public class Book implements Serializable {
     public Book(){
         id = -1;
         title = "";
-        author = "";
+        authors= new ArrayList<>();
         isbn = "";
         description = "";
         datePublication = "";
@@ -37,12 +39,12 @@ public class Book implements Serializable {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public String getIsbn() {

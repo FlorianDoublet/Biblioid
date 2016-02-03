@@ -172,7 +172,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
                 bookMap.put("img", String.valueOf(R.drawable.picturebook));
             }
-            bookMap.put("author", book.getAuthor());
+            bookMap.put("author", book.getAuthors());
             bookMap.put("title", book.getTitle());
             bookMap.put("isbn", book.getIsbn());
             listOfBooks.add(bookMap);
@@ -238,7 +238,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
                 bookMap.put("img", String.valueOf(R.drawable.picturebook));
             }
-            bookMap.put("author", book.getAuthor());
+            bookMap.put("author", book.getAuthors());
             bookMap.put("title", book.getTitle());
             bookMap.put("isbn", book.getIsbn());
             listOfBooks.add(bookMap);
