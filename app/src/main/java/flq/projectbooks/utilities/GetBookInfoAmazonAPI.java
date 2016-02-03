@@ -67,8 +67,8 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
     private String endpoint = "webservices.amazon.com"; // must be lowercase
 
     // change this so reads from properties file
-    private String awsAccessKeyId = "AKIAIUUO5U3WBA2T26UA";
-    private String awsSecretKey = "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";
+    private String awsAccessKeyId = "";
+    private String awsSecretKey = "";
 
     private SecretKeySpec secretKeySpec = null;
     private Mac mac = null;
