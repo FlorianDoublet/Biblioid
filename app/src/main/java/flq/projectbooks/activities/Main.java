@@ -25,6 +25,8 @@ import java.io.IOException;
 import flq.projectbooks.Book;
 import flq.projectbooks.fragments.NoticeDialogFragment;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
+import flq.projectbooks.libraries.AuthorLibrary;
+import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.R;
 import flq.projectbooks.bdd.MySQLiteHelper;
 import flq.projectbooks.libraries.BookFilterCatalog;
@@ -40,7 +42,8 @@ public class Main extends ActionBarActivity implements GetBookInfoGoogleBooksAPI
 
     protected BookLibrary books;
     protected BookFilterCatalog filters;
-    protected GetBookInfoGoogleBooksAPI asyncTask ;
+    protected AuthorLibrary authors;
+    protected GetBookInfo asyncTask ;
     private Uri uri;
 
     @Override
@@ -49,8 +52,10 @@ public class Main extends ActionBarActivity implements GetBookInfoGoogleBooksAPI
         setContentView(R.layout.activity_main);
 
         //this.deleteDatabase("books.db"); //Effacer la bdd en cas de bug ou en cas de conflit de versions.
+        authors = new AuthorLibrary(this);
         books = new BookLibrary(this);
         filters = new BookFilterCatalog(this);
+
     }
 
     @Override

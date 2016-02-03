@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import flq.projectbooks.Author;
 import flq.projectbooks.Book;
 import flq.projectbooks.bdd.BooksDataSource;
 
@@ -14,7 +15,7 @@ import flq.projectbooks.bdd.BooksDataSource;
  */
 public class BookLibrary implements Serializable {
 
-    private BooksDataSource datasource ;
+    private BooksDataSource datasource;
     private static BookLibrary books ;
     List<Book> bookList;
     private static Context context ;
@@ -39,7 +40,7 @@ public class BookLibrary implements Serializable {
     public void Add(Book book){
         bookList.add(book);
         datasource.open();
-        datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getEditor(), book.getCategory(), book.getNbPages()); //Add book to database
+        datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getEditor(), book.getCategory(), book.getNbPages()); //Add book to database
         datasource.close();
     }
 
@@ -87,7 +88,7 @@ public class BookLibrary implements Serializable {
         datasource.close();
     }
 
-    public void updateOrAddBook(Book book){
+    public long updateOrAddBook(Book book){
         long id = book.getId();
         if(id != -1) {
             for (int j = 0; j < bookList.size(); j++) {
@@ -96,15 +97,43 @@ public class BookLibrary implements Serializable {
                     datasource.updateBook(book); //Update database
                     datasource.close();
                     bookList.set(j, book); //Update local list
-                    return;
                 }
             }
         } else {
             datasource.open();
-            datasource.createBook(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getEditor(), book.getCategory(), book.getNbPages()); //Add book to database
+            book = datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getEditor(), book.getCategory(), book.getNbPages()); //Add book to database
             bookList = datasource.getAllBooks(); //Update books
             datasource.close();
         }
+        return book.getId();
     }
+
+    public boolean checkIfBooksAuthorLinkExist(long book_id, long author_id){
+        datasource.open();
+        Boolean bool = datasource.booksAuhorsIdExist(book_id, author_id);
+        datasource.close();
+        return bool;
+    }
+
+    public long addBooksAuthorsLink(long book_id, long author_id){
+        datasource.open();
+        long inserted_id = datasource.createBooksAuthors(book_id, author_id);
+        datasource.close();
+        return inserted_id;
+    }
+
+    public void deleteBooksAuthorsLink(long book_id, long author_id){
+        datasource.open();
+        datasource.deleteBooksAuthors(book_id, author_id);
+        datasource.close();
+    }
+
+    public List<Author> getAllAuthorFromABook(Book book){
+        datasource.open();
+        List<Author> authors = datasource.getAllAuthorFromABook(book);
+        datasource.close();
+        return authors;
+    }
+
 
 }

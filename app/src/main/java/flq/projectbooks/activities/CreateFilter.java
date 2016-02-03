@@ -3,14 +3,24 @@ package flq.projectbooks.activities;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import flq.projectbooks.Author;
 import flq.projectbooks.BookFilter;
 import flq.projectbooks.R;
+import flq.projectbooks.bdd.LinkTablesDataSource;
+import flq.projectbooks.libraries.AuthorLibrary;
 import flq.projectbooks.libraries.BookFilterCatalog;
+import flq.projectbooks.libraries.FilteredBookLibrary;
 
 
 public class CreateFilter extends ActionBarActivity {
@@ -34,7 +44,7 @@ public class CreateFilter extends ActionBarActivity {
 
         ((TextView)findViewById(R.id.filterName)).setText(filter.getName());
         ((TextView)findViewById(R.id.filterTitle)).setText(filter.getTitle());
-        ((TextView)findViewById(R.id.filterAuthor)).setText(filter.getAuthor());
+        ((TextView)findViewById(R.id.filterAuthor)).setText(LinkTablesDataSource.authorsToString(filter.getAuthors()));
         ((TextView)findViewById(R.id.filterDescription)).setText(filter.getDescription());
         ((TextView)findViewById(R.id.filterDatePublicationMin)).setText(filter.getDatePublicationMin());
         ((TextView)findViewById(R.id.filterDatePublicationMax)).setText(filter.getDatePublicationMax());
@@ -73,16 +83,20 @@ public class CreateFilter extends ActionBarActivity {
         EditText nbPages1 = (EditText) findViewById(R.id.filterNbPagesMin);
         EditText nbPages2 = (EditText) findViewById(R.id.filterNbPagesMax);
 
+
+
         filter.setName(name.getText().toString());
         filter.setTitle(title.getText().toString());
-        filter.setAuthor(author.getText().toString());
         filter.setDescription(isbn.getText().toString());
         filter.setDatePublications(datePub1.getText().toString(), datePub2.getText().toString());
         filter.setEditor(editor.getText().toString());
         filter.setCategory(category.getText().toString());
         filter.setNbPages(Integer.parseInt(nbPages1.getText().toString()), Integer.parseInt(nbPages2.getText().toString()));
-        BookFilterCatalog.getInstance().UpdateOrAddFilter(filter);
+
+        //will feed the filter with the good authors
+        LinkTablesDataSource.feedBookFilterWithAuthors(filter, author);
 
         finish();
     }
+
 }

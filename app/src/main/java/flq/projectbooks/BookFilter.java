@@ -2,6 +2,8 @@ package flq.projectbooks;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import flq.projectbooks.libraries.BookLibrary;
 import flq.projectbooks.libraries.FilteredBookLibrary;
@@ -13,7 +15,7 @@ public class BookFilter implements Serializable {
     private long id;
     private String name;
     private String title;
-    private String author;
+    private List<Author> authors;
     private String description;
     private String datePublicationMin;
     private String datePublicationMax;
@@ -27,7 +29,7 @@ public class BookFilter implements Serializable {
         id = -1;
         name = "";
         title = "";
-        author = "";
+        authors= new ArrayList<>();
         description = "";
         datePublicationMin = "";
         datePublicationMax = "";
@@ -95,12 +97,12 @@ public class BookFilter implements Serializable {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public String getDescription() {
@@ -121,9 +123,21 @@ public class BookFilter implements Serializable {
 
     public boolean isSelected(Book book){
         boolean returnValue = true;
-        if(!author.equals("") && !book.getAuthor().contains(author)){
-            returnValue = false;
+
+        //check if all authors in the filter are in the book
+        if(authors != null && authors.size() != 0){
+            List<Author> authors_book = book.getAuthors();
+            for(Author author_filter : authors){
+                Boolean authorMatch = false;
+                for(Author author : authors_book){
+                    if(author.getId() == author_filter.getId())
+                        authorMatch = true;
+                }
+                if(!authorMatch)
+                    returnValue = false;
+            }
         }
+
         if(!title.equals("") && !book.getTitle().contains(title)){
             returnValue = false;
         }

@@ -9,7 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import flq.projectbooks.Author;
 import flq.projectbooks.BookFilter;
+import flq.projectbooks.libraries.AuthorLibrary;
 
 /**
  * Created by Quentin on 22/10/2015.
@@ -21,7 +23,6 @@ public class BookFiltersDataSource {
     private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_FILTER_NAME,
             MySQLiteHelper.COLUMN_TITLE,
-            MySQLiteHelper.COLUMN_AUTHOR,
             MySQLiteHelper.COLUMN_DESCRIPTION,
             MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN,
             MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX,
@@ -42,12 +43,11 @@ public class BookFiltersDataSource {
         dbHelper.close();
     }
 
-    public BookFilter createFilter(String name, String title, String author, String isbn, String datePublicationMin, String datePublicationMax, String editor, String category, int nbPagesMin, int nbPagesMax) {
+    public BookFilter createFilter(String name, String title, String isbn, String datePublicationMin, String datePublicationMax, String editor, String category, int nbPagesMin, int nbPagesMax) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_FILTER_NAME, name);
         values.put(MySQLiteHelper.COLUMN_TITLE, title);
-        values.put(MySQLiteHelper.COLUMN_AUTHOR, author);
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, isbn);
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN, datePublicationMin);
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX, datePublicationMax);
@@ -72,7 +72,6 @@ public class BookFiltersDataSource {
 
         values.put(MySQLiteHelper.COLUMN_FILTER_NAME, filter.getName());
         values.put(MySQLiteHelper.COLUMN_TITLE, filter.getTitle());
-        values.put(MySQLiteHelper.COLUMN_AUTHOR, filter.getAuthor());
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, filter.getDescription());
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN, filter.getDatePublicationMin());
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX, filter.getDatePublicationMax());
@@ -102,8 +101,11 @@ public class BookFiltersDataSource {
             filters.add(filter);
             cursor.moveToNext();
         }
-
         cursor.close();
+        //used to fill the Authors Array
+        for(BookFilter filter : filters){
+            filter.setAuthors(getAllAuthorFromABookFilter(filter));
+        }
         return filters;
     }
 
@@ -113,13 +115,31 @@ public class BookFiltersDataSource {
         filter.setId(cursor.getLong(0));
         filter.setName(cursor.getString(1));
         filter.setTitle(cursor.getString(2));
-        filter.setAuthor(cursor.getString(3));
-        filter.setDescription(cursor.getString(4));
-        filter.setDatePublications(cursor.getString(5), cursor.getString(6));
-        filter.setEditor(cursor.getString(7));
-        filter.setCategory(cursor.getString(8));
-        filter.setNbPages(cursor.getInt(9), cursor.getInt(10));
+        filter.setDescription(cursor.getString(3));
+        filter.setDatePublications(cursor.getString(4), cursor.getString(5));
+        filter.setEditor(cursor.getString(6));
+        filter.setCategory(cursor.getString(7));
+        filter.setNbPages(cursor.getInt(8), cursor.getInt(9));
         return filter;
+    }
+
+    public boolean bookFiltersAuhorsIdExist(long book_filter_id, long author_id){
+        return LinkTablesDataSource.bookFiltersAuhorsIdExist(database, book_filter_id, author_id);
+    }
+
+    public long createBookFiltersAuthors(long book_filter_id, long author_id) {
+        return LinkTablesDataSource.createBookFiltersAuthors(database, book_filter_id, author_id);
+    }
+
+    public List<Author> getAllAuthorFromABookFilter(BookFilter filter){
+        return LinkTablesDataSource.getAllAuthorFromABookFilter(database, filter);
+    }
+
+    public void deleteBookFilterAuthors(long book_filter_id, long author_id){
+
+        System.out.println("Link deleted with book_filter_id: " + book_filter_id + " and author_id " + author_id);
+        database.delete(MySQLiteHelper.TABLE_BOOK_FILTERS_AUTHORS, MySQLiteHelper.COLUMN_BOOK_FILTER_ID
+                + " = " + book_filter_id + " and " + MySQLiteHelper.COLUMN_AUTHOR_ID + " = " + author_id , null);
     }
 
 }
