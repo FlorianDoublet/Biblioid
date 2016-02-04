@@ -1,9 +1,11 @@
 package flq.projectbooks.UI.activities;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
@@ -62,6 +64,15 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         if (retrievedBook == null) {
             bookSourcesLogos = new ArrayList<>();
             retrievedBook = new ArrayList<>();
+
+            Resources res = getResources();
+            Drawable drawable = res.getDrawable(R.drawable.picturebook);
+            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] bitMapData = stream.toByteArray();
+            photo = bitMapData;
+
         } else {
             if (retrievedBook.size() != 0) {
                 if (indexBookImage >= retrievedBook.size()) {
@@ -387,7 +398,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         if (indexBookImage > retrievedBook.size()) {
             indexBookImage = 0;
         }
-        if(indexBookTitle != retrievedBook.size()) {
+        if(indexBookImage != retrievedBook.size()) {
             Bitmap imageBitmap = BitmapFactory.decodeByteArray(retrievedBook.get(indexBookImage).getImage(), 0, retrievedBook.get(indexBookImage).getImage().length);
             book.setImage(retrievedBook.get(indexBookImage).getImage());
             ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
@@ -608,7 +619,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 }
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookTitle = bookSourcesLogos.size() - 1;
-                    ((ImageButton) findViewById(R.id.bookDescriptionImageButton)).setImageResource(bookSourcesLogos.get(indexBookTitle));
+                    ((ImageButton) findViewById(R.id.bookTitleImageButton)).setImageResource(bookSourcesLogos.get(indexBookTitle));
                     book.setTitle(text);
                 }
             }
@@ -635,7 +646,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 }
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookDescription = bookSourcesLogos.size() - 1;
-                    ((ImageButton) findViewById(R.id.bookDescriptionImageButton)).setImageResource(bookSourcesLogos.get(indexBookTitle));
+                    ((ImageButton) findViewById(R.id.bookDescriptionImageButton)).setImageResource(bookSourcesLogos.get(indexBookDescription));
                     book.setDescription(text);
                 }
             }
@@ -662,7 +673,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 }
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookAuthor = bookSourcesLogos.size() - 1;
-                    ((ImageButton) findViewById(R.id.bookAuthorImageButton)).setImageResource(bookSourcesLogos.get(indexBookTitle));
+                    ((ImageButton) findViewById(R.id.bookAuthorImageButton)).setImageResource(bookSourcesLogos.get(indexBookAuthor));
                     book.setAuthors(LinkTablesDataSource.getAuthorsFromEditText((EditText) findViewById(R.id.bookAuthor),-1));
                 }
             }
