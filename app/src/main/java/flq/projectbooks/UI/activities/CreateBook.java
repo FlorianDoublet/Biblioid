@@ -64,12 +64,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         if (retrievedBook == null) {
             bookSourcesLogos = new ArrayList<>();
             retrievedBook = new ArrayList<>();
-
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.picturebook);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
-            photo = stream.toByteArray();
-
+            photo = null;
             ((LinearLayout)findViewById(R.id.topMenuCreateBook)).removeAllViews();
 
             findViewById(R.id.bookTitleImageButton).setVisibility(View.GONE);
@@ -153,10 +148,15 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
             }
         }
+
+        if(photo == null){
+            ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
+        }
     }
 
     public static void resetBookCreation(){
         retrievedBook = null;
+        photo = null;
     }
 
     @Override
@@ -432,9 +432,15 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
             ((ImageButton) findViewById(R.id.bookImageImageButton)).setImageResource(bookSourcesLogos.get(indexBookImage));
         }else{
-            Bitmap imageBitmap = BitmapFactory.decodeByteArray(photo, 0, photo.length);
-            book.setImage(photo);
-            ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
+            if(photo != null){
+                book.setImage(photo);
+                Bitmap imageBitmap = BitmapFactory.decodeByteArray(photo, 0, photo.length);
+                ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
+            }else{
+                ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
+            }
+
+
             ((ImageButton) findViewById(R.id.bookImageImageButton)).setImageResource(bookSourcesLogos.get(indexBookImage));
         }
     }

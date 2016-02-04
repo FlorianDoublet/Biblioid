@@ -33,3 +33,4 @@ proguard/
 .idea/misc.xml
 .idea/workspace.xml
 app/app.iml
+/.idea/
