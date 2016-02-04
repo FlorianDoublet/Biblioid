@@ -65,14 +65,30 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             bookSourcesLogos = new ArrayList<>();
             retrievedBook = new ArrayList<>();
 
-            Resources res = getResources();
-            Drawable drawable = res.getDrawable(R.drawable.picturebook);
-            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.picturebook);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] bitMapData = stream.toByteArray();
-            photo = bitMapData;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+            photo = stream.toByteArray();
 
+            ((LinearLayout)findViewById(R.id.topMenuCreateBook)).removeAllViews();
+
+            findViewById(R.id.bookTitleImageButton).setVisibility(View.GONE);
+            findViewById(R.id.bookAuthorImageButton).setVisibility(View.GONE);
+            findViewById(R.id.bookDescriptionImageButton).setVisibility(View.GONE);
+            findViewById(R.id.bookDatePublicationImageButton).setVisibility(View.GONE);
+            findViewById(R.id.bookPublisherImageButton).setVisibility(View.GONE);
+            findViewById(R.id.bookCategoryImageButton).setVisibility(View.GONE);
+            findViewById(R.id.bookNbPagesImageButton).setVisibility(View.GONE);
+            findViewById(R.id.bookImageImageButton).setVisibility(View.GONE);
+
+            findViewById(R.id.bookTitleImageButtonLock).setVisibility(View.GONE);
+            findViewById(R.id.bookAuthorImageButtonLock).setVisibility(View.GONE);
+            findViewById(R.id.bookDescriptionImageButtonLock).setVisibility(View.GONE);
+            findViewById(R.id.bookDatePublicationImageButtonLock).setVisibility(View.GONE);
+            findViewById(R.id.bookPublisherImageButtonLock).setVisibility(View.GONE);
+            findViewById(R.id.bookCategoryImageButtonLock).setVisibility(View.GONE);
+            findViewById(R.id.bookNbPagesImageButtonLock).setVisibility(View.GONE);
+            findViewById(R.id.bookImageImageButtonLock).setVisibility(View.GONE);
         } else {
             if (retrievedBook.size() != 0) {
                 if (indexBookImage >= retrievedBook.size()) {
@@ -105,8 +121,14 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             setTitle("Modification d'un livre");
             book = (Book) intent.getSerializableExtra(DisplayBooks.GIVE_BOOK);
         } else {
-            setTitle("Création d'un livre");
-            book = (Book) intent.getSerializableExtra(Main.ASK_NEW_BOOK);
+            if(intent.hasExtra(Main.GIVE_BOOK_WITH_ISBN)){
+                ((EditText) findViewById(R.id.bookISBN)).setText(intent.getStringExtra(Main.GIVE_BOOK_WITH_ISBN));
+                book = (Book) intent.getSerializableExtra(Main.ASK_NEW_BOOK);
+                loadSource(null);
+            }else{
+                setTitle("Création d'un livre");
+                book = (Book) intent.getSerializableExtra(Main.ASK_NEW_BOOK);
+            }
         }
 
         ((TextView) findViewById(R.id.bookTitle)).setText(book.getTitle());
@@ -131,6 +153,10 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
             }
         }
+    }
+
+    public static void resetBookCreation(){
+        retrievedBook = null;
     }
 
     @Override
@@ -185,11 +211,13 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
     public void seeCover(View view) {
         findViewById(R.id.topMenuCreateBook).setVisibility(View.GONE);
         findViewById(R.id.scrollViewCreateBook).setVisibility(View.GONE);
+        findViewById(R.id.validateCreationBookLayout).setVisibility(View.GONE);
     }
 
     public void hideCover(View view) {
         findViewById(R.id.topMenuCreateBook).setVisibility(View.VISIBLE);
         findViewById(R.id.scrollViewCreateBook).setVisibility(View.VISIBLE);
+        findViewById(R.id.validateCreationBookLayout).setVisibility(View.VISIBLE);
     }
 
     public void loadSource(View view) {

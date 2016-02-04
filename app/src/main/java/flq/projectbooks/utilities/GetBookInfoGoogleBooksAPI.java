@@ -43,8 +43,6 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
             return null;
         }
 
-        String key = "";
-
         String apiUrlString = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbns[0];
 
         try {

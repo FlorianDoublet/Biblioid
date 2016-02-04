@@ -33,10 +33,11 @@ import flq.projectbooks.database.MySQLiteHelper;
 import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
 
-public class Main extends ActionBarActivity implements GetBookInfoGoogleBooksAPI.AsyncResponse, NoticeDialogFragment.NoticeDialogListener {
+public class Main extends ActionBarActivity implements NoticeDialogFragment.NoticeDialogListener {
 
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
+    public final static String GIVE_BOOK_WITH_ISBN = "flq.GIVE_BOOK_WITH_ISBN";
 
     public final static int FILE_CODE_IMPORT = 1;
     public final static int FILE_CODE_EXPORT = 2;
@@ -44,7 +45,6 @@ public class Main extends ActionBarActivity implements GetBookInfoGoogleBooksAPI
     protected BookLibrary books;
     protected BookFilterCatalog filters;
     protected AuthorLibrary authors;
-    protected GetBookInfo asyncTask;
     private Uri uri;
 
     @Override
@@ -80,10 +80,21 @@ public class Main extends ActionBarActivity implements GetBookInfoGoogleBooksAPI
     }
 
     public void openCreateBookActivity(View view) {
+        CreateBook.resetBookCreation();
         Intent intent = new Intent(this, CreateBook.class);
         intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
         startActivity(intent);
     }
+
+    public void openCreateBookActivityWithISBN(String ISBN) {
+        CreateBook.resetBookCreation();
+
+        Intent intent = new Intent(this, CreateBook.class);
+        intent.putExtra(GIVE_BOOK_WITH_ISBN, ISBN);
+        intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
+        startActivity(intent);
+    }
+
 
     public void openDisplayBookActivity(View view) {
         Intent intent = new Intent(this, DisplayBooks.class);
@@ -145,17 +156,8 @@ public class Main extends ActionBarActivity implements GetBookInfoGoogleBooksAPI
 
         if (data != null && data.hasExtra(("SCAN_RESULT"))) {
             String ISBN = data.getStringExtra("SCAN_RESULT");
-            asyncTask = new GetBookInfoGoogleBooksAPI(getApplicationContext());
-            asyncTask.delegate = this;
-            asyncTask.execute(ISBN);
+            openCreateBookActivityWithISBN(ISBN);
         }
-    }
-
-    @Override
-    public void processFinish(Book output) {
-        Intent intent = new Intent(this, CreateBook.class);
-        intent.putExtra(DisplayBooks.GIVE_BOOK, output);
-        startActivityForResult(intent, 0);
     }
 
     @Override
