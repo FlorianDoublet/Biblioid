@@ -20,7 +20,7 @@ public class BookFilter implements Serializable {
     private String datePublicationMin;
     private String datePublicationMax;
     private String editor;
-    private String category;
+    private List<Category> categories;
     private int nbPagesMin;
     private int nbPagesMax;
 
@@ -34,17 +34,17 @@ public class BookFilter implements Serializable {
         datePublicationMin = "";
         datePublicationMax = "";
         editor = "";
-        category = "";
+        categories = new ArrayList<>();
         nbPagesMin = 0;
         nbPagesMax = 0;
     }
 
-    public String getCategory() {
-        return category;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public String getEditor() {
@@ -146,8 +146,18 @@ public class BookFilter implements Serializable {
             returnValue = false;
         }
 
-        if (!category.equals("") && !book.getCategory().contains(category)) {
-            returnValue = false;
+        //check if all categories in the filter are in the book
+        if (categories != null && categories.size() != 0) {
+            List<Category> categories_book = book.getCategories();
+            for (Category category_filter : categories) {
+                Boolean categoryMatch = false;
+                for (Category category : categories_book) {
+                    if (category.getId() == category_filter.getId())
+                        categoryMatch = true;
+                }
+                if (!categoryMatch)
+                    returnValue = false;
+            }
         }
 
         if (!editor.equals("") && !book.getEditor().contains(editor)) {

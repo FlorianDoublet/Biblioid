@@ -39,7 +39,7 @@ public class CreateFilter extends ActionBarActivity {
         ((TextView) findViewById(R.id.filterDatePublicationMin)).setText(filter.getDatePublicationMin());
         ((TextView) findViewById(R.id.filterDatePublicationMax)).setText(filter.getDatePublicationMax());
         ((TextView) findViewById(R.id.filterEditeur)).setText(filter.getEditor());
-        ((TextView) findViewById(R.id.filterCategorie)).setText(filter.getCategory());
+        ((TextView) findViewById(R.id.filterCategorie)).setText(LinkTablesDataSource.categoriesToString(filter.getCategories()));
         ((TextView) findViewById(R.id.filterNbPagesMin)).setText(String.valueOf(filter.getNbPagesMin()));
         ((TextView) findViewById(R.id.filterNbPagesMax)).setText(String.valueOf(filter.getNbPagesMax()));
     }
@@ -79,11 +79,11 @@ public class CreateFilter extends ActionBarActivity {
         filter.setDescription(isbn.getText().toString());
         filter.setDatePublications(datePub1.getText().toString(), datePub2.getText().toString());
         filter.setEditor(editor.getText().toString());
-        filter.setCategory(category.getText().toString());
         filter.setNbPages(Integer.parseInt(nbPages1.getText().toString()), Integer.parseInt(nbPages2.getText().toString()));
 
         //will feed the filter with the good authors
         LinkTablesDataSource.feedBookFilterWithAuthors(filter, author);
+        LinkTablesDataSource.feedBookFilterWithCategories(filter, category);
 
         finish();
     }

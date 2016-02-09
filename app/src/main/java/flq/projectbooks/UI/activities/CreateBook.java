@@ -134,7 +134,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         ((TextView) findViewById(R.id.bookDescription)).setText(book.getDescription());
         ((TextView) findViewById(R.id.bookDatePublication)).setText(book.getDatePublication());
         ((TextView) findViewById(R.id.bookEditeur)).setText(book.getEditor());
-        ((TextView) findViewById(R.id.bookCategorie)).setText(book.getCategory());
+        ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
         ((TextView) findViewById(R.id.bookNbPages)).setText(String.valueOf(book.getNbPages()));
 
         initTextViewListener();
@@ -191,11 +191,12 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         book.setDescription(description.getText().toString());
         book.setDatePublication(datePub.getText().toString());
         book.setEditor(editor.getText().toString());
-        book.setCategory(category.getText().toString());
         book.setNbPages(Integer.parseInt(nbPages.getText().toString()));
 
         //will feed the book with the good authors
         LinkTablesDataSource.feedBookWithAuthor(book, author);
+        //will feed the book with the good categories
+        LinkTablesDataSource.feedBookWithCategories(book, category);
 
         finish();
     }
@@ -313,7 +314,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                         }
                         if(findViewById(R.id.bookCategoryImageButton).isEnabled()) {
                             indexBookCategory = bookSourcesLogos.size()-1;
-                            ((TextView) findViewById(R.id.bookCategorie)).setText(book.getCategory());
+                            ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
                             ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
                         }
                         if(findViewById(R.id.bookDescriptionImageButton).isEnabled()) {
@@ -331,7 +332,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 ((TextView) findViewById(R.id.bookDescription)).setText(output.getDescription());
                 ((TextView) findViewById(R.id.bookDatePublication)).setText(output.getDatePublication());
                 ((TextView) findViewById(R.id.bookEditeur)).setText(output.getEditor());
-                ((TextView) findViewById(R.id.bookCategorie)).setText(output.getCategory());
+                ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(output.getCategories()));
                 ((TextView) findViewById(R.id.bookNbPages)).setText(String.valueOf(output.getNbPages()));
 
                 if (output.getImage() != null) {
@@ -521,10 +522,10 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             indexBookCategory = 0;
         }
         if(indexBookCategory != retrievedBook.size()) {
-            ((TextView) findViewById(R.id.bookCategorie)).setText(retrievedBook.get(indexBookCategory).getCategory());
+            ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.authorsToString(retrievedBook.get(indexBookAuthor).getAuthors()));
             ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
         }else {
-            ((TextView) findViewById(R.id.bookCategorie)).setText(book.getCategory());
+            ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
             ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
         }
     }
@@ -708,7 +709,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookAuthor = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookAuthorImageButton)).setImageResource(bookSourcesLogos.get(indexBookAuthor));
-                    book.setAuthors(LinkTablesDataSource.getAuthorsFromEditText((EditText) findViewById(R.id.bookAuthor),-1));
+                    book.setAuthors(LinkTablesDataSource.getAuthorsFromEditText((EditText) findViewById(R.id.bookAuthor)));
                 }
             }
         });
@@ -754,7 +755,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 String text = ((EditText) findViewById(R.id.bookCategorie)).getText().toString();
                 boolean equal = false;
                 for (int i = 0; i < retrievedBook.size(); i++) {
-                    if (text.equals(retrievedBook.get(i).getCategory())) {
+                    if (text.equals(LinkTablesDataSource.categoriesToString(retrievedBook.get(i).getCategories()))) {
                         equal = true;
                         ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(i));
                     }
@@ -762,7 +763,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookCategory = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
-                    book.setCategory(text);
+                    book.setCategories(LinkTablesDataSource.getCategoriesFromString(text));
                 }
             }
         });

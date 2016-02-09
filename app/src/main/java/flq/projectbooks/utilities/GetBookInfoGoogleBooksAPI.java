@@ -25,6 +25,7 @@ import java.util.List;
 
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.Category;
 import flq.projectbooks.data.libraries.BookLibrary;
 
 /**
@@ -115,16 +116,13 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
                     newBook.setEditor(editor);
                 }
                 if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("categories")) {
-                    String category = "";
                     JSONArray arrCategory = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getJSONArray("categories");
+                    List<Category> categories = new ArrayList<Category>();
                     for (int i = 0; i < arrCategory.length(); i++) {
-                        if (category == "") {
-                            category += arrCategory.getString(i);
-                        } else {
-                            category += ", " + arrCategory.getString(i);
-                        }
+                        Category category = new Category(arrCategory.getString(i));
+                        categories.add(category);
                     }
-                    newBook.setCategory(category);
+                    newBook.setCategories(categories);
                 }
 
                 if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("pageCount")) {

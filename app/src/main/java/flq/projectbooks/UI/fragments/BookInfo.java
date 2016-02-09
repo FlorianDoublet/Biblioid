@@ -22,6 +22,7 @@ import flq.projectbooks.UI.activities.CreateBook;
 import flq.projectbooks.UI.activities.DisplayBooks;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.Category;
 import flq.projectbooks.data.libraries.BookLibrary;
 
 
@@ -120,13 +121,20 @@ public class BookInfo extends Fragment implements Parcelable {
             textViewDatePub.setHeight(0);
         }
 
-
         TextView textViewCategory = (TextView) view.findViewById(R.id.bookInfoCategorie);
-        if (!book.getCategory().equals("")) {
-            textViewCategory.setText("Genre : " + book.getCategory());
-        } else {
-            textViewCategory.setHeight(0);
+
+        List<Category> categories = book.getCategories();
+        String category_s = "";
+        if (categories != null) {
+            for (int i = 0; i < categories.size(); i++) {
+                if (i == 0) {
+                    category_s += "Genre : " + categories.get(i).getName();
+                } else
+                    category_s += ", " + categories.get(i).getName();
+            }
         }
+        textViewCategory.setText(category_s);
+
 
 
         TextView textViewEditor = (TextView) view.findViewById(R.id.bookInfoEditor);

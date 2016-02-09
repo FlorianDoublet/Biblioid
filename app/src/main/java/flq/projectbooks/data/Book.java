@@ -16,7 +16,7 @@ public class Book implements Serializable {
     private String description;
     private String datePublication;
     private String editor;
-    private String category;
+    private List<Category> categories;
     private int nbPages;
 
     public Book() {
@@ -27,7 +27,7 @@ public class Book implements Serializable {
         description = "";
         datePublication = "";
         editor = "";
-        category = "";
+        categories = new ArrayList<>();
         nbPages = 0;
     }
 
@@ -95,12 +95,12 @@ public class Book implements Serializable {
         this.editor = editor;
     }
 
-    public String getCategory() {
-        return category;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public int getNbPages() {

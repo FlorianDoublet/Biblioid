@@ -31,4 +31,5 @@ public abstract class GetBookInfo extends AsyncTask<String, Void, Book> {
     public interface AsyncResponse {
         void processFinish(Book output);
     }
+
 }

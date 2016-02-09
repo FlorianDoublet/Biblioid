@@ -45,7 +45,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.Category;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.database.LinkTablesDataSource;
 
 /**
  * Created by doublet on 05/11/15.
@@ -138,11 +140,9 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
 
             if (xmlResponse.getElementsByTagName("Item").getLength() > 0) {
                 String title = ""; //OK
-                String author = ""; //OK
                 String datePublication = ""; //OK
                 String publisher = ""; //OK
                 String nbPages = ""; //OK
-                String category = "";
                 String description = ""; //OK
 
 
@@ -150,17 +150,16 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                 Book newBook = BookLibrary.getInstance().getNewBook();
 
                 List<Author> authors = new ArrayList<>();
+                List<Category> categories = new ArrayList<>();
                 for (int i = 0; i < itemNode.getChildNodes().getLength(); i++) {
                     Node item = itemNode.getChildNodes().item(i);
-                    String test = item.getNodeName();
                     switch (item.getNodeName()) {
                         case "ItemAttributes":
                             for (int j = 0; j < item.getChildNodes().getLength(); j++) {
                                 Node itemAttribute = item.getChildNodes().item(j);
                                 switch (itemAttribute.getNodeName()) {
                                     case "Author":
-                                        //Ici faire addAuthor plutot, vu que y'a plusieurs auteurs
-                                        authors.add(new Author(itemAttribute.getTextContent()));
+                                        authors = LinkTablesDataSource.getAuthorsFromString(itemAttribute.getTextContent());
                                         break;
                                     case "Publisher":
                                         publisher = itemAttribute.getTextContent();
@@ -185,7 +184,8 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                             description = Html.fromHtml(description).toString();
                             break;
                         case "BrowseNodes":
-                            category = "";
+                            //TODO remplir les categories
+                            categories = LinkTablesDataSource.getCategoriesFromString("");
                             break;
                         case "LargeImage":
                             String urlPicture = item.getChildNodes().item(0).getChildNodes().item(0).getTextContent();
@@ -199,7 +199,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                 newBook.setIsbn(isbns[0]);
                 newBook.setTitle(title);
                 newBook.setAuthors(authors);
-                newBook.setCategory(category);
+                newBook.setCategories(categories);
                 newBook.setDatePublication(datePublication);
                 newBook.setEditor(publisher);
                 newBook.setNbPages(Integer.parseInt(nbPages));

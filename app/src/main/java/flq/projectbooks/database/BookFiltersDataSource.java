@@ -11,6 +11,7 @@ import java.util.List;
 
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.BookFilter;
+import flq.projectbooks.data.Category;
 
 /**
  * Created by Quentin on 22/10/2015.
@@ -26,7 +27,6 @@ public class BookFiltersDataSource {
             MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN,
             MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX,
             MySQLiteHelper.COLUMN_EDITOR,
-            MySQLiteHelper.COLUMN_CATEGORY,
             MySQLiteHelper.COLUMN_NB_PAGES_MIN,
             MySQLiteHelper.COLUMN_NB_PAGES_MAX};
 
@@ -42,7 +42,7 @@ public class BookFiltersDataSource {
         dbHelper.close();
     }
 
-    public BookFilter createFilter(String name, String title, String isbn, String datePublicationMin, String datePublicationMax, String editor, String category, int nbPagesMin, int nbPagesMax) {
+    public BookFilter createFilter(String name, String title, String isbn, String datePublicationMin, String datePublicationMax, String editor, int nbPagesMin, int nbPagesMax) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_FILTER_NAME, name);
@@ -51,7 +51,6 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN, datePublicationMin);
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX, datePublicationMax);
         values.put(MySQLiteHelper.COLUMN_EDITOR, editor);
-        values.put(MySQLiteHelper.COLUMN_CATEGORY, category);
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MIN, nbPagesMin);
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MAX, nbPagesMax);
 
@@ -75,7 +74,6 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN, filter.getDatePublicationMin());
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX, filter.getDatePublicationMax());
         values.put(MySQLiteHelper.COLUMN_EDITOR, filter.getEditor());
-        values.put(MySQLiteHelper.COLUMN_CATEGORY, filter.getCategory());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MIN, filter.getNbPagesMin());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MAX, filter.getNbPagesMax());
         return database.update(MySQLiteHelper.TABLE_BOOK_FILTERS, values, MySQLiteHelper.COLUMN_ID + " = " + filter.getId(), null);
@@ -105,6 +103,10 @@ public class BookFiltersDataSource {
         for (BookFilter filter : filters) {
             filter.setAuthors(getAllAuthorFromABookFilter(filter));
         }
+        //used to fill the Categories Array
+        for (BookFilter filter : filters) {
+            filter.setCategories(getAllCategoryFromABookFilter(filter));
+        }
         return filters;
     }
 
@@ -117,8 +119,7 @@ public class BookFiltersDataSource {
         filter.setDescription(cursor.getString(3));
         filter.setDatePublications(cursor.getString(4), cursor.getString(5));
         filter.setEditor(cursor.getString(6));
-        filter.setCategory(cursor.getString(7));
-        filter.setNbPages(cursor.getInt(8), cursor.getInt(9));
+        filter.setNbPages(cursor.getInt(7), cursor.getInt(8));
         return filter;
     }
 
@@ -139,6 +140,25 @@ public class BookFiltersDataSource {
         System.out.println("Link deleted with book_filter_id: " + book_filter_id + " and author_id " + author_id);
         database.delete(MySQLiteHelper.TABLE_BOOK_FILTERS_AUTHORS, MySQLiteHelper.COLUMN_BOOK_FILTER_ID
                 + " = " + book_filter_id + " and " + MySQLiteHelper.COLUMN_AUTHOR_ID + " = " + author_id, null);
+    }
+
+    public boolean bookFiltersCategoriesIdExist(long book_filter_id, long category_id) {
+        return LinkTablesDataSource.bookFiltersCategoriesIdExist(database, book_filter_id, category_id);
+    }
+
+    public long createBookFiltersCategories(long book_filter_id, long categories_id) {
+        return LinkTablesDataSource.createBookFiltersCategories(database, book_filter_id, categories_id);
+    }
+
+    public List<Category> getAllCategoryFromABookFilter(BookFilter filter) {
+        return LinkTablesDataSource.getAllCategoryFromABookFilter(database, filter);
+    }
+
+    public void deleteBookFilterCategories(long book_filter_id, long category_id) {
+
+        System.out.println("Link deleted with book_filter_id: " + book_filter_id + " and author_id " + category_id);
+        database.delete(MySQLiteHelper.TABLE_BOOK_FILTERS_CATEGORIES, MySQLiteHelper.COLUMN_BOOK_FILTER_ID
+                + " = " + book_filter_id + " and " + MySQLiteHelper.COLUMN_CATEGORY_ID + " = " + category_id, null);
     }
 
 }

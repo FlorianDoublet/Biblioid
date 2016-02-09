@@ -8,6 +8,7 @@ import java.util.List;
 
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.BookFilter;
+import flq.projectbooks.data.Category;
 import flq.projectbooks.database.BookFiltersDataSource;
 
 /**
@@ -40,7 +41,7 @@ public class BookFilterCatalog implements Serializable {
     public void Add(BookFilter filter) {
         //Add in the database
         datasource.open();
-        datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getCategory(), filter.getNbPagesMin(), filter.getNbPagesMax());
+        datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getNbPagesMin(), filter.getNbPagesMax());
         datasource.close();
 
         //Add in the local list
@@ -95,7 +96,7 @@ public class BookFilterCatalog implements Serializable {
             }
         } else {
             datasource.open();
-            filter = datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getCategory(), filter.getNbPagesMin(), filter.getNbPagesMax()); //Add book to database
+            filter = datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getNbPagesMin(), filter.getNbPagesMax()); //Add book to database
             bookFilterList = datasource.getAllBookFilters(); //Update books
             datasource.close();
         }
@@ -127,6 +128,33 @@ public class BookFilterCatalog implements Serializable {
         List<Author> authors = datasource.getAllAuthorFromABookFilter(filter);
         datasource.close();
         return authors;
+    }
+
+    public boolean checkIfBookFiltersCategoriesLinkExist(long book_filter_id, long category_id) {
+        datasource.open();
+        Boolean bool = datasource.bookFiltersCategoriesIdExist(book_filter_id, category_id);
+        datasource.close();
+        return bool;
+    }
+
+    public long addBookFiltersCategoriesLink(long book_id, long category_id) {
+        datasource.open();
+        long inserted_id = datasource.createBookFiltersCategories(book_id, category_id);
+        datasource.close();
+        return inserted_id;
+    }
+
+    public void deleteBookFilterCategoriesLink(long book_filter_id, long category_id) {
+        datasource.open();
+        datasource.deleteBookFilterCategories(book_filter_id, category_id);
+        datasource.close();
+    }
+
+    public List<Category> getAllCategoryFromABookFilter(BookFilter filter) {
+        datasource.open();
+        List<Category> categories = datasource.getAllCategoryFromABookFilter(filter);
+        datasource.close();
+        return categories;
     }
 
 }
