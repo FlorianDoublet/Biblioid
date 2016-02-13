@@ -41,7 +41,7 @@ public class BookLibrary implements Serializable {
     public void Add(Book book) {
         bookList.add(book);
         datasource.open();
-        datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getEditor(), book.getNbPages()); //Add book to database
+        datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getPublisher_id(), book.getNbPages()); //Add book to database
         datasource.close();
     }
 
@@ -102,7 +102,7 @@ public class BookLibrary implements Serializable {
             }
         } else {
             datasource.open();
-            book = datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getEditor(), book.getNbPages()); //Add book to database
+            book = datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getPublisher_id(), book.getNbPages()); //Add book to database
             bookList = datasource.getAllBooks(); //Update books
             datasource.close();
         }

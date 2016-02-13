@@ -47,6 +47,7 @@ import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Category;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.LinkTablesDataSource;
 
 /**
@@ -178,9 +179,9 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                                 }
                             }
                             break;
-                        case "EditorialReviews":
-                            Node itemEditorial = itemNode.getChildNodes().item(i);
-                            description = itemEditorial.getChildNodes().item(0).getChildNodes().item(1).getTextContent();
+                        case "PublisherialReviews":
+                            Node itemPublisherial = itemNode.getChildNodes().item(i);
+                            description = itemPublisherial.getChildNodes().item(0).getChildNodes().item(1).getTextContent();
                             description = Html.fromHtml(description).toString();
                             break;
                         case "BrowseNodes":
@@ -201,7 +202,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                 newBook.setAuthors(authors);
                 newBook.setCategories(categories);
                 newBook.setDatePublication(datePublication);
-                newBook.setEditor(publisher);
+                newBook.setPublisher_id(PublisherLibrary.getInstance().getPublisherByName(publisher).getId());
                 newBook.setNbPages(Integer.parseInt(nbPages));
                 newBook.setDescription(description);
 

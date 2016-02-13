@@ -1,11 +1,9 @@
 package flq.projectbooks.UI.activities;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
@@ -26,7 +24,10 @@ import java.util.List;
 
 import flq.projectbooks.R;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.Publisher;
+import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.LinkTablesDataSource;
+import flq.projectbooks.database.PublishersDataSource;
 import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.utilities.GetBookInfoAmazonAPI;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
@@ -133,7 +134,10 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
         ((TextView) findViewById(R.id.bookDescription)).setText(book.getDescription());
         ((TextView) findViewById(R.id.bookDatePublication)).setText(book.getDatePublication());
-        ((TextView) findViewById(R.id.bookEditeur)).setText(book.getEditor());
+        Publisher p = PublisherLibrary.getInstance().getPublisherById(book.getPublisher_id());
+        String publisher_name = "";
+        if(p != null) publisher_name = p.getName();
+        ((TextView) findViewById(R.id.bookPublisher)).setText(publisher_name);
         ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
         ((TextView) findViewById(R.id.bookNbPages)).setText(String.valueOf(book.getNbPages()));
 
@@ -180,7 +184,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         EditText isbn = (EditText) findViewById(R.id.bookISBN);
         EditText description = (EditText) findViewById(R.id.bookDescription);
         EditText datePub = (EditText) findViewById(R.id.bookDatePublication);
-        EditText editor = (EditText) findViewById(R.id.bookEditeur);
+        EditText publisher = (EditText) findViewById(R.id.bookPublisher);
         EditText category = (EditText) findViewById(R.id.bookCategorie);
         EditText nbPages = (EditText) findViewById(R.id.bookNbPages);
 
@@ -190,7 +194,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         book.setIsbn(isbn.getText().toString());
         book.setDescription(description.getText().toString());
         book.setDatePublication(datePub.getText().toString());
-        book.setEditor(editor.getText().toString());
+        book.setPublisher_id(PublisherLibrary.getInstance().findAndAddAPublisher(publisher.getText().toString()).getId());
         book.setNbPages(Integer.parseInt(nbPages.getText().toString()));
 
         //will feed the book with the good authors
@@ -288,7 +292,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                         }
                         if(findViewById(R.id.bookPublisherImageButton).isEnabled()) {
                             indexBookPublisher = bookSourcesLogos.size()-1;
-                            ((TextView) findViewById(R.id.bookEditeur)).setText(book.getEditor());
+                            ((TextView) findViewById(R.id.bookPublisher)).setText(PublisherLibrary.getInstance().getPublisherById(book.getPublisher_id()).getName());
                             ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(indexBookPublisher));
                         }
                         if(findViewById(R.id.bookDatePublicationImageButton).isEnabled()) {
@@ -331,7 +335,10 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 ((TextView) findViewById(R.id.bookAuthor)).setText(LinkTablesDataSource.authorsToString(output.getAuthors()));
                 ((TextView) findViewById(R.id.bookDescription)).setText(output.getDescription());
                 ((TextView) findViewById(R.id.bookDatePublication)).setText(output.getDatePublication());
-                ((TextView) findViewById(R.id.bookEditeur)).setText(output.getEditor());
+                Publisher p = PublisherLibrary.getInstance().getPublisherById(output.getPublisher_id());
+                String publisher_name = "";
+                if(p != null) publisher_name = p.getName();
+                ((TextView) findViewById(R.id.bookPublisher)).setText(publisher_name);
                 ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(output.getCategories()));
                 ((TextView) findViewById(R.id.bookNbPages)).setText(String.valueOf(output.getNbPages()));
 
@@ -507,11 +514,16 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         if (indexBookPublisher > retrievedBook.size()) {
             indexBookPublisher = 0;
         }
+        String publisher_name = "";
         if(indexBookPublisher != retrievedBook.size()) {
-            ((TextView) findViewById(R.id.bookEditeur)).setText(retrievedBook.get(indexBookPublisher).getEditor());
+            Publisher p = PublisherLibrary.getInstance().getPublisherById(retrievedBook.get(indexBookPublisher).getPublisher_id());
+            if(p != null) publisher_name = p.getName();
+            ((TextView) findViewById(R.id.bookPublisher)).setText(publisher_name);
             ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(indexBookPublisher));
         }else {
-            ((TextView) findViewById(R.id.bookEditeur)).setText(book.getEditor());
+            Publisher p = PublisherLibrary.getInstance().getPublisherById(book.getPublisher_id());
+            if(p != null) publisher_name = p.getName();
+            ((TextView) findViewById(R.id.bookPublisher)).setText(publisher_name);
             ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(indexBookPublisher));
         }
     }
@@ -602,7 +614,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
     public void lockPublisherSource(View view) {
         View button = findViewById(R.id.bookPublisherImageButton);
         button.setEnabled(!button.isEnabled());
-        findViewById(R.id.bookEditeur).setEnabled(findViewById(R.id.bookEditeur).isEnabled());
+        findViewById(R.id.bookPublisher).setEnabled(findViewById(R.id.bookPublisher).isEnabled());
         if (button.isEnabled()) {
             ((ImageButton) findViewById(R.id.bookPublisherImageButtonLock)).setImageResource(R.drawable.unlock);
         } else {
@@ -795,7 +807,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             }
         });
 
-        ((TextView) findViewById(R.id.bookEditeur)).addTextChangedListener(new TextWatcher() {
+        ((TextView) findViewById(R.id.bookPublisher)).addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -806,10 +818,10 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = ((EditText) findViewById(R.id.bookEditeur)).getText().toString();
+                String text = ((EditText) findViewById(R.id.bookPublisher)).getText().toString();
                 boolean equal = false;
                 for (int i = 0; i < retrievedBook.size(); i++) {
-                    if (text.equals(retrievedBook.get(i).getEditor())) {
+                    if (text.equals(retrievedBook.get(i).getPublisher_id())) {
                         equal = true;
                         ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(i));
                     }
@@ -817,7 +829,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookPublisher = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(indexBookPublisher));
-                    book.setEditor(text);
+                    book.setPublisher_id(PublisherLibrary.getInstance().findAndAddAPublisher(text).getId());
                 }
             }
         });

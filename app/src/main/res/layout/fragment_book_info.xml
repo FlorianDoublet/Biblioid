@@ -48,13 +48,13 @@
                 tools:text="JJ/MM/AAAA" />
 
             <TextView
-                android:id="@+id/bookInfoEditor"
+                android:id="@+id/bookInfoPublisher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:paddingRight="16dp"
                 android:textSize="20dp"
-                tools:text="Editeur" />
+                tools:text="Publisher" />
 
 
             <TextView

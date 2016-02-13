@@ -15,7 +15,7 @@ public class Book implements Serializable {
     private byte[] image;
     private String description;
     private String datePublication;
-    private String editor;
+    private long publisher_id;
     private List<Category> categories;
     private int nbPages;
 
@@ -26,7 +26,7 @@ public class Book implements Serializable {
         isbn = "";
         description = "";
         datePublication = "";
-        editor = "";
+        publisher_id = -1;
         categories = new ArrayList<>();
         nbPages = 0;
     }
@@ -87,12 +87,12 @@ public class Book implements Serializable {
         this.datePublication = datePublication;
     }
 
-    public String getEditor() {
-        return editor;
+    public long getPublisher_id() {
+        return publisher_id;
     }
 
-    public void setEditor(String editor) {
-        this.editor = editor;
+    public void setPublisher_id(long publisher_id) {
+        this.publisher_id = publisher_id;
     }
 
     public List<Category> getCategories() {

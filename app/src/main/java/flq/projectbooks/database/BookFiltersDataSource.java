@@ -26,7 +26,7 @@ public class BookFiltersDataSource {
             MySQLiteHelper.COLUMN_DESCRIPTION,
             MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN,
             MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX,
-            MySQLiteHelper.COLUMN_EDITOR,
+            MySQLiteHelper.COLUMN_PUBLISHER_ID,
             MySQLiteHelper.COLUMN_NB_PAGES_MIN,
             MySQLiteHelper.COLUMN_NB_PAGES_MAX};
 
@@ -42,7 +42,7 @@ public class BookFiltersDataSource {
         dbHelper.close();
     }
 
-    public BookFilter createFilter(String name, String title, String isbn, String datePublicationMin, String datePublicationMax, String editor, int nbPagesMin, int nbPagesMax) {
+    public BookFilter createFilter(String name, String title, String isbn, String datePublicationMin, String datePublicationMax, long publisher_id, int nbPagesMin, int nbPagesMax) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_FILTER_NAME, name);
@@ -50,7 +50,7 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, isbn);
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN, datePublicationMin);
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX, datePublicationMax);
-        values.put(MySQLiteHelper.COLUMN_EDITOR, editor);
+        values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, publisher_id);
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MIN, nbPagesMin);
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MAX, nbPagesMax);
 
@@ -73,7 +73,7 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, filter.getDescription());
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MIN, filter.getDatePublicationMin());
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX, filter.getDatePublicationMax());
-        values.put(MySQLiteHelper.COLUMN_EDITOR, filter.getEditor());
+        values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, filter.getPublisher_id());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MIN, filter.getNbPagesMin());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MAX, filter.getNbPagesMax());
         return database.update(MySQLiteHelper.TABLE_BOOK_FILTERS, values, MySQLiteHelper.COLUMN_ID + " = " + filter.getId(), null);
@@ -118,7 +118,7 @@ public class BookFiltersDataSource {
         filter.setTitle(cursor.getString(2));
         filter.setDescription(cursor.getString(3));
         filter.setDatePublications(cursor.getString(4), cursor.getString(5));
-        filter.setEditor(cursor.getString(6));
+        filter.setPublisher_id(cursor.getLong(6));
         filter.setNbPages(cursor.getInt(7), cursor.getInt(8));
         return filter;
     }

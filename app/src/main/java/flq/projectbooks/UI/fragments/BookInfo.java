@@ -24,6 +24,7 @@ import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Category;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.data.libraries.PublisherLibrary;
 
 
 /**
@@ -137,11 +138,11 @@ public class BookInfo extends Fragment implements Parcelable {
 
 
 
-        TextView textViewEditor = (TextView) view.findViewById(R.id.bookInfoEditor);
-        if (!book.getEditor().equals("")) {
-            textViewEditor.setText("Editeur : " + book.getEditor());
+        TextView textViewPublisher = (TextView) view.findViewById(R.id.bookInfoPublisher);
+        if (book.getPublisher_id()!= -1) {
+            textViewPublisher.setText("Publisher : " + PublisherLibrary.getInstance().getPublisherById(book.getPublisher_id()).getName());
         } else {
-            textViewEditor.setHeight(0);
+            textViewPublisher.setHeight(0);
         }
 
 

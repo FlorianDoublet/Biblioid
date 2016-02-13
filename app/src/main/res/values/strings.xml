@@ -35,7 +35,7 @@
     <string name="nameFilter">Nom du filtre:</string>
     <string name="update_filter">Modifier le filtre</string>
     <string name="bookNbPages">Nombre de pages :</string>
-    <string name="bookEditeur">Editeur :</string>
+    <string name="bookPublisher">Publisher :</string>
     <string name="bookCategorie">Genre :</string>
     <string name="bookCreationDatePublication">Date de publication :</string>
     <string name="btnModif">Modifier</string>

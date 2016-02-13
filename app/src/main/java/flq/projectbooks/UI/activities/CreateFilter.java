@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import flq.projectbooks.R;
 import flq.projectbooks.data.BookFilter;
+import flq.projectbooks.data.Publisher;
+import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.LinkTablesDataSource;
 
 
@@ -38,7 +40,10 @@ public class CreateFilter extends ActionBarActivity {
         ((TextView) findViewById(R.id.filterDescription)).setText(filter.getDescription());
         ((TextView) findViewById(R.id.filterDatePublicationMin)).setText(filter.getDatePublicationMin());
         ((TextView) findViewById(R.id.filterDatePublicationMax)).setText(filter.getDatePublicationMax());
-        ((TextView) findViewById(R.id.filterEditeur)).setText(filter.getEditor());
+        Publisher p = PublisherLibrary.getInstance().getPublisherById(filter.getPublisher_id());
+        String publisher_name = "";
+        if(p != null) publisher_name = p.getName();
+        ((TextView) findViewById(R.id.filterPublisher)).setText(publisher_name);
         ((TextView) findViewById(R.id.filterCategorie)).setText(LinkTablesDataSource.categoriesToString(filter.getCategories()));
         ((TextView) findViewById(R.id.filterNbPagesMin)).setText(String.valueOf(filter.getNbPagesMin()));
         ((TextView) findViewById(R.id.filterNbPagesMax)).setText(String.valueOf(filter.getNbPagesMax()));
@@ -68,7 +73,7 @@ public class CreateFilter extends ActionBarActivity {
         EditText isbn = (EditText) findViewById(R.id.filterDescription);
         EditText datePub1 = (EditText) findViewById(R.id.filterDatePublicationMin);
         EditText datePub2 = (EditText) findViewById(R.id.filterDatePublicationMax);
-        EditText editor = (EditText) findViewById(R.id.filterEditeur);
+        EditText publisher = (EditText) findViewById(R.id.filterPublisher);
         EditText category = (EditText) findViewById(R.id.filterCategorie);
         EditText nbPages1 = (EditText) findViewById(R.id.filterNbPagesMin);
         EditText nbPages2 = (EditText) findViewById(R.id.filterNbPagesMax);
@@ -78,7 +83,7 @@ public class CreateFilter extends ActionBarActivity {
         filter.setTitle(title.getText().toString());
         filter.setDescription(isbn.getText().toString());
         filter.setDatePublications(datePub1.getText().toString(), datePub2.getText().toString());
-        filter.setEditor(editor.getText().toString());
+        filter.setPublisher_id(PublisherLibrary.getInstance().findAndAddAPublisher(publisher.getText().toString()).getId());
         filter.setNbPages(Integer.parseInt(nbPages1.getText().toString()), Integer.parseInt(nbPages2.getText().toString()));
 
         //will feed the filter with the good authors

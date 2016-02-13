@@ -261,10 +261,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/bookEditeur" />
+                        android:text="@string/bookPublisher" />
 
                     <EditText
-                        android:id="@+id/bookEditeur"
+                        android:id="@+id/bookPublisher"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="8" />

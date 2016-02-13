@@ -41,7 +41,7 @@ public class BookFilterCatalog implements Serializable {
     public void Add(BookFilter filter) {
         //Add in the database
         datasource.open();
-        datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getNbPagesMin(), filter.getNbPagesMax());
+        datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getPublisher_id(), filter.getNbPagesMin(), filter.getNbPagesMax());
         datasource.close();
 
         //Add in the local list
@@ -96,7 +96,7 @@ public class BookFilterCatalog implements Serializable {
             }
         } else {
             datasource.open();
-            filter = datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getEditor(), filter.getNbPagesMin(), filter.getNbPagesMax()); //Add book to database
+            filter = datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getPublisher_id(), filter.getNbPagesMin(), filter.getNbPagesMax()); //Add book to database
             bookFilterList = datasource.getAllBookFilters(); //Update books
             datasource.close();
         }

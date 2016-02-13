@@ -28,6 +28,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_CATEGORIES = "categories";
     public static final String TABLE_BOOKS_CATEGORIES = "books_categories";
     public static final String TABLE_BOOK_FILTERS_CATEGORIES = "book_filters_categories";
+    public static final String TABLE_PUBLISHERS = "publishers";
     //Common column names
     public static final String COLUMN_ID = "_id";
     //TABLE_AUTHORS and TABLE_CATEGORIES column names
@@ -47,7 +48,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     //TABLE_BOOKS - TABLE_BOOK_FILTERS column names
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_DESCRIPTION = "description";
-    public static final String COLUMN_EDITOR = "editor";
+    public static final String COLUMN_PUBLISHER_ID = "publisher_id";
     //TABLE_BOOKS_AUTHORS  and TABLE_BOOKS_CATEGORIES column names
     public static final String COLUMN_BOOK_ID = "book_id";
     //TABLE_BOOK_FILTERS_AUTHORS and TABLE_BOOK_FILTERS_CATEGORIES column names
@@ -56,6 +57,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_AUTHOR_ID = "author_id";
     //TABLE_BOOKS_CATEGORIES - TABLE_BOOK_FILTERS_CATEGORIES column names
     public static final String COLUMN_CATEGORY_ID = "category_id";
+    //TABLE_PUBLISHERS column names
+    public static final String COLUMN_PUBLISHER_NAME = "name";
 
 
     //important variable
@@ -70,8 +73,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_IMAGE + " BLOB, "
             + COLUMN_DESCRIPTION + " text ,"
             + COLUMN_DATE_PUBLICATION + " text ,"
-            + COLUMN_EDITOR + " text ,"
-            + COLUMN_NB_PAGES + " integer "
+            + COLUMN_NB_PAGES + " integer ,"
+            + COLUMN_PUBLISHER_ID + " integer,"
+            + " FOREIGN KEY (" + COLUMN_PUBLISHER_ID + ") REFERENCES " + TABLE_PUBLISHERS + "(" + COLUMN_ID + ")"
             + " );";
 
 
@@ -85,9 +89,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_DESCRIPTION + " text ,"
             + COLUMN_DATE_PUBLICATION_MIN + " text ,"
             + COLUMN_DATE_PUBLICATION_MAX + " text ,"
-            + COLUMN_EDITOR + " text ,"
             + COLUMN_NB_PAGES_MIN + " integer ,"
-            + COLUMN_NB_PAGES_MAX + " integer "
+            + COLUMN_NB_PAGES_MAX + " integer ,"
+            + COLUMN_PUBLISHER_ID + " integer,"
+            + " FOREIGN KEY (" + COLUMN_PUBLISHER_ID + ") REFERENCES " + TABLE_PUBLISHERS + "(" + COLUMN_ID + ")"
             + " );";
     //TABLE_AUTHORS create statements
     private static final String DATABASE_CREATE_AUTHORS = "create table "
@@ -138,6 +143,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " FOREIGN KEY (" + COLUMN_BOOK_FILTER_ID + ") REFERENCES " + TABLE_BOOK_FILTERS + "(" + COLUMN_ID + "),"
             + " FOREIGN KEY (" + COLUMN_CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORIES + "(" + COLUMN_ID + ")"
             + " );";
+    //TABLE_PUBLISHERS create statements
+    private static final String DATABASE_CREATE_PUBLISHERS = "create table "
+            + TABLE_PUBLISHERS + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_PUBLISHER_NAME + " text not null "
+            + " );";
 
     private final String DB_FILEPATH;
 
@@ -159,6 +170,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         database.execSQL(DATABASE_CREATE_CATEGORIES);
         database.execSQL(DATABASE_CREATE_BOOKS_CATEGORIES);
         database.execSQL(DATABASE_CREATE_BOOK_FILTERS_CATEGORIES);
+        database.execSQL(DATABASE_CREATE_PUBLISHERS);
+
     }
 
     @Override
@@ -174,6 +187,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_FILTERS_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBLISHERS);
         onCreate(db);
     }
 
@@ -186,6 +200,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_FILTERS_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBLISHERS);
         onCreate(db);
     }
 

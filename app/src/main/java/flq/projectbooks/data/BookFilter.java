@@ -19,7 +19,7 @@ public class BookFilter implements Serializable {
     private String description;
     private String datePublicationMin;
     private String datePublicationMax;
-    private String editor;
+    private long publisher_id;
     private List<Category> categories;
     private int nbPagesMin;
     private int nbPagesMax;
@@ -33,7 +33,7 @@ public class BookFilter implements Serializable {
         description = "";
         datePublicationMin = "";
         datePublicationMax = "";
-        editor = "";
+        publisher_id = -1;
         categories = new ArrayList<>();
         nbPagesMin = 0;
         nbPagesMax = 0;
@@ -47,12 +47,12 @@ public class BookFilter implements Serializable {
         this.categories = categories;
     }
 
-    public String getEditor() {
-        return editor;
+    public long getPublisher_id() {
+        return publisher_id;
     }
 
-    public void setEditor(String editor) {
-        this.editor = editor;
+    public void setPublisher_id(long publisher_id) {
+        this.publisher_id = publisher_id;
     }
 
     public String getDatePublicationMin() {
@@ -160,7 +160,7 @@ public class BookFilter implements Serializable {
             }
         }
 
-        if (!editor.equals("") && !book.getEditor().contains(editor)) {
+        if (publisher_id != -1 && book.getPublisher_id() != publisher_id) {
             returnValue = false;
         }
 

@@ -26,7 +26,7 @@ public class BooksDataSource {
             MySQLiteHelper.COLUMN_IMAGE,
             MySQLiteHelper.COLUMN_DESCRIPTION,
             MySQLiteHelper.COLUMN_DATE_PUBLICATION,
-            MySQLiteHelper.COLUMN_EDITOR,
+            MySQLiteHelper.COLUMN_PUBLISHER_ID,
             MySQLiteHelper.COLUMN_NB_PAGES};
 
     public BooksDataSource(Context context) {
@@ -41,7 +41,7 @@ public class BooksDataSource {
         dbHelper.close();
     }
 
-    public Book createBook(String title, String isbn, byte[] image, String description, String datePublication, String editor, int nbPages) {
+    public Book createBook(String title, String isbn, byte[] image, String description, String datePublication, long publisher_id, int nbPages) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_TITLE, title);
@@ -49,7 +49,7 @@ public class BooksDataSource {
         values.put(MySQLiteHelper.COLUMN_IMAGE, image);
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, description);
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION, datePublication);
-        values.put(MySQLiteHelper.COLUMN_EDITOR, editor);
+        values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, publisher_id);
         values.put(MySQLiteHelper.COLUMN_NB_PAGES, nbPages);
 
         long insertId = database.insert(MySQLiteHelper.TABLE_BOOKS, null,
@@ -71,7 +71,7 @@ public class BooksDataSource {
         values.put(MySQLiteHelper.COLUMN_IMAGE, book.getImage());
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, book.getDescription());
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION, book.getDatePublication());
-        values.put(MySQLiteHelper.COLUMN_EDITOR, book.getEditor());
+        values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, book.getPublisher_id());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES, book.getNbPages());
         return database.update(MySQLiteHelper.TABLE_BOOKS, values, MySQLiteHelper.COLUMN_ID + " = " + book.getId(), null);
     }
@@ -119,7 +119,7 @@ public class BooksDataSource {
         book.setImage(cursor.getBlob(3));
         book.setDescription(cursor.getString(4));
         book.setDatePublication(cursor.getString(5));
-        book.setEditor(cursor.getString(6));
+        book.setPublisher_id(cursor.getLong(6));
         book.setNbPages(cursor.getInt(7));
         return book;
     }
