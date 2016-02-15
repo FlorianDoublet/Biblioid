@@ -25,7 +25,9 @@ import java.util.List;
 
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.Category;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.data.libraries.PublisherLibrary;
 
 /**
  * Created by doublet on 05/11/15.
@@ -111,20 +113,17 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
                 }
 
                 if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("publisher")) {
-                    String editor = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("publisher");
-                    newBook.setEditor(editor);
+                    String publisher = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("publisher");
+                    newBook.setPublisher_id(PublisherLibrary.getInstance().getPublisherByName(publisher).getId());
                 }
                 if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("categories")) {
-                    String category = "";
                     JSONArray arrCategory = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getJSONArray("categories");
+                    List<Category> categories = new ArrayList<Category>();
                     for (int i = 0; i < arrCategory.length(); i++) {
-                        if (category == "") {
-                            category += arrCategory.getString(i);
-                        } else {
-                            category += ", " + arrCategory.getString(i);
-                        }
+                        Category category = new Category(arrCategory.getString(i));
+                        categories.add(category);
                     }
-                    newBook.setCategory(category);
+                    newBook.setCategories(categories);
                 }
 
                 if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("pageCount")) {

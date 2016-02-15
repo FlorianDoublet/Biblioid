@@ -15,9 +15,10 @@ public class Book implements Serializable {
     private byte[] image;
     private String description;
     private String datePublication;
-    private String editor;
-    private String category;
+    private long publisher_id;
+    private List<Category> categories;
     private int nbPages;
+    private long friend_id;
 
     public Book() {
         id = -1;
@@ -26,9 +27,10 @@ public class Book implements Serializable {
         isbn = "";
         description = "";
         datePublication = "";
-        editor = "";
-        category = "";
+        publisher_id = -1;
+        categories = new ArrayList<>();
         nbPages = 0;
+        friend_id = -1;
     }
 
     public String getTitle() {
@@ -87,20 +89,20 @@ public class Book implements Serializable {
         this.datePublication = datePublication;
     }
 
-    public String getEditor() {
-        return editor;
+    public long getPublisher_id() {
+        return publisher_id;
     }
 
-    public void setEditor(String editor) {
-        this.editor = editor;
+    public void setPublisher_id(long publisher_id) {
+        this.publisher_id = publisher_id;
     }
 
-    public String getCategory() {
-        return category;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public int getNbPages() {
@@ -109,6 +111,14 @@ public class Book implements Serializable {
 
     public void setNbPages(int nbPages) {
         this.nbPages = nbPages;
+    }
+
+    public long getFriend_id() {
+        return friend_id;
+    }
+
+    public void setFriend_id(long friend_id) {
+        this.friend_id = friend_id;
     }
 
     @Override

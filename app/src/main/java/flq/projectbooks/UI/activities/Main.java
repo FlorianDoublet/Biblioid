@@ -29,6 +29,10 @@ import flq.projectbooks.data.Book;
 import flq.projectbooks.data.libraries.AuthorLibrary;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.data.libraries.CategoryLibrary;
+import flq.projectbooks.data.libraries.FriendLibrary;
+import flq.projectbooks.data.libraries.LoanLibrary;
+import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.MySQLiteHelper;
 import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
@@ -45,6 +49,10 @@ public class Main extends ActionBarActivity implements NoticeDialogFragment.Noti
     protected BookLibrary books;
     protected BookFilterCatalog filters;
     protected AuthorLibrary authors;
+    protected CategoryLibrary categories;
+    protected PublisherLibrary publishers;
+    protected FriendLibrary friends;
+    protected LoanLibrary loans;
     private Uri uri;
 
     @Override
@@ -54,7 +62,11 @@ public class Main extends ActionBarActivity implements NoticeDialogFragment.Noti
 
         //this.deleteDatabase("books.db"); //Effacer la bdd en cas de bug ou en cas de conflit de versions.
         authors = new AuthorLibrary(this);
+        categories = new CategoryLibrary(this);
+        publishers = new PublisherLibrary(this);
+        friends = new FriendLibrary(this);
         books = new BookLibrary(this);
+        loans = new LoanLibrary(this);
         filters = new BookFilterCatalog(this);
 
     }

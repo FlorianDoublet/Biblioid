@@ -22,7 +22,9 @@ import flq.projectbooks.UI.activities.CreateBook;
 import flq.projectbooks.UI.activities.DisplayBooks;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.Category;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.data.libraries.PublisherLibrary;
 
 
 /**
@@ -120,20 +122,27 @@ public class BookInfo extends Fragment implements Parcelable {
             textViewDatePub.setHeight(0);
         }
 
-
         TextView textViewCategory = (TextView) view.findViewById(R.id.bookInfoCategorie);
-        if (!book.getCategory().equals("")) {
-            textViewCategory.setText("Genre : " + book.getCategory());
-        } else {
-            textViewCategory.setHeight(0);
+
+        List<Category> categories = book.getCategories();
+        String category_s = "";
+        if (categories != null) {
+            for (int i = 0; i < categories.size(); i++) {
+                if (i == 0) {
+                    category_s += "Genre : " + categories.get(i).getName();
+                } else
+                    category_s += ", " + categories.get(i).getName();
+            }
         }
+        textViewCategory.setText(category_s);
 
 
-        TextView textViewEditor = (TextView) view.findViewById(R.id.bookInfoEditor);
-        if (!book.getEditor().equals("")) {
-            textViewEditor.setText("Editeur : " + book.getEditor());
+
+        TextView textViewPublisher = (TextView) view.findViewById(R.id.bookInfoPublisher);
+        if (book.getPublisher_id()!= -1) {
+            textViewPublisher.setText("Publisher : " + PublisherLibrary.getInstance().getPublisherById(book.getPublisher_id()).getName());
         } else {
-            textViewEditor.setHeight(0);
+            textViewPublisher.setHeight(0);
         }
 
 

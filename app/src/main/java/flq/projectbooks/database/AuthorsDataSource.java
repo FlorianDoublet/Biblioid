@@ -40,10 +40,6 @@ public class AuthorsDataSource {
         long insertId = database.insert(MySQLiteHelper.TABLE_AUTHORS, null,
                 values);
 
-        /*for (long book_id : book_ids) {
-            createBooksAuthors(book_id, insertId);
-        }*/
-
         Cursor cursor = database.query(MySQLiteHelper.TABLE_AUTHORS,
                 allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);

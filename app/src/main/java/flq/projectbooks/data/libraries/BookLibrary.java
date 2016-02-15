@@ -8,6 +8,7 @@ import java.util.List;
 
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.Category;
 import flq.projectbooks.database.BooksDataSource;
 
 /**
@@ -40,7 +41,7 @@ public class BookLibrary implements Serializable {
     public void Add(Book book) {
         bookList.add(book);
         datasource.open();
-        datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getEditor(), book.getCategory(), book.getNbPages()); //Add book to database
+        datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getPublisher_id(), book.getNbPages(), book.getFriend_id()); //Add book to database
         datasource.close();
     }
 
@@ -101,7 +102,7 @@ public class BookLibrary implements Serializable {
             }
         } else {
             datasource.open();
-            book = datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getEditor(), book.getCategory(), book.getNbPages()); //Add book to database
+            book = datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getPublisher_id(), book.getNbPages(), book.getFriend_id()); //Add book to database
             bookList = datasource.getAllBooks(); //Update books
             datasource.close();
         }
@@ -133,6 +134,33 @@ public class BookLibrary implements Serializable {
         List<Author> authors = datasource.getAllAuthorFromABook(book);
         datasource.close();
         return authors;
+    }
+
+    public boolean checkIfBooksCategoriesLinkExist(long book_id, long category_id) {
+        datasource.open();
+        Boolean bool = datasource.booksCategoriesIdExist(book_id, category_id);
+        datasource.close();
+        return bool;
+    }
+
+    public long addBooksCategoriesLink(long book_id, long category_id) {
+        datasource.open();
+        long inserted_id = datasource.createBooksCategories(book_id, category_id);
+        datasource.close();
+        return inserted_id;
+    }
+
+    public void deleteBooksCategoriesLink(long book_id, long category_id) {
+        datasource.open();
+        datasource.deleteBooksCategories(book_id, category_id);
+        datasource.close();
+    }
+
+    public List<Category> getAllCategoryFromABook(Book book) {
+        datasource.open();
+        List<Category> categories = datasource.getAllCategoryFromABook(book);
+        datasource.close();
+        return categories;
     }
 
 

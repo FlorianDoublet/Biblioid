@@ -25,10 +25,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_AUTHORS = "authors";
     public static final String TABLE_BOOKS_AUTHORS = "books_authors";
     public static final String TABLE_BOOK_FILTERS_AUTHORS = "book_filters_authors";
+    public static final String TABLE_CATEGORIES = "categories";
+    public static final String TABLE_BOOKS_CATEGORIES = "books_categories";
+    public static final String TABLE_BOOK_FILTERS_CATEGORIES = "book_filters_categories";
+    public static final String TABLE_PUBLISHERS = "publishers";
+    public static final String TABLE_FRIENDS = "friends";
+    public static final String TABLE_LOANS = "loans";
     //Common column names
     public static final String COLUMN_ID = "_id";
-    //TABLE_AUTHORS column names
+    //TABLE_AUTHORS and TABLE_CATEGORIES column names
     public static final String COLUMN_AUTHOR_NAME = "name";
+    public static final String COLUMN_CATEGORY_NAME = "name";
     //TABLE_BOOKS column names
     public static final String COLUMN_ISBN = "isbn";
     public static final String COLUMN_IMAGE = "image";
@@ -43,16 +50,30 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     //TABLE_BOOKS - TABLE_BOOK_FILTERS column names
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_DESCRIPTION = "description";
-    public static final String COLUMN_EDITOR = "editor";
-    public static final String COLUMN_CATEGORY = "category";
-    //TABLE_BOOKS_AUTHORS column names
+    public static final String COLUMN_PUBLISHER_ID = "publisher_id";
+    //TABLE_BOOKS_AUTHORS  - TABLE_BOOKS_CATEGORIES and TABLE_LOAN column names
     public static final String COLUMN_BOOK_ID = "book_id";
-    //TABLE_BOOK_FILTERS_AUTHORS column names
+    //TABLE_BOOK_FILTERS_AUTHORS and TABLE_BOOK_FILTERS_CATEGORIES column names
     public static final String COLUMN_BOOK_FILTER_ID = "book_filter_id";
     //TABLE_BOOKS_AUTHORS - TABLE_BOOK_FILTERS_AUTHORS column names
     public static final String COLUMN_AUTHOR_ID = "author_id";
-    //A VOIR
-    public static final String COLUMN_AUTHOR = "author";
+    //TABLE_BOOKS_CATEGORIES - TABLE_BOOK_FILTERS_CATEGORIES column names
+    public static final String COLUMN_CATEGORY_ID = "category_id";
+    //TABLE_PUBLISHERS column names
+    public static final String COLUMN_PUBLISHER_NAME = "name";
+    //TABLE_FRIENDS column names
+    public static final String COLUMN_FRIEND_FIRSTNAME = "firstname";
+    public static final String COLUMN_FRIEND_LASTNAME = "lastname";
+    public static final String COLUMN_FRIEND_CLOUDLINK = "cloudlink";
+    //TABLE_LOANS column names
+    public static final String COLUMLN_LOAN_DATELOAN = "dateloan";
+    public static final String COLUMLN_LOAN_DATEREMIDER = "dateremider";
+    //TABLE_BOOK and TABLE_LOAN column names
+    public static final String COLUMN_FRIEND_ID = "friend_id";
+
+
+
+
     //important variable
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "books.db";
@@ -65,11 +86,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_IMAGE + " BLOB, "
             + COLUMN_DESCRIPTION + " text ,"
             + COLUMN_DATE_PUBLICATION + " text ,"
-            + COLUMN_EDITOR + " text ,"
-            + COLUMN_CATEGORY + " text ,"
-            + COLUMN_NB_PAGES + " integer "
+            + COLUMN_NB_PAGES + " integer ,"
+            + COLUMN_PUBLISHER_ID + " integer,"
+            + COLUMN_FRIEND_ID + " integer ,"
+            + " FOREIGN KEY (" + COLUMN_PUBLISHER_ID + ") REFERENCES " + TABLE_PUBLISHERS + "(" + COLUMN_ID + "),"
+            + " FOREIGN KEY (" + COLUMN_FRIEND_ID + ") REFERENCES " + TABLE_FRIENDS + "(" + COLUMN_ID + ")"
             + " );";
-    //A VOIR
 
 
     //Table Create Statements
@@ -82,10 +104,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_DESCRIPTION + " text ,"
             + COLUMN_DATE_PUBLICATION_MIN + " text ,"
             + COLUMN_DATE_PUBLICATION_MAX + " text ,"
-            + COLUMN_EDITOR + " text ,"
-            + COLUMN_CATEGORY + " text ,"
             + COLUMN_NB_PAGES_MIN + " integer ,"
-            + COLUMN_NB_PAGES_MAX + " integer "
+            + COLUMN_NB_PAGES_MAX + " integer ,"
+            + COLUMN_PUBLISHER_ID + " integer ,"
+            + " FOREIGN KEY (" + COLUMN_PUBLISHER_ID + ") REFERENCES " + TABLE_PUBLISHERS + "(" + COLUMN_ID + ")"
             + " );";
     //TABLE_AUTHORS create statements
     private static final String DATABASE_CREATE_AUTHORS = "create table "
@@ -111,6 +133,57 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + " FOREIGN KEY (" + COLUMN_BOOK_FILTER_ID + ") REFERENCES " + TABLE_BOOK_FILTERS + "(" + COLUMN_ID + "),"
             + " FOREIGN KEY (" + COLUMN_AUTHOR_ID + ") REFERENCES " + TABLE_AUTHORS + "(" + COLUMN_ID + ")"
             + " );";
+
+    //TABLE_CATEGORIES create statements
+    private static final String DATABASE_CREATE_CATEGORIES = "create table "
+            + TABLE_CATEGORIES + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_CATEGORY_NAME + " text not null "
+            + " );";
+    //TABLE_BOOKS_CATEGORIES create statements
+    private static final String DATABASE_CREATE_BOOKS_CATEGORIES = "create table "
+            + TABLE_BOOKS_CATEGORIES + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_BOOK_ID + " INTEGER,"
+            + COLUMN_CATEGORY_ID + " INTEGER,"
+            + " FOREIGN KEY (" + COLUMN_BOOK_ID + ") REFERENCES " + TABLE_BOOKS + "(" + COLUMN_ID + "),"
+            + " FOREIGN KEY (" + COLUMN_CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORIES + "(" + COLUMN_ID + ")"
+            + " );";
+    //TABLE_BOOK_FILTERS_CATEGORIES create statements
+    private static final String DATABASE_CREATE_BOOK_FILTERS_CATEGORIES = "create table "
+            + TABLE_BOOK_FILTERS_CATEGORIES + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_BOOK_FILTER_ID + " INTEGER,"
+            + COLUMN_CATEGORY_ID + " INTEGER,"
+            + " FOREIGN KEY (" + COLUMN_BOOK_FILTER_ID + ") REFERENCES " + TABLE_BOOK_FILTERS + "(" + COLUMN_ID + "),"
+            + " FOREIGN KEY (" + COLUMN_CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORIES + "(" + COLUMN_ID + ")"
+            + " );";
+    //TABLE_PUBLISHERS create statements
+    private static final String DATABASE_CREATE_PUBLISHERS = "create table "
+            + TABLE_PUBLISHERS + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_PUBLISHER_NAME + " text not null "
+            + " );";
+    //TABLE_FRIENDS create statements
+    private static final String DATABASE_CREATE_FRIENDS = "create table "
+            + TABLE_FRIENDS + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_FRIEND_FIRSTNAME + " text not null, "
+            + COLUMN_FRIEND_LASTNAME + " text , "
+            + COLUMN_FRIEND_CLOUDLINK + " text "
+            + " );";
+    private static final String DATABASE_CREATE_LOAN = "create table "
+            + TABLE_LOANS + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMLN_LOAN_DATELOAN + " text not null, "
+            + COLUMLN_LOAN_DATEREMIDER + " text, "
+            + COLUMN_BOOK_ID + " integer, "
+            + COLUMN_FRIEND_ID + " integer ,"
+            + " FOREIGN KEY (" + COLUMN_BOOK_ID + ") REFERENCES " + TABLE_BOOKS + "(" + COLUMN_ID + "),"
+            + " FOREIGN KEY (" + COLUMN_FRIEND_ID + ") REFERENCES " + TABLE_FRIENDS + "(" + COLUMN_ID + ")"
+            + " );";
+
+
     private final String DB_FILEPATH;
 
 
@@ -128,6 +201,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         database.execSQL(DATABASE_CREATE_AUTHORS);
         database.execSQL(DATABASE_CREATE_BOOKS_AUTHORS);
         database.execSQL(DATABASE_CREATE_BOOK_FILTERS_AUTHORS);
+        database.execSQL(DATABASE_CREATE_CATEGORIES);
+        database.execSQL(DATABASE_CREATE_BOOKS_CATEGORIES);
+        database.execSQL(DATABASE_CREATE_BOOK_FILTERS_CATEGORIES);
+        database.execSQL(DATABASE_CREATE_PUBLISHERS);
+        database.execSQL(DATABASE_CREATE_FRIENDS);
+        database.execSQL(DATABASE_CREATE_LOAN);
     }
 
     @Override
@@ -140,7 +219,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_AUTHORS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS_AUTHORS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_FILTERS_AUTHORS);
-        onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_FILTERS_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBLISHERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FRIENDS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOANS);
     }
 
     public void dropDatabase(SQLiteDatabase db) {
@@ -149,6 +233,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_AUTHORS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS_AUTHORS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_FILTERS_AUTHORS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_FILTERS_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBLISHERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FRIENDS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOANS);
         onCreate(db);
     }
 

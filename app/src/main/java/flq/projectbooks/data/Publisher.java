@@ -1,32 +1,29 @@
 package flq.projectbooks.data;
 
-
-import java.io.Serializable;
-
 /**
- * Created by flori on 25/01/2016.
+ * Created by Florian on 09/02/2016.
  */
-public class Author implements Serializable {
+public class Publisher {
+
     private long id;
     private String name;
 
-    //constructors
-    public Author() {
-        id = -1;
-        name = "";
+    //contructors
+    public Publisher(){
+        this.id = -1;
+        this.name = "";
     }
 
-    public Author(String name) {
-        id = -1;
+    public Publisher(String name) {
         this.name = name;
     }
 
-    public Author(long id, String name) {
+    public Publisher(long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    //getter and setter
+    //getters and setters
     public long getId() {
         return id;
     }
@@ -42,5 +39,4 @@ public class Author implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
 }
