@@ -18,6 +18,7 @@ public class Book implements Serializable {
     private long publisher_id;
     private List<Category> categories;
     private int nbPages;
+    private long friend_id;
 
     public Book() {
         id = -1;
@@ -29,6 +30,7 @@ public class Book implements Serializable {
         publisher_id = -1;
         categories = new ArrayList<>();
         nbPages = 0;
+        friend_id = -1;
     }
 
     public String getTitle() {
@@ -109,6 +111,14 @@ public class Book implements Serializable {
 
     public void setNbPages(int nbPages) {
         this.nbPages = nbPages;
+    }
+
+    public long getFriend_id() {
+        return friend_id;
+    }
+
+    public void setFriend_id(long friend_id) {
+        this.friend_id = friend_id;
     }
 
     @Override

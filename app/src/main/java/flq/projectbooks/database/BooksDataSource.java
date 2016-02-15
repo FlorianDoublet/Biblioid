@@ -27,7 +27,8 @@ public class BooksDataSource {
             MySQLiteHelper.COLUMN_DESCRIPTION,
             MySQLiteHelper.COLUMN_DATE_PUBLICATION,
             MySQLiteHelper.COLUMN_PUBLISHER_ID,
-            MySQLiteHelper.COLUMN_NB_PAGES};
+            MySQLiteHelper.COLUMN_NB_PAGES,
+            MySQLiteHelper.COLUMN_FRIEND_ID};
 
     public BooksDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -41,7 +42,7 @@ public class BooksDataSource {
         dbHelper.close();
     }
 
-    public Book createBook(String title, String isbn, byte[] image, String description, String datePublication, long publisher_id, int nbPages) {
+    public Book createBook(String title, String isbn, byte[] image, String description, String datePublication, long publisher_id, int nbPages, long friend_id) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_TITLE, title);
@@ -51,7 +52,7 @@ public class BooksDataSource {
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION, datePublication);
         values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, publisher_id);
         values.put(MySQLiteHelper.COLUMN_NB_PAGES, nbPages);
-
+        values.put(MySQLiteHelper.COLUMN_FRIEND_ID, friend_id);
         long insertId = database.insert(MySQLiteHelper.TABLE_BOOKS, null,
                 values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
@@ -63,6 +64,8 @@ public class BooksDataSource {
         return newComment;
     }
 
+
+
     public int updateBook(Book book) {
         ContentValues values = new ContentValues();
 
@@ -73,6 +76,7 @@ public class BooksDataSource {
         values.put(MySQLiteHelper.COLUMN_DATE_PUBLICATION, book.getDatePublication());
         values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, book.getPublisher_id());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES, book.getNbPages());
+        values.put(MySQLiteHelper.COLUMN_FRIEND_ID, book.getFriend_id());
         return database.update(MySQLiteHelper.TABLE_BOOKS, values, MySQLiteHelper.COLUMN_ID + " = " + book.getId(), null);
     }
 
@@ -121,6 +125,7 @@ public class BooksDataSource {
         book.setDatePublication(cursor.getString(5));
         book.setPublisher_id(cursor.getLong(6));
         book.setNbPages(cursor.getInt(7));
+        book.setFriend_id(cursor.getLong(8));
         return book;
     }
 
