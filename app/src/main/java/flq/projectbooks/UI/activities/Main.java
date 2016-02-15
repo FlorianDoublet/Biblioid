@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
@@ -33,19 +34,16 @@ import flq.projectbooks.database.MySQLiteHelper;
 import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
 
-public class Main extends ActionBarActivity implements NoticeDialogFragment.NoticeDialogListener {
+public class Main extends ActionBarActivity  {
 
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
     public final static String GIVE_BOOK_WITH_ISBN = "flq.GIVE_BOOK_WITH_ISBN";
 
-    public final static int FILE_CODE_IMPORT = 1;
-    public final static int FILE_CODE_EXPORT = 2;
 
     protected BookLibrary books;
     protected BookFilterCatalog filters;
     protected AuthorLibrary authors;
-    private Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,85 +104,14 @@ public class Main extends ActionBarActivity implements NoticeDialogFragment.Noti
         startActivity(intent);
     }
 
-    public void exportDatabase(View view) {
-        Intent intent = new Intent(this, FilePickerActivity.class);
-        intent.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        intent.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
-        intent.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
-        intent.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
-
-        startActivityForResult(intent, FILE_CODE_EXPORT);
-    }
-
-    public void importDatabase(View view) {
-        Intent i = new Intent(this, FilePickerActivity.class);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
-
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
-
-        startActivityForResult(i, FILE_CODE_IMPORT);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         MySQLiteHelper db = new MySQLiteHelper(this);
-
-        if (data != null && requestCode == FILE_CODE_IMPORT && resultCode == Activity.RESULT_OK) {
-            uri = data.getData();
-
-            try {
-                db.importDatabase(uri.getPath());
-                Toast.makeText(this, "Données chargées.", Toast.LENGTH_LONG).show();
-                BookLibrary.getInstance().updateLocalList();
-                BookFilterCatalog.getInstance().updateLocalList();
-
-            } catch (IOException e) {
-                Toast.makeText(this, "Erreur, impossible d'importer les données.", Toast.LENGTH_LONG).show();
-            }
-
-        }
-
-        if (data != null && requestCode == FILE_CODE_EXPORT && resultCode == Activity.RESULT_OK) {
-            uri = data.getData();
-
-            DialogFragment newFragment = new NoticeDialogFragment();
-            newFragment.show(getFragmentManager(), "NoticeDialogFragment");
-
-        }
 
         if (data != null && data.hasExtra(("SCAN_RESULT"))) {
             String ISBN = data.getStringExtra("SCAN_RESULT");
             openCreateBookActivityWithISBN(ISBN);
         }
-    }
-
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        MySQLiteHelper db = new MySQLiteHelper(this);
-
-        Dialog d = dialog.getDialog();
-        EditText editText = (EditText) d.findViewById(R.id.db_name);
-        String fileName = editText.getText().toString();
-
-        if (fileName.equals("")) {
-            fileName = "books.db";
-        } else {
-            fileName = fileName + ".db";
-        }
-
-        try {
-            db.backupDatabase(uri.getPath(), fileName);
-            Toast.makeText(this, "Données sauvegardées.", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            Toast.makeText(this, "Erreur, impossible d'exporter les données.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        dialog.dismiss();
     }
 
     @Override
@@ -229,6 +156,11 @@ public class Main extends ActionBarActivity implements NoticeDialogFragment.Noti
         Toast.makeText(this, "Données remises à zéro", Toast.LENGTH_LONG).show();
         BookLibrary.getInstance().updateLocalList();
         BookFilterCatalog.getInstance().updateLocalList();
+    }
+
+    public void openImportExportActivity(View view) {
+        Intent i = new Intent(this, ImportExport.class);
+        startActivity(i);
     }
 
 }

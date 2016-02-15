@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_id": "biblioid-1120",
+    "project_number": "353056335053",
+    "name": "Biblioid"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353056335053:android:52d6c9e0058ba6ac",
+        "client_id": "android:flq.projectbooks",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "flq.projectbooks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353056335053-bojtima6ck3kd73hobhtqg1fp4vlu5c4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "flq.projectbooks",
+            "certificate_hash": "CFD0E412E9DCD4ABDBD951A4FD3CFB3A78756A7F"
+          }
+        },
+        {
+          "client_id": "353056335053-o0d7qcn3la04vn0obb1m7lpn7rkif389.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

@@ -225,5 +225,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return rc;
     }
 
+    public float getDBSizeInMb(){
+        long size = new File(DB_FILEPATH).length();
+        return (float)size / (float)1024 / (float)1024;
+    }
+
 
 }

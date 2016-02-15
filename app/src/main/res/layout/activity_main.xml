@@ -53,15 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:onClick="exportDatabase"
-                android:text="@string/exportDatabaseButton" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:onClick="importDatabase"
-                android:text="@string/importDatabaseButton" />
+                android:onClick="openImportExportActivity"
+                android:text="Import / Export" />
         </TableLayout>
     </ScrollView>
 </LinearLayout>
