@@ -30,6 +30,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_BOOK_FILTERS_CATEGORIES = "book_filters_categories";
     public static final String TABLE_PUBLISHERS = "publishers";
     public static final String TABLE_FRIENDS = "friends";
+    public static final String TABLE_LOANS = "loans";
     //Common column names
     public static final String COLUMN_ID = "_id";
     //TABLE_AUTHORS and TABLE_CATEGORIES column names
@@ -40,7 +41,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_DATE_PUBLICATION = "datePublication";
     public static final String COLUMN_NB_PAGES = "nbPages";
-    public static final String COLUMN_FRIEND_ID = "friend_id";
     //TABLE_BOOK_FILTERS
     public static final String COLUMN_FILTER_NAME = "name";
     public static final String COLUMN_DATE_PUBLICATION_MIN = "datePublicationMin";
@@ -51,7 +51,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_PUBLISHER_ID = "publisher_id";
-    //TABLE_BOOKS_AUTHORS  and TABLE_BOOKS_CATEGORIES column names
+    //TABLE_BOOKS_AUTHORS  - TABLE_BOOKS_CATEGORIES and TABLE_LOAN column names
     public static final String COLUMN_BOOK_ID = "book_id";
     //TABLE_BOOK_FILTERS_AUTHORS and TABLE_BOOK_FILTERS_CATEGORIES column names
     public static final String COLUMN_BOOK_FILTER_ID = "book_filter_id";
@@ -61,10 +61,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CATEGORY_ID = "category_id";
     //TABLE_PUBLISHERS column names
     public static final String COLUMN_PUBLISHER_NAME = "name";
-    //TABLE_FRIENDS
+    //TABLE_FRIENDS column names
     public static final String COLUMN_FRIEND_FIRSTNAME = "firstname";
     public static final String COLUMN_FRIEND_LASTNAME = "lastname";
     public static final String COLUMN_FRIEND_CLOUDLINK = "cloudlink";
+    //TABLE_LOANS column names
+    public static final String COLUMLN_LOAN_DATELOAN = "dateloan";
+    public static final String COLUMLN_LOAN_DATEREMIDER = "dateremider";
+    //TABLE_BOOK and TABLE_LOAN column names
+    public static final String COLUMN_FRIEND_ID = "friend_id";
+
+
 
 
     //important variable
@@ -165,6 +172,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_FRIEND_LASTNAME + " text , "
             + COLUMN_FRIEND_CLOUDLINK + " text "
             + " );";
+    private static final String DATABASE_CREATE_LOAN = "create table "
+            + TABLE_LOANS + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMLN_LOAN_DATELOAN + " text not null, "
+            + COLUMLN_LOAN_DATEREMIDER + " text, "
+            + COLUMN_BOOK_ID + " integer, "
+            + COLUMN_FRIEND_ID + " integer ,"
+            + " FOREIGN KEY (" + COLUMN_BOOK_ID + ") REFERENCES " + TABLE_BOOKS + "(" + COLUMN_ID + "),"
+            + " FOREIGN KEY (" + COLUMN_FRIEND_ID + ") REFERENCES " + TABLE_FRIENDS + "(" + COLUMN_ID + ")"
+            + " );";
+
 
     private final String DB_FILEPATH;
 
@@ -188,6 +206,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         database.execSQL(DATABASE_CREATE_BOOK_FILTERS_CATEGORIES);
         database.execSQL(DATABASE_CREATE_PUBLISHERS);
         database.execSQL(DATABASE_CREATE_FRIENDS);
+        database.execSQL(DATABASE_CREATE_LOAN);
     }
 
     @Override
@@ -205,6 +224,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_FILTERS_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBLISHERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FRIENDS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOANS);
     }
 
     public void dropDatabase(SQLiteDatabase db) {
@@ -218,6 +238,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_FILTERS_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBLISHERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FRIENDS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOANS);
         onCreate(db);
     }
 
