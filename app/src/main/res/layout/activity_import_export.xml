@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="flq.projectbooks.UI.activities.ImportExport">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ImportExportDescription"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="15dp"/>
+
+            <TextView
+                android:id="@+id/infoPoids"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/actualDBSize"
+                android:layout_gravity="center"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:paddingTop="5dp"
+                android:layout_marginBottom="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/primary_material_dark"
+                android:layout_margin="10dp"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/importExportOnMemory"
+                    android:textSize="16dp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="exportDatabase"
+                    android:text="@string/exportDatabaseButton" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="importDatabase"
+                    android:text="@string/importDatabaseButton" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/primary_material_dark"
+                android:layout_margin="10dp"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/cloudInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ImportExportOnCloud"
+                    android:textSize="16dp"
+                    android:textStyle="bold"/>
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:id="@+id/cloudStatut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cloudStatut"
+                    android:layout_gravity="center"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/backupInfoDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lastCloudSave"
+                    android:layout_gravity="center"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:paddingTop="5dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/backupInfoPoids"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lastCloudSize"
+                    android:layout_gravity="center"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:paddingTop="5dp"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/saveDatabaseOnCloudButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exportOnCloud"
+                    android:onClick="createBackup"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/readDatabaseOnCloudButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/importFromCloud"
+                    android:onClick="readDatabaseOnCloud"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

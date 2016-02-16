@@ -40,4 +40,13 @@
     <string name="bookCreationDatePublication">Date de publication :</string>
     <string name="btnModif">Modifier</string>
     <string name="seeCover">Voir la couverture</string>
+    <string name="ImportExportDescription">Cette page vous permet de sauvegarder ou charger vos données afin de pouvoir les utiliser sur plusieurs appareil.</string>
+    <string name="actualDBSize">Taille actuelle de la base de données :</string>
+    <string name="importExportOnMemory">Import/Export sur le téléphone :</string>
+    <string name="ImportExportOnCloud">Import/Export sur le cloud de google :</string>
+    <string name="cloudStatut">Non connecté</string>
+    <string name="lastCloudSave">Dernière sauvegarde : Il y a x temps</string>
+    <string name="lastCloudSize">Dernière sauvegarde : xx ko</string>
+    <string name="exportOnCloud">Creation backup sur le cloud</string>
+    <string name="importFromCloud">Lecture backup sur le cloud</string>
 </resources>

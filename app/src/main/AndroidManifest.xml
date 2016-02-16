@@ -28,27 +28,27 @@
         </activity>
         <activity
             android:name=".UI.activities.CreateBook"
-            android:label="@string/title_activity_create_book"></activity>
+            android:label="@string/title_activity_create_book" />
         <activity
             android:name=".UI.activities.DisplayBooks"
-            android:label="@string/title_activity_display_books"></activity>
+            android:label="@string/title_activity_display_books" />
         <activity
             android:name=".UI.activities.DisplayFilters"
-            android:label="@string/title_activity_display_filters"></activity>
+            android:label="@string/title_activity_display_filters" />
         <activity
             android:name=".UI.activities.CreateFilter"
-            android:label="@string/title_activity_create_filter"></activity>
-
+            android:label="@string/title_activity_create_filter" />
         <activity
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
             android:label="@string/app_name"
             android:theme="@style/FilePickerTheme">
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".UI.activities.ImportExport"></activity>
     </application>
 
 </manifest>
