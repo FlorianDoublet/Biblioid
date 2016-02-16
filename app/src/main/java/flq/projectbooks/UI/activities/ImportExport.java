@@ -3,7 +3,6 @@ package flq.projectbooks.UI.activities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,8 +44,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import flq.projectbooks.R;
@@ -96,12 +93,12 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
 
         db = new MySQLiteHelper(this);
 
-        float size = db.getDBSizeInMb() ;
+        float size = db.getDBSizeInMb();
 
 
         DecimalFormat df = new DecimalFormat("##.##");
         df.setRoundingMode(RoundingMode.DOWN);
-        ((TextView)findViewById(R.id.infoPoids)).setText("Taille actuel de la base de données : " + df.format(size) + " mo");
+        ((TextView) findViewById(R.id.infoPoids)).setText("Taille actuel de la base de données : " + df.format(size) + " mo");
     }
 
     public void googleSignIn(View view) {
@@ -129,10 +126,10 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
                 displayMessage("Données chargées.");
                 BookLibrary.getInstance().updateLocalList();
                 BookFilterCatalog.getInstance().updateLocalList();
-                float size = db.getDBSizeInMb() ;
+                float size = db.getDBSizeInMb();
                 DecimalFormat df = new DecimalFormat("##.##");
                 df.setRoundingMode(RoundingMode.DOWN);
-                ((TextView)findViewById(R.id.infoPoids)).setText("Taille actuel de la base de données : " + df.format(size) + " mo");
+                ((TextView) findViewById(R.id.infoPoids)).setText("Taille actuel de la base de données : " + df.format(size) + " mo");
 
             } catch (IOException e) {
                 displayMessage("Erreur, impossible d'importer les données.");
@@ -177,7 +174,7 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            ((TextView)findViewById(R.id.cloudStatut)).setText("Connecté");
+            ((TextView) findViewById(R.id.cloudStatut)).setText("Connecté");
             getDriveIdIfBiblioidFolderExist(false);
         }
     }
@@ -193,15 +190,15 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
                     @Override
                     public void onResult(DriveApi.MetadataBufferResult result) {
                         // Iterate over the matching Metadata instances in mdResultSet
-                        if (result.getStatus().isSuccess() && result.getMetadataBuffer().getCount() > 0) {
+                        if (result.getStatus().isSuccess() && result.getMetadataBuffer().getCount() > 0 && result.getMetadataBuffer().get(0).isExplicitlyTrashed() == false) {
                             biblioidFolderDriveID = result.getMetadataBuffer().get(0).getDriveId();
                             if (saveDBB) {
                                 createEmptyBiblioidDatabase();
                             }
-                            if(result.getMetadataBuffer().get(0).getFileSize() > 0){
-                                ((TextView)findViewById(R.id.cloudStatut)).setText("Connecté : aucune sauvegarde trouvée.");
-                            }else{
-                                ((TextView)findViewById(R.id.cloudStatut)).setText("Connecté");
+                            if (result.getMetadataBuffer().get(0).getFileSize() > 0) {
+                                ((TextView) findViewById(R.id.cloudStatut)).setText("Connecté : aucune sauvegarde trouvée.");
+                            } else {
+                                ((TextView) findViewById(R.id.cloudStatut)).setText("Connecté");
 
                                 findViewById(R.id.saveDatabaseOnCloudButton).setVisibility(View.VISIBLE);
                                 findViewById(R.id.readDatabaseOnCloudButton).setVisibility(View.VISIBLE);
@@ -218,36 +215,35 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
 
                                             @Override
                                             public void onResult(DriveApi.MetadataBufferResult result) {
-                                                if (result.getStatus().isSuccess() && result.getMetadataBuffer().getCount() > 0) {
-                                                    float size = ((float)result.getMetadataBuffer().get(0).getFileSize() / (float)1024 / (float)1024) ;
+                                                if (result.getStatus().isSuccess() && result.getMetadataBuffer().getCount() > 0 && result.getMetadataBuffer().get(0).isExplicitlyTrashed() == false) {
+                                                    float size = ((float) result.getMetadataBuffer().get(0).getFileSize() / (float) 1024 / (float) 1024);
                                                     DecimalFormat df = new DecimalFormat("##.##");
                                                     df.setRoundingMode(RoundingMode.DOWN);
 
-                                                    ((TextView) findViewById(R.id.backupInfoPoids)).setText("Dernière sauvegarde : " +  df.format(size) + " mo");
+                                                    ((TextView) findViewById(R.id.backupInfoPoids)).setText("Dernière sauvegarde : " + df.format(size) + " mo");
 
                                                     long actualSeconds = System.currentTimeMillis() / 1000;
-                                                    long lastModifiedSeconds = result.getMetadataBuffer().get(0).getModifiedDate().getTime() / 1000 ;
+                                                    long lastModifiedSeconds = result.getMetadataBuffer().get(0).getModifiedDate().getTime() / 1000;
                                                     long seconds = actualSeconds - lastModifiedSeconds;
                                                     int day = (int) TimeUnit.SECONDS.toDays(seconds);
-                                                    long hours = TimeUnit.SECONDS.toHours(seconds) - (day *24);
-                                                    long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
+                                                    long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24);
+                                                    long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 
                                                     String text = "Dernière sauvegarde : Il y a ";
-                                                    String instantAgo = "un instant" ;
-                                                    if(day > 0){
+                                                    String instantAgo = "un instant";
+                                                    if (day > 0) {
                                                         text += day + " j ";
                                                         instantAgo = "";
                                                     }
-                                                    if(hours > 0){
+                                                    if (hours > 0) {
                                                         text += hours + " h ";
                                                         instantAgo = "";
                                                     }
-                                                    if(minute > 0){
+                                                    if (minute > 0) {
                                                         text += minute + " m ";
                                                         instantAgo = "";
                                                     }
-                                                    ((TextView)findViewById(R.id.backupInfoDate)).setText(text + instantAgo);
-
+                                                    ((TextView) findViewById(R.id.backupInfoDate)).setText(text + instantAgo);
                                                 }
                                             }
                                         });
@@ -491,7 +487,7 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
         dialog.dismiss();
     }
 
-    private void displayMessage(String message){
+    private void displayMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
