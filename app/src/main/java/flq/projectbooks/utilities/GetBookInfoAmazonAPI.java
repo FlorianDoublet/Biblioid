@@ -46,6 +46,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Category;
+import flq.projectbooks.data.Publisher;
 import flq.projectbooks.data.libraries.BookLibrary;
 import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.LinkTablesDataSource;
@@ -140,11 +141,11 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
 
 
             if (xmlResponse.getElementsByTagName("Item").getLength() > 0) {
-                String title = ""; //OK
-                String datePublication = ""; //OK
-                String publisher = ""; //OK
-                String nbPages = ""; //OK
-                String description = ""; //OK
+                String title = "";
+                String datePublication = "";
+                String publisher = "";
+                String nbPages = "";
+                String description = "";
 
 
                 Node itemNode = xmlResponse.getElementsByTagName("Item").item(0);
@@ -160,7 +161,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                                 Node itemAttribute = item.getChildNodes().item(j);
                                 switch (itemAttribute.getNodeName()) {
                                     case "Author":
-                                        authors = LinkTablesDataSource.getAuthorsFromString(itemAttribute.getTextContent());
+                                        authors.addAll(LinkTablesDataSource.getAuthorsFromString(itemAttribute.getTextContent()));
                                         break;
                                     case "Publisher":
                                         publisher = itemAttribute.getTextContent();
@@ -179,14 +180,20 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                                 }
                             }
                             break;
-                        case "PublisherialReviews":
+                        case "EditorialReviews":
                             Node itemPublisherial = itemNode.getChildNodes().item(i);
                             description = itemPublisherial.getChildNodes().item(0).getChildNodes().item(1).getTextContent();
                             description = Html.fromHtml(description).toString();
                             break;
                         case "BrowseNodes":
-                            //TODO remplir les categories
-                            categories = LinkTablesDataSource.getCategoriesFromString("");
+                            for (int k = 0; k < item.getChildNodes().getLength(); k++) {
+                                Node itemCategorie = item.getChildNodes().item(k);
+                                switch (itemCategorie.getNodeName()) {
+                                    case "BrowseNode":
+                                        categories.addAll(LinkTablesDataSource.getCategoriesFromString(itemCategorie.getChildNodes().item(1).getTextContent()));
+                                        break;
+                                }
+                            }
                             break;
                         case "LargeImage":
                             String urlPicture = item.getChildNodes().item(0).getChildNodes().item(0).getTextContent();
@@ -202,7 +209,15 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                 newBook.setAuthors(authors);
                 newBook.setCategories(categories);
                 newBook.setDatePublication(datePublication);
-                newBook.setPublisher_id(PublisherLibrary.getInstance().getPublisherByName(publisher).getId());
+
+                if(publisher != "") {
+                    Publisher p = PublisherLibrary.getInstance().findAndAddAPublisher(publisher);
+                    if (p == null) {
+                        p = PublisherLibrary.getInstance().getNewPublisher();
+                        p.setName(publisher);
+                    }
+                    newBook.setPublisher_id(p.getId());
+                }
                 newBook.setNbPages(Integer.parseInt(nbPages));
                 newBook.setDescription(description);
 

@@ -26,6 +26,7 @@ import java.util.List;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Category;
+import flq.projectbooks.data.Publisher;
 import flq.projectbooks.data.libraries.BookLibrary;
 import flq.projectbooks.data.libraries.PublisherLibrary;
 
@@ -114,7 +115,15 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
 
                 if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("publisher")) {
                     String publisher = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("publisher");
-                    newBook.setPublisher_id(PublisherLibrary.getInstance().getPublisherByName(publisher).getId());
+
+                    if(publisher != "") {
+                        Publisher p = PublisherLibrary.getInstance().findAndAddAPublisher(publisher);
+                        if (p == null) {
+                            p = PublisherLibrary.getInstance().getNewPublisher();
+                            p.setName(publisher);
+                        }
+                        newBook.setPublisher_id(p.getId());
+                    }
                 }
                 if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("categories")) {
                     JSONArray arrCategory = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getJSONArray("categories");
