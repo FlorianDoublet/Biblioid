@@ -92,24 +92,24 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 } else {
                     ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(BitmapFactory.decodeByteArray(retrievedBook.get(indexBookImage).getImage(), 0, retrievedBook.get(indexBookImage).getImage().length)));
                 }
-            }
-            findViewById(R.id.bookTitleImageButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookAuthorImageButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookDescriptionImageButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookDatePublicationImageButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookPublisherImageButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookCategoryImageButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookNbPagesImageButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookImageImageButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookTitleImageButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookAuthorImageButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookDescriptionImageButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookDatePublicationImageButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookPublisherImageButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookCategoryImageButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookNbPagesImageButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookImageImageButton).setVisibility(View.VISIBLE);
 
-            findViewById(R.id.bookTitleImageButtonLock).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookAuthorImageButtonLock).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookDescriptionImageButtonLock).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookDatePublicationImageButtonLock).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookPublisherImageButtonLock).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookCategoryImageButtonLock).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookNbPagesImageButtonLock).setVisibility(View.VISIBLE);
-            findViewById(R.id.bookImageImageButtonLock).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookTitleImageButtonLock).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookAuthorImageButtonLock).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookDescriptionImageButtonLock).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookDatePublicationImageButtonLock).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookPublisherImageButtonLock).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookCategoryImageButtonLock).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookNbPagesImageButtonLock).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookImageImageButtonLock).setVisibility(View.VISIBLE);
+            }
         }
 
         Intent intent = getIntent();
@@ -275,7 +275,6 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             retrievedBook.add(output);
 
             if (retrievedBook.size() == 1) {
-
                 ImageButton btnSource = new ImageButton(this);
                 int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
                 btnSource.setLayoutParams(new LinearLayout.LayoutParams(size, size));
@@ -534,7 +533,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             indexBookCategory = 0;
         }
         if(indexBookCategory != retrievedBook.size()) {
-            ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.authorsToString(retrievedBook.get(indexBookAuthor).getAuthors()));
+            ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(retrievedBook.get(indexBookCategory).getCategories()));
             ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
         }else {
             ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
@@ -821,7 +820,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 String text = ((EditText) findViewById(R.id.bookPublisher)).getText().toString();
                 boolean equal = false;
                 for (int i = 0; i < retrievedBook.size(); i++) {
-                    if (text.equals(retrievedBook.get(i).getPublisher_id())) {
+                    if (text.equals(PublisherLibrary.getInstance().getPublisherById(retrievedBook.get(i).getPublisher_id()).getName())) {
                         equal = true;
                         ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(i));
                     }
