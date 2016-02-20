@@ -43,6 +43,7 @@ public class Main extends ActionBarActivity  {
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
     public final static String GIVE_BOOK_WITH_ISBN = "flq.GIVE_BOOK_WITH_ISBN";
+    public final static String ASK_NEW_FRIEND = "flq.ASK_NEW_FRIEND";
 
 
     protected BookLibrary books;
@@ -104,6 +105,12 @@ public class Main extends ActionBarActivity  {
         Intent intent = new Intent(this, CreateBook.class);
         intent.putExtra(GIVE_BOOK_WITH_ISBN, ISBN);
         intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
+        startActivity(intent);
+    }
+
+    public void openCreateFriendActivity(View view) {
+        Intent intent = new Intent(this, CreateFriend.class);
+        intent.putExtra(ASK_NEW_FRIEND, friends.getNewFriend());
         startActivity(intent);
     }
 

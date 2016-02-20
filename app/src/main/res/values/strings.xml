@@ -49,4 +49,8 @@
     <string name="lastCloudSize">Dernière sauvegarde : xx ko</string>
     <string name="exportOnCloud">Creation backup sur le cloud</string>
     <string name="importFromCloud">Lecture backup sur le cloud</string>
+    <string name="friendFirstName">Prénom / Surnom :</string>
+    <string name="friendLastName">Nom (optionel) :</string>
+    <string name="friendCloudLink">Lien cloud :</string>
+    <string name="title_activity_create_friend">Création d\'un ami</string>
 </resources>
