@@ -13,6 +13,7 @@ import flq.projectbooks.UI.fragments.BookInfo;
 import flq.projectbooks.UI.fragments.BookList;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
+import flq.projectbooks.data.libraries.BookLibrary;
 
 
 public class DisplayBooks extends ActionBarActivity implements BookList.OnBookSelected {
@@ -52,6 +53,11 @@ public class DisplayBooks extends ActionBarActivity implements BookList.OnBookSe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //extra wish can be set by the loan notification when we click on it
+        String menuFragment = getIntent().getStringExtra("menuFragment");
+
+
         setContentView(R.layout.activity_display_books);
 
         if (findViewById(R.id.listContainer) != null) {
@@ -86,6 +92,10 @@ public class DisplayBooks extends ActionBarActivity implements BookList.OnBookSe
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.listContainer, fragmentList).commit();
+            if(menuFragment != null){
+                long book_id = getIntent().getLongExtra("bookId", -1);
+                OnBookSelected(BookLibrary.getInstance().getBookById(book_id));
+            }
         }
     }
 

@@ -23,10 +23,12 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.IOException;
+import java.util.Date;
 
 import flq.projectbooks.R;
 import flq.projectbooks.UI.fragments.NoticeDialogFragment;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.Loan;
 import flq.projectbooks.data.libraries.AuthorLibrary;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
@@ -35,6 +37,7 @@ import flq.projectbooks.data.libraries.FriendLibrary;
 import flq.projectbooks.data.libraries.LoanLibrary;
 import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.MySQLiteHelper;
+import flq.projectbooks.utilities.BiblioidBroadcastReceiver;
 import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
 
@@ -61,6 +64,10 @@ public class Main extends ActionBarActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*Loan loan = new Loan();
+        Date d = loan.stringToLoanDate("01/01/2012 10:48");
+        String s = loan.dateToString(d);*/
+
         //this.deleteDatabase("books.db"); //Effacer la bdd en cas de bug ou en cas de conflit de versions.
         authors = new AuthorLibrary(this);
         categories = new CategoryLibrary(this);
@@ -69,6 +76,8 @@ public class Main extends ActionBarActivity  {
         books = new BookLibrary(this);
         loans = new LoanLibrary(this);
         filters = new BookFilterCatalog(this);
+
+        BiblioidBroadcastReceiver.runDateReminderCheckerEveryMinute(this);
 
     }
 

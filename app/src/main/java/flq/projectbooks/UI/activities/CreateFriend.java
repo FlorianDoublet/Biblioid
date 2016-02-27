@@ -23,14 +23,6 @@ public class CreateFriend extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_friend);
 
-       Intent intent = getIntent();
-        /*if (intent.hasExtra(DisplayFriends.GIVE_FRIEND)) {
-            setTitle("Modification d'un ami");
-           // friend = (Friend) intent.getSerializableExtra(DisplayFriends.GIVE_FRIEND);
-        } else {
-            setTitle("Création d'un ami");
-            filter = new BookFilter();
-        }*/
         friend = new Friend();
 
         ((TextView) findViewById(R.id.friendFirstName)).setText(friend.getFirstName());
@@ -60,9 +52,9 @@ public class CreateFriend extends ActionBarActivity {
         EditText lastName = (EditText) findViewById(R.id.friendLastName);
         EditText cloudLink = (EditText) findViewById(R.id.friendCloudLink);
 
-        friend.setFirstName(firstName.getText().toString());
-        friend.setLastName(lastName.getText().toString());
-        friend.setCloudLink(cloudLink.getText().toString());
+        friend.setFirstName(firstName.getText().toString().trim());
+        friend.setLastName(lastName.getText().toString().trim());
+        friend.setCloudLink(cloudLink.getText().toString().trim());
 
         FriendLibrary.getInstance().updateOrAddFriend(friend);
 

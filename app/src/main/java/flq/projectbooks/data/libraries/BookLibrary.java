@@ -75,6 +75,9 @@ public class BookLibrary implements Serializable {
                 datasource.deleteBook(temp);
                 datasource.close();
 
+                //if this book was in a loan, delete the loan
+                LoanLibrary.getInstance().deleteLoanByBookId(temp.getId());
+
                 //Remove from local list
                 bookList.remove(j);
 

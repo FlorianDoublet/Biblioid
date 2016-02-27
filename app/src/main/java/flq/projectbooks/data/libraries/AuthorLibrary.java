@@ -52,7 +52,7 @@ public class AuthorLibrary implements Serializable {
         return new Author();
     }
 
-    public void deleteBook(Author author) {
+    public void deleteAuthor(Author author) {
         authorList.remove(author);
     }
 
