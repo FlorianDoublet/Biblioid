@@ -28,7 +28,14 @@ public class BooksDataSource {
             MySQLiteHelper.COLUMN_DATE_PUBLICATION,
             MySQLiteHelper.COLUMN_PUBLISHER_ID,
             MySQLiteHelper.COLUMN_NB_PAGES,
-            MySQLiteHelper.COLUMN_FRIEND_ID};
+            MySQLiteHelper.COLUMN_FRIEND_ID,
+            MySQLiteHelper.COLUMN_ADVANCEMENT_STATE,
+            MySQLiteHelper.COLUMN_RATING,
+            MySQLiteHelper.COLUMN_ON_WISH_LIST,
+            MySQLiteHelper.COLUMN_ON_FAVORITE_LIST,
+            MySQLiteHelper.COLUMN_BOOK_STATE,
+            MySQLiteHelper.COLUMN_POSSESSION_STATE,
+            MySQLiteHelper.COLUMN_COMMENT};
 
     public BooksDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -42,7 +49,9 @@ public class BooksDataSource {
         dbHelper.close();
     }
 
-    public Book createBook(String title, String isbn, byte[] image, String description, String datePublication, long publisher_id, int nbPages, long friend_id) {
+
+
+    public Book createBook(String title, String isbn, byte[] image, String description, String datePublication, long publisher_id, int nbPages, long friend_id, String advancementState, int rating, int onWishList, int onFavoriteList, int bookState, int possessionState, String comment) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_TITLE, title);
@@ -53,6 +62,13 @@ public class BooksDataSource {
         values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, publisher_id);
         values.put(MySQLiteHelper.COLUMN_NB_PAGES, nbPages);
         values.put(MySQLiteHelper.COLUMN_FRIEND_ID, friend_id);
+        values.put(MySQLiteHelper.COLUMN_ADVANCEMENT_STATE, advancementState);
+        values.put(MySQLiteHelper.COLUMN_RATING, rating);
+        values.put(MySQLiteHelper.COLUMN_ON_WISH_LIST, onWishList);
+        values.put(MySQLiteHelper.COLUMN_ON_FAVORITE_LIST, onFavoriteList);
+        values.put(MySQLiteHelper.COLUMN_BOOK_STATE, bookState);
+        values.put(MySQLiteHelper.COLUMN_POSSESSION_STATE, possessionState);
+        values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
         long insertId = database.insert(MySQLiteHelper.TABLE_BOOKS, null,
                 values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
@@ -77,6 +93,15 @@ public class BooksDataSource {
         values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, book.getPublisher_id());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES, book.getNbPages());
         values.put(MySQLiteHelper.COLUMN_FRIEND_ID, book.getFriend_id());
+        values.put(MySQLiteHelper.COLUMN_ADVANCEMENT_STATE, book.getAdvancementState());
+        values.put(MySQLiteHelper.COLUMN_RATING, book.getRating());
+        values.put(MySQLiteHelper.COLUMN_ON_WISH_LIST, book.getOnWishList());
+        values.put(MySQLiteHelper.COLUMN_ON_FAVORITE_LIST, book.getOnFavoriteList());
+        values.put(MySQLiteHelper.COLUMN_BOOK_STATE, book.getBookState());
+        values.put(MySQLiteHelper.COLUMN_POSSESSION_STATE, book.getPossessionState());
+        values.put(MySQLiteHelper.COLUMN_COMMENT, book.getComment());
+
+
         return database.update(MySQLiteHelper.TABLE_BOOKS, values, MySQLiteHelper.COLUMN_ID + " = " + book.getId(), null);
     }
 
@@ -126,6 +151,13 @@ public class BooksDataSource {
         book.setPublisher_id(cursor.getLong(6));
         book.setNbPages(cursor.getInt(7));
         book.setFriend_id(cursor.getLong(8));
+        book.setAdvancementState(cursor.getString(9));
+        book.setRating(cursor.getInt(10));
+        book.setOnWishList(cursor.getInt(11));
+        book.setOnFavoriteList(cursor.getInt(12));
+        book.setBookState(cursor.getInt(13));
+        book.setPossessionState(cursor.getInt(14));
+        book.setComment(cursor.getString(15));
         return book;
     }
 

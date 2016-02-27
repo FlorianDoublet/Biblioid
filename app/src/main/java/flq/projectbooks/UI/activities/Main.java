@@ -23,10 +23,12 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import flq.projectbooks.R;
 import flq.projectbooks.UI.fragments.NoticeDialogFragment;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.libraries.AuthorLibrary;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
@@ -68,6 +70,36 @@ public class Main extends ActionBarActivity  {
         books = new BookLibrary(this);
         loans = new LoanLibrary(this);
         filters = new BookFilterCatalog(this);
+
+        Book.spinnerArrayState = new ArrayList<>();
+        Book.spinnerArrayPossession = new ArrayList<>();
+        Book.spinnerArrayState.add("Comme neuf");
+        Book.spinnerArrayState.add("Très bon état");
+        Book.spinnerArrayState.add("Bon état");
+        Book.spinnerArrayState.add("État correct");
+        Book.spinnerArrayState.add("Mauvais état");
+        Book.spinnerArrayState.add("Incomplet");
+        Book.spinnerArrayPossession.add("Liste de souhait");
+        Book.spinnerArrayPossession.add("Possédé");
+        Book.spinnerArrayPossession.add("Prété");
+        Book.spinnerArrayPossession.add("Vendu");
+        Book.spinnerArrayPossession.add("Perdu");
+
+        BookFilter.spinnerArrayState = new ArrayList<>();
+        BookFilter.spinnerArrayPossession = new ArrayList<>();
+        BookFilter.spinnerArrayState.add("Indéterminé");
+        BookFilter.spinnerArrayState.add("Comme neuf");
+        BookFilter.spinnerArrayState.add("Très bon état");
+        BookFilter.spinnerArrayState.add("Bon état");
+        BookFilter.spinnerArrayState.add("État correct");
+        BookFilter.spinnerArrayState.add("Mauvais état");
+        BookFilter.spinnerArrayState.add("Incomplet");
+        BookFilter.spinnerArrayPossession.add("Indeterminé");
+        BookFilter.spinnerArrayPossession.add("Liste de souhait");
+        BookFilter.spinnerArrayPossession.add("Possédé");
+        BookFilter.spinnerArrayPossession.add("Prété");
+        BookFilter.spinnerArrayPossession.add("Vendu");
+        BookFilter.spinnerArrayPossession.add("Perdu");
 
     }
 

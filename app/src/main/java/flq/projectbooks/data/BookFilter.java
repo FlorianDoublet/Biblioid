@@ -24,6 +24,17 @@ public class BookFilter implements Serializable {
     private int nbPagesMin;
     private int nbPagesMax;
 
+    private String advancementState;
+    private int ratingMin;
+    private int ratingMax;
+    private int onWishList;
+    private int onFavoriteList;
+    private int bookState;
+    private int possessionState;
+    private String comment;
+
+    public static ArrayList<String> spinnerArrayState ;
+    public static ArrayList<String> spinnerArrayPossession ;
 
     public BookFilter() {
         id = -1;
@@ -37,6 +48,14 @@ public class BookFilter implements Serializable {
         categories = new ArrayList<>();
         nbPagesMin = 0;
         nbPagesMax = 0;
+        advancementState = "";
+        ratingMin = 0;
+        ratingMax = 0;
+        onWishList = 0;
+        onFavoriteList = 0;
+        bookState = 0;
+        possessionState = 0;
+        comment = "";
     }
 
     public List<Category> getCategories() {
@@ -123,7 +142,6 @@ public class BookFilter implements Serializable {
     }
 
     public boolean isSelected(Book book) {
-        boolean returnValue = true;
 
         //check if all authors in the filter are in the book
         if (authors != null && authors.size() != 0) {
@@ -135,15 +153,15 @@ public class BookFilter implements Serializable {
                         authorMatch = true;
                 }
                 if (!authorMatch)
-                    returnValue = false;
+                    return false;
             }
         }
 
         if (!title.equals("") && !book.getTitle().contains(title)) {
-            returnValue = false;
+            return false;
         }
         if (!description.equals("") && !book.getDescription().contains(description)) {
-            returnValue = false;
+            return false;
         }
 
         //check if all categories in the filter are in the book
@@ -156,24 +174,85 @@ public class BookFilter implements Serializable {
                         categoryMatch = true;
                 }
                 if (!categoryMatch)
-                    returnValue = false;
+                    return false;
             }
         }
 
         if (publisher_id != -1 && book.getPublisher_id() != publisher_id) {
-            returnValue = false;
+            return false;
         }
 
         if (!datePublicationMin.equals("") && !datePublicationMax.equals("")) {
             if ((yearFromString(datePublicationMin) > yearFromString(book.getDatePublication()) || yearFromString(datePublicationMax) < yearFromString(book.getDatePublication())))
-                returnValue = false;
+                return false;
         }
 
         if (nbPagesMax != 0 && ((book.getNbPages() < nbPagesMin) || (book.getNbPages() > nbPagesMax))) {
-            returnValue = false;
+            return false;
         }
 
-        return returnValue;
+        //Check if the book match the advancement state
+
+            switch(advancementState){
+                case "Undetermined":
+                    break;
+                case "Read":
+                    if(!book.getAdvancementState().equals(advancementState)){
+                        return false;
+                    }
+                    break;
+                case "Reading":
+                    if(book.getAdvancementState().equals("Read") || book.getAdvancementState().equals("Not Read")){
+                        return false;
+                    }
+                    break;
+                case "Not Read":
+                    if(!book.getAdvancementState().equals(advancementState)){
+                        return false;
+                    }
+                    break;
+            }
+
+        //Check if the book fulfill the min rating filter
+        if(ratingMin != 0 && book.getRating() < ratingMin){
+            return false;
+        }
+
+        //Check if the book fulfill the max rating filter
+        if(ratingMax != 0 && book.getRating() > ratingMax){
+            return false;
+        }
+
+        if(book.getRating() == 0 && ratingMax != 0 || ratingMin != 0){
+            return false;
+        }
+
+        //Check if the book is in the favorite list
+        if(onFavoriteList == 1 && book.getOnFavoriteList() != 1){
+            return false;
+        }
+
+        //Check if the book is in the wish list
+        if(onWishList == 1 && book.getOnWishList() != 1){
+            return false;
+        }
+
+        //Check if the book state match the filter
+        if(bookState != 0 && book.getBookState() != (bookState-1)){
+            return false;
+        }
+
+        //Check if the book possession match the filter
+        if(possessionState != 0 && book.getPossessionState() != (possessionState-1)){
+            return false;
+        }
+
+        //Check if the book comment contains the filter comment string
+        if(comment.equals("") && !book.getComment().contains(comment)){
+            return false;
+        }
+
+        return true;
     }
 
     public FilteredBookLibrary getFilteredLibrary() {
@@ -202,5 +281,69 @@ public class BookFilter implements Serializable {
             }
         }
         return Integer.parseInt(date);
+    }
+
+    public String getAdvancementState() {
+        return advancementState;
+    }
+
+    public void setAdvancementState(String advancementState) {
+        this.advancementState = advancementState;
+    }
+
+    public int getRatingMin() {
+        return ratingMin;
+    }
+
+    public void setRatingMin(int ratingMin) {
+        this.ratingMin = ratingMin;
+    }
+
+    public int getRatingMax() {
+        return ratingMax;
+    }
+
+    public void setRatingMax(int ratingMax) {
+        this.ratingMax = ratingMax;
+    }
+
+    public int getOnWishList() {
+        return onWishList;
+    }
+
+    public void setOnWishList(int onWishList) {
+        this.onWishList = onWishList;
+    }
+
+    public int getOnFavoriteList() {
+        return onFavoriteList;
+    }
+
+    public void setOnFavoriteList(int onFavoriteList) {
+        this.onFavoriteList = onFavoriteList;
+    }
+
+    public int getBookState() {
+        return bookState;
+    }
+
+    public void setBookState(int bookState) {
+        this.bookState = bookState;
+    }
+
+    public int getPossessionState() {
+        return possessionState;
+    }
+
+    public void setPossessionState(int possessionState) {
+        this.possessionState = possessionState;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

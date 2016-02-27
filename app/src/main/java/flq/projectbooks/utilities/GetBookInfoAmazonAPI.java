@@ -1,8 +1,10 @@
 package flq.projectbooks.utilities;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.common.io.ByteStreams;
@@ -43,6 +45,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import flq.projectbooks.R;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Category;
@@ -70,6 +73,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
 
     public GetBookInfoAmazonAPI(Context context) {
         super(context);
+        sourceLogoName = R.drawable.amazonlogo;
     }
 
     @Override
@@ -218,7 +222,9 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                     }
                     newBook.setPublisher_id(p.getId());
                 }
-                newBook.setNbPages(Integer.parseInt(nbPages));
+                if(nbPages != ""){
+                    newBook.setNbPages(Integer.parseInt(nbPages));
+                }
                 newBook.setDescription(description);
 
                 return newBook;
@@ -241,6 +247,14 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
         } catch (SAXException e) {
             e.printStackTrace();
         }
+
+        Handler handler = new Handler(mContext.getMainLooper());
+        handler.post(new Runnable() {
+
+            public void run() {
+                Toast.makeText(mContext, "Source Amazon : Aucun livre trouvé.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return null;
     }
