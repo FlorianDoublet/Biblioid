@@ -18,8 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 import flq.projectbooks.R;
+import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
+import flq.projectbooks.data.libraries.BookLibrary;
 
 
 public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMenuItemClickListener {
@@ -74,12 +76,28 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         listOfFilters = new ArrayList<>();
         ListView filterList = (ListView) findViewById(R.id.filterList);
 
+        List<Integer> numberOfBookPerFilter = new ArrayList<>();
+        for (BookFilter filter : filters.getBookFilterList()) {
+            numberOfBookPerFilter.add(0);
+        }
+
+        for(Book book : BookLibrary.getInstance().getBookList()){
+            int i = 0;
+            for (BookFilter filter : filters.getBookFilterList()) {
+                if (filter.isSelected(book)) {
+                    numberOfBookPerFilter.set(i,numberOfBookPerFilter.get(i) + 1) ;
+                }
+                i++;
+            }
+        }
+
+        int i = 0;
         for (BookFilter filter : filters.getBookFilterList()) {
             Map<String, String> filterMap = new HashMap<>();
             filterMap.put("name", filter.getName());
 
             String nbLivreString;
-            int size = filter.getFilteredLibrary().getBookList().size();
+            int size = numberOfBookPerFilter.get(i);
             if (size > 1) {
                 nbLivreString = size + " livres";
             } else {
@@ -87,6 +105,7 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
             }
             filterMap.put("nbLivre", nbLivreString);
             listOfFilters.add(filterMap);
+            i++;
         }
 
         listAdapter = new SimpleAdapter(this.getBaseContext(), listOfFilters, R.layout.filter_detail,

@@ -28,56 +28,58 @@ public class BookFilterCatalog implements Serializable {
         bookFilterList = datasource.getAllBookFilters();
         datasource.close();
         if(bookFilterList.size() == 0){
-            BookFilter filterBase1 = new BookFilter();
-            filterBase1.setName("Liste de souhait");
-            filterBase1.setOnWishList(1);
-            this.Add(filterBase1);
+            for(int i = 0; i < 10; i++) {
+                BookFilter filterBase1 = new BookFilter();
+                filterBase1.setName("Liste de souhait");
+                filterBase1.setOnWishList(1);
+                this.Add(filterBase1);
 
-            BookFilter filterBase2 = new BookFilter();
-            filterBase2.setName("Liste des favoris");
-            filterBase2.setOnFavoriteList(1);
-            this.Add(filterBase2);
+                BookFilter filterBase2 = new BookFilter();
+                filterBase2.setName("Liste des favoris");
+                filterBase2.setOnFavoriteList(1);
+                this.Add(filterBase2);
 
-            BookFilter filterBase3 = new BookFilter();
-            filterBase3.setName("Livres lus");
-            filterBase3.setAdvancementState("Read");
-            this.Add(filterBase3);
+                BookFilter filterBase3 = new BookFilter();
+                filterBase3.setName("Livres lus");
+                filterBase3.setAdvancementState("Read");
+                this.Add(filterBase3);
 
-            BookFilter filterBase4 = new BookFilter();
-            filterBase4.setName("Livres en cours de lecture");
-            filterBase4.setAdvancementState("Reading");
-            this.Add(filterBase4);
+                BookFilter filterBase4 = new BookFilter();
+                filterBase4.setName("Livres en cours de lecture");
+                filterBase4.setAdvancementState("Reading");
+                this.Add(filterBase4);
 
-            BookFilter filterBase5 = new BookFilter();
-            filterBase5.setName("Livres non lus");
-            filterBase5.setAdvancementState("Not Read");
-            this.Add(filterBase5);
+                BookFilter filterBase5 = new BookFilter();
+                filterBase5.setName("Livres non lus");
+                filterBase5.setAdvancementState("Not Read");
+                this.Add(filterBase5);
 
-            BookFilter filterBase6 = new BookFilter();
-            filterBase6.setName("Note supérieure à 4");
-            filterBase6.setRatingMin(4);
-            this.Add(filterBase6);
+                BookFilter filterBase6 = new BookFilter();
+                filterBase6.setName("Note supérieure à 4");
+                filterBase6.setRatingMin(4);
+                this.Add(filterBase6);
 
-            BookFilter filterBase7 = new BookFilter();
-            filterBase7.setName("Note strictement inférieure à 3");
-            filterBase7.setRatingMax(2);
-            this.Add(filterBase7);
+                BookFilter filterBase7 = new BookFilter();
+                filterBase7.setName("Note strictement inférieure à 3");
+                filterBase7.setRatingMax(2);
+                this.Add(filterBase7);
 
-            BookFilter filterBase8 = new BookFilter();
-            filterBase8.setName("Note égale à 5");
-            filterBase8.setRatingMin(5);
-            filterBase8.setRatingMax(5);
-            this.Add(filterBase8);
+                BookFilter filterBase8 = new BookFilter();
+                filterBase8.setName("Note égale à 5");
+                filterBase8.setRatingMin(5);
+                filterBase8.setRatingMax(5);
+                this.Add(filterBase8);
 
-            BookFilter filterBase9 = new BookFilter();
-            filterBase9.setName("Livre prétés");
-            filterBase9.setPossessionState(3);
-            this.Add(filterBase9);
+                BookFilter filterBase9 = new BookFilter();
+                filterBase9.setName("Livre prétés");
+                filterBase9.setPossessionState(3);
+                this.Add(filterBase9);
 
-            BookFilter filterBase10 = new BookFilter();
-            filterBase10.setName("Livre possédés");
-            filterBase10.setPossessionState(2);
-            this.Add(filterBase10);
+                BookFilter filterBase10 = new BookFilter();
+                filterBase10.setName("Livre possédés");
+                filterBase10.setPossessionState(2);
+                this.Add(filterBase10);
+            }
         }
     }
 

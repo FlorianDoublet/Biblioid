@@ -130,8 +130,6 @@ public class BookInfo extends Fragment implements Parcelable {
         informationTab.setContent(R.id.Informations);
         tabs.addTab(informationTab);
 
-
-
         final Spinner spinnerBookState = (Spinner)view.findViewById(R.id.spinnerBookState);
         ArrayAdapter<String> spinnerArrayAdapterState = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, Book.spinnerArrayState); //selected item will look like a spinner set from XML
         spinnerArrayAdapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -286,14 +284,14 @@ public class BookInfo extends Fragment implements Parcelable {
                 break;
             case "Read" :
                 radioGroupBookState.check(R.id.radioButtonRead);
-                ratingBar.setEnabled(false);
-                ratingBar.setRating(0);
+                ratingBar.setEnabled(true);
                 break;
             default:
                 radioGroupBookState.check(R.id.radioButtonReading);
                 editTextNbPages.setEnabled(true);
                 editTextNbPages.setText(book.getAdvancementState());
-                ratingBar.setEnabled(true);
+                ratingBar.setEnabled(false);
+                ratingBar.setRating(0);
                 break;
         }
 

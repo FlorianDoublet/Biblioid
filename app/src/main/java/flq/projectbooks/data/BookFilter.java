@@ -223,7 +223,7 @@ public class BookFilter implements Serializable {
             return false;
         }
 
-        if(book.getRating() == 0 && ratingMax != 0 || ratingMin != 0){
+        if(book.getRating() == 0 && (ratingMax != 0 || ratingMin != 0)){
             return false;
         }
 
@@ -253,6 +253,11 @@ public class BookFilter implements Serializable {
         }
 
         return true;
+    }
+
+    private boolean isSelectedAuthor(Book book){
+
+        return false;
     }
 
     public FilteredBookLibrary getFilteredLibrary() {

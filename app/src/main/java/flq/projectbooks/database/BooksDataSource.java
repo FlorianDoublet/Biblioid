@@ -158,6 +158,7 @@ public class BooksDataSource {
         book.setBookState(cursor.getInt(13));
         book.setPossessionState(cursor.getInt(14));
         book.setComment(cursor.getString(15));
+
         return book;
     }
 

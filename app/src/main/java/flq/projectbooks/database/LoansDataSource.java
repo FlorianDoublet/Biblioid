@@ -113,6 +113,7 @@ public class LoansDataSource {
         loan.setBook_id(cursor.getLong(2));
         loan.setFriend_id(cursor.getLong(3));
 
+        cursor.close();
         return loan;
     }
 
