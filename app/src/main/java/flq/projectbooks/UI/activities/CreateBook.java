@@ -1,5 +1,6 @@
 package flq.projectbooks.UI.activities;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,23 +13,41 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import flq.projectbooks.R;
+import flq.projectbooks.UI.fragments.DatePickerFragment;
+import flq.projectbooks.UI.fragments.TimePickerFragment;
+import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.Category;
+import flq.projectbooks.data.Friend;
+import flq.projectbooks.data.Loan;
 import flq.projectbooks.data.Publisher;
+import flq.projectbooks.data.libraries.AuthorLibrary;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.data.libraries.CategoryLibrary;
+import flq.projectbooks.data.libraries.FriendLibrary;
+import flq.projectbooks.data.libraries.LoanLibrary;
 import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.LinkTablesDataSource;
-import flq.projectbooks.database.PublishersDataSource;
+import flq.projectbooks.database.LoansDataSource;
 import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.utilities.GetBookInfoAmazonAPI;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
@@ -53,6 +72,13 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
     protected boolean isLoadingBookFromSource;
     private Book book;
     private int indexSourceBook;
+    private ArrayAdapter<String> spinnerArrayAdapterFriend;
+    private ArrayAdapter<String> autocompetedArrayAdapterPublisher;
+    private ArrayAdapter<String> multiAutocompetedArrayAdapterAuthor;
+    private ArrayAdapter<String> multiAutocompetedArrayAdapterCategory;
+    private DatePickerFragment datePickerFragment = new DatePickerFragment();
+    private TimePickerFragment timePickerFragment = new TimePickerFragment();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,15 +157,15 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         ((TextView) findViewById(R.id.bookTitle)).setText(book.getTitle());
         ((TextView) findViewById(R.id.bookISBN)).setText(book.getIsbn());
 
-        ((TextView) findViewById(R.id.bookAuthor)).setText(LinkTablesDataSource.authorsToString(book.getAuthors()));
+        ((MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted)).setText(LinkTablesDataSource.authorsToString(book.getAuthors()));
 
         ((TextView) findViewById(R.id.bookDescription)).setText(book.getDescription());
         ((TextView) findViewById(R.id.bookDatePublication)).setText(book.getDatePublication());
         Publisher p = PublisherLibrary.getInstance().getPublisherById(book.getPublisher_id());
         String publisher_name = "";
         if(p != null) publisher_name = p.getName();
-        ((TextView) findViewById(R.id.bookPublisher)).setText(publisher_name);
-        ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
+        ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).setText(publisher_name);
+        ((MultiAutoCompleteTextView) findViewById(R.id.bookCategoryMultiAutoCompleted)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
         ((TextView) findViewById(R.id.bookNbPages)).setText(String.valueOf(book.getNbPages()));
 
         initTextViewListener();
@@ -156,6 +182,33 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
         if(photo == null){
             ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
+        }
+
+        //init of our (multi) auto-completed text view
+        initPublisherAutoCompletion();
+        initAuthorsMultiAutoCompletion();
+        initCategoriesMultiAutoCompletion();
+
+        initFriendSpinner();
+        Loan loan = LoanLibrary.getInstance().getLoanByBookId(book.getId());
+        if(loan != null){
+            Friend friend = FriendLibrary.getInstance().getFriendById(loan.getFriend_id());
+            ((CheckBox) findViewById(R.id.loanCheckBox)).setChecked(true);
+            //use to automatically select the right friend
+            ((Spinner) findViewById(R.id.friendSpinner)).setSelection(spinnerArrayAdapterFriend.getPosition(friend.getFirstName() + " " + friend.getLastName()));
+            //init the dates textview
+            this.datePickerFragment.initDateLoan(loan.getDateLoan(), (TextView) findViewById(R.id.loanDateLoanTextViewDate));
+            this.datePickerFragment.initDateReminder(loan.getDateReminder(), (TextView) findViewById(R.id.loanDateReminderTextViewDate));
+            //init the dates textview
+            this.timePickerFragment.initDateLoan(loan.getDateLoan(), (TextView) findViewById(R.id.loanDateLoanTextViewTime));
+            this.timePickerFragment.initDateReminder(loan.getDateReminder(), (TextView) findViewById(R.id.loanDateReminderTextViewTime));
+        } else {
+            //init the dates textview
+            this.datePickerFragment.initDateLoan((TextView) findViewById(R.id.loanDateLoanTextViewDate));
+            this.datePickerFragment.initDateReminder((TextView) findViewById(R.id.loanDateReminderTextViewDate));
+            //init the dates textview
+            this.timePickerFragment.initDateLoan((TextView) findViewById(R.id.loanDateLoanTextViewTime));
+            this.timePickerFragment.initDateReminder((TextView) findViewById(R.id.loanDateReminderTextViewTime));
         }
     }
 
@@ -181,13 +234,14 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
     public void bookCreation(View view) {
         EditText title = (EditText) findViewById(R.id.bookTitle);
-        EditText author = (EditText) findViewById(R.id.bookAuthor);
+        MultiAutoCompleteTextView author = (MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted);
         EditText isbn = (EditText) findViewById(R.id.bookISBN);
         EditText description = (EditText) findViewById(R.id.bookDescription);
         EditText datePub = (EditText) findViewById(R.id.bookDatePublication);
-        EditText publisher = (EditText) findViewById(R.id.bookPublisher);
-        EditText category = (EditText) findViewById(R.id.bookCategorie);
+        AutoCompleteTextView publisher = (AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted);
+        MultiAutoCompleteTextView category = (MultiAutoCompleteTextView) findViewById(R.id.bookCategoryMultiAutoCompleted);
         EditText nbPages = (EditText) findViewById(R.id.bookNbPages);
+        CheckBox loanCheckbox = (CheckBox) findViewById(R.id.loanCheckBox);
 
         book.setTitle(title.getText().toString());
 
@@ -195,15 +249,42 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         book.setIsbn(isbn.getText().toString());
         book.setDescription(description.getText().toString());
         book.setDatePublication(datePub.getText().toString());
-        book.setPublisher_id(PublisherLibrary.getInstance().findAndAddAPublisher(publisher.getText().toString()).getId());
+        book.setPublisher_id(PublisherLibrary.getInstance().findAndAddAPublisher(publisher.getText().toString().trim()).getId());
         book.setNbPages(Integer.parseInt(nbPages.getText().toString()));
 
         //will feed the book with the good authors
-        LinkTablesDataSource.feedBookWithAuthor(book, author);
+        long book_id = LinkTablesDataSource.feedBookWithAuthor(book, author);
         //will feed the book with the good categories
         LinkTablesDataSource.feedBookWithCategories(book, category);
 
-        BookLibrary.getInstance().updateOrAddBook(book);
+        //treatment for the loan system
+        Spinner friend = (Spinner) findViewById(R.id.friendSpinner);
+
+        Loan previousLoan = LoanLibrary.getInstance().getLoanByBookId(book_id);
+
+        if(loanCheckbox.isChecked()) {
+            long friend_id = FriendLibrary.getInstance().getFriendByFirstNameAndLastName(friend.getSelectedItem().toString()).getId();
+            Loan loan = LoanLibrary.getInstance().getLoanByBookAndFriendId(book_id, friend_id);
+            Date dateLoan = createOneDateWithDateAndTime(datePickerFragment.getDateLoan(), timePickerFragment.getDateLoan());
+            Date dateReminder = createOneDateWithDateAndTime(datePickerFragment.getDateReminder(), timePickerFragment.getDateReminder());
+            if(loan != null){
+                loan.setDateLoan(dateLoan);
+                loan.setDateReminder(dateReminder);
+            } else {
+                loan = new Loan(dateLoan, dateReminder, book_id, friend_id);
+                //if we are here and the previousLoan isn't null then it mean that the friend is different so we delete the older loan
+                if(previousLoan != null){
+                    LoanLibrary.getInstance().deleteLoanByLoanId(previousLoan.getId());
+                }
+            }
+            LoanLibrary.getInstance().updateOrAddLoan(loan);
+        } else if(previousLoan != null){
+            //here it mean that this book have a previous loan but we don't want it anymore so we juste delete this loan.
+            LoanLibrary.getInstance().deleteLoanByLoanId(previousLoan.getId());
+        }
+        
+		BookLibrary.getInstance().updateOrAddBook(book);
+
         finish();
     }
 
@@ -319,14 +400,14 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
                 ((TextView) findViewById(R.id.bookTitle)).setText(output.getTitle());
                 ((TextView) findViewById(R.id.bookISBN)).setText(output.getIsbn());
-                ((TextView) findViewById(R.id.bookAuthor)).setText(LinkTablesDataSource.authorsToString(output.getAuthors()));
+                ((MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted)).setText(LinkTablesDataSource.authorsToString(output.getAuthors()));
                 ((TextView) findViewById(R.id.bookDescription)).setText(output.getDescription());
                 ((TextView) findViewById(R.id.bookDatePublication)).setText(output.getDatePublication());
                 Publisher p = PublisherLibrary.getInstance().getPublisherById(output.getPublisher_id());
                 String publisher_name = "";
                 if(p != null) publisher_name = p.getName();
-                ((TextView) findViewById(R.id.bookPublisher)).setText(publisher_name);
-                ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(output.getCategories()));
+                ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).setText(publisher_name);
+                ((MultiAutoCompleteTextView) findViewById(R.id.bookCategoryMultiAutoCompleted)).setText(LinkTablesDataSource.categoriesToString(output.getCategories()));
                 ((TextView) findViewById(R.id.bookNbPages)).setText(String.valueOf(output.getNbPages()));
 
                 if (output.getImage() != null) {
@@ -478,10 +559,10 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             indexBookAuthor = 0;
         }
         if(indexBookAuthor != retrievedBook.size()) {
-            ((TextView) findViewById(R.id.bookAuthor)).setText(LinkTablesDataSource.authorsToString(retrievedBook.get(indexBookAuthor).getAuthors()));
+            ((MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted)).setText(LinkTablesDataSource.authorsToString(retrievedBook.get(indexBookAuthor).getAuthors()));
             ((ImageButton) findViewById(R.id.bookAuthorImageButton)).setImageResource(bookSourcesLogos.get(indexBookAuthor));
         }else {
-            ((TextView) findViewById(R.id.bookAuthor)).setText(LinkTablesDataSource.authorsToString(book.getAuthors()));
+            ((MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted)).setText(LinkTablesDataSource.authorsToString(book.getAuthors()));
             ((ImageButton) findViewById(R.id.bookAuthorImageButton)).setImageResource(bookSourcesLogos.get(indexBookAuthor));
         }
     }
@@ -509,12 +590,12 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         if(indexBookPublisher != retrievedBook.size()) {
             Publisher p = PublisherLibrary.getInstance().getPublisherById(retrievedBook.get(indexBookPublisher).getPublisher_id());
             if(p != null) publisher_name = p.getName();
-            ((TextView) findViewById(R.id.bookPublisher)).setText(publisher_name);
+            ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).setText(publisher_name);
             ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(indexBookPublisher));
         }else {
             Publisher p = PublisherLibrary.getInstance().getPublisherById(book.getPublisher_id());
             if(p != null) publisher_name = p.getName();
-            ((TextView) findViewById(R.id.bookPublisher)).setText(publisher_name);
+            ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).setText(publisher_name);
             ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(indexBookPublisher));
         }
     }
@@ -525,10 +606,10 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             indexBookCategory = 0;
         }
         if(indexBookCategory != retrievedBook.size()) {
-            ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(retrievedBook.get(indexBookCategory).getCategories()));
+            ((MultiAutoCompleteTextView) findViewById(R.id.bookCategoryMultiAutoCompleted)).setText(LinkTablesDataSource.categoriesToString(retrievedBook.get(indexBookCategory).getCategories()));
             ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
         }else {
-            ((TextView) findViewById(R.id.bookCategorie)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
+            ((MultiAutoCompleteTextView) findViewById(R.id.bookCategoryMultiAutoCompleted)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
             ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
         }
     }
@@ -561,7 +642,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
     public void lockAuthorSource(View view) {
         View button = findViewById(R.id.bookAuthorImageButton);
         button.setEnabled(!button.isEnabled());
-        findViewById(R.id.bookAuthor).setEnabled(findViewById(R.id.bookAuthor).isEnabled());
+        findViewById(R.id.bookAuthorMultiAutoCompleted).setEnabled(findViewById(R.id.bookAuthorMultiAutoCompleted).isEnabled());
         if (button.isEnabled()) {
             ((ImageButton) findViewById(R.id.bookAuthorImageButtonLock)).setImageResource(R.drawable.unlock);
         } else {
@@ -605,7 +686,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
     public void lockPublisherSource(View view) {
         View button = findViewById(R.id.bookPublisherImageButton);
         button.setEnabled(!button.isEnabled());
-        findViewById(R.id.bookPublisher).setEnabled(findViewById(R.id.bookPublisher).isEnabled());
+        findViewById(R.id.bookPublisherAutoCompleted).setEnabled(findViewById(R.id.bookPublisherAutoCompleted).isEnabled());
         if (button.isEnabled()) {
             ((ImageButton) findViewById(R.id.bookPublisherImageButtonLock)).setImageResource(R.drawable.unlock);
         } else {
@@ -616,7 +697,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
     public void lockCategorySource(View view) {
         View button = findViewById(R.id.bookCategoryImageButton);
         button.setEnabled(!button.isEnabled());
-        findViewById(R.id.bookCategorie).setEnabled(findViewById(R.id.bookCategorie).isEnabled());
+        findViewById(R.id.bookCategoryMultiAutoCompleted).setEnabled(findViewById(R.id.bookCategoryMultiAutoCompleted).isEnabled());
         if (button.isEnabled()) {
             ((ImageButton) findViewById(R.id.bookCategoryImageButtonLock)).setImageResource(R.drawable.unlock);
         } else {
@@ -633,6 +714,109 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         } else {
             ((ImageButton) findViewById(R.id.bookNbPagesImageButtonLock)).setImageResource(R.drawable.lock);
         }
+    }
+
+    private void initFriendSpinner(){
+        View view = this.findViewById(android.R.id.content).getRootView();
+        ArrayList<String> friendSpinnerString = new ArrayList<String>();
+        List<Friend> friends = FriendLibrary.getInstance().getFriendList();
+        for(Friend friend : friends){
+            friendSpinnerString.add(friend.getFirstName() + " " + friend.getLastName());
+        }
+
+        Spinner spinnerFriend = (Spinner)view.findViewById(R.id.friendSpinner);
+        spinnerArrayAdapterFriend = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, friendSpinnerString);
+        spinnerArrayAdapterFriend.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFriend.setAdapter(spinnerArrayAdapterFriend);
+    }
+
+    //method to feed the auto completed box with our publishers (to do autocompletion of course)
+    private void initPublisherAutoCompletion(){
+        View view = this.findViewById(android.R.id.content).getRootView();
+        ArrayList<String> publisherAutocompleteArrayString = new ArrayList<String>();
+        List<Publisher> publishers = PublisherLibrary.getInstance().getPublisherList();
+        for(Publisher publisher : publishers){
+            publisherAutocompleteArrayString.add(publisher.getName());
+        }
+        AutoCompleteTextView publisherAutoComplete = (AutoCompleteTextView)view.findViewById(R.id.bookPublisherAutoCompleted);
+        autocompetedArrayAdapterPublisher = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_dropdown_item_1line, publisherAutocompleteArrayString);
+
+        publisherAutoComplete.setAdapter(autocompetedArrayAdapterPublisher);
+    }
+
+    //method to feed the multi auto completed box with our authors (to do autocompletion of course)
+    private void initAuthorsMultiAutoCompletion(){
+        View view = this.findViewById(android.R.id.content).getRootView();
+        ArrayList<String> authorsAutocompleteArrayString = new ArrayList<String>();
+        List<Author> authors = AuthorLibrary.getInstance().getAuthorList();
+        for(Author author : authors){
+            authorsAutocompleteArrayString.add(author.getName());
+        }
+        MultiAutoCompleteTextView authorsMultiAutoComplete = (MultiAutoCompleteTextView )view.findViewById(R.id.bookAuthorMultiAutoCompleted);
+        multiAutocompetedArrayAdapterAuthor = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_dropdown_item_1line, authorsAutocompleteArrayString);
+
+        authorsMultiAutoComplete.setAdapter(multiAutocompetedArrayAdapterAuthor);
+        authorsMultiAutoComplete.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+    }
+
+    //method to feed the auto completed box with our categories (to do autocompletion of course)
+    private void initCategoriesMultiAutoCompletion(){
+        View view = this.findViewById(android.R.id.content).getRootView();
+        ArrayList<String> categoriesAutocompleteArrayString = new ArrayList<String>();
+        List<Category> categories = CategoryLibrary.getInstance().getCategoryList();
+        for(Category category : categories){
+            categoriesAutocompleteArrayString.add(category.getName());
+        }
+        MultiAutoCompleteTextView categoriesMultiAutoComplete = (MultiAutoCompleteTextView )view.findViewById(R.id.bookCategoryMultiAutoCompleted);
+        multiAutocompetedArrayAdapterCategory = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_dropdown_item_1line, categoriesAutocompleteArrayString);
+
+        categoriesMultiAutoComplete.setAdapter(multiAutocompetedArrayAdapterCategory);
+        categoriesMultiAutoComplete.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+    }
+
+    public void showTimePickerDialogForDateLoan(View v) {
+        //before to call the diaglog you have to define which date you gonna create (for example reminder or date-loan)
+        timePickerFragment.setDateReminder((TextView) findViewById(R.id.loanDateLoanTextViewTime));
+        timePickerFragment.show(getFragmentManager(), "timePicker");
+
+    }
+
+    public void showTimePickerDialogForDateReminder(View v) {
+        //before to call the diaglog you have to define which date you gonna create (for example reminder or date-loan)
+        timePickerFragment.setDateReminder((TextView) findViewById(R.id.loanDateReminderTextViewTime));
+        timePickerFragment.show(getFragmentManager(), "timePicker");
+
+    }
+
+    public void showDatePickerDialogForDateLoan(View v) {
+        //before to call the diaglog you have to define which date you gonna create (for example reminder or date-loan)
+        datePickerFragment.setDateLoan((TextView) findViewById(R.id.loanDateLoanTextViewDate));
+        datePickerFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public void showDatePickerDialogForDateReminder(View v) {
+        //before to call the diaglog you have to define which date you gonna create (for example reminder or date-loan)
+        datePickerFragment.setDateReminder((TextView) findViewById(R.id.loanDateReminderTextViewDate));
+        datePickerFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public Date createOneDateWithDateAndTime(Date date, Date time){
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(date);
+        Calendar timecal = Calendar.getInstance();
+        timecal.setTime(time);
+
+        cal.set(Calendar.HOUR_OF_DAY, timecal.get(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE, timecal.get(Calendar.MINUTE));
+        Date finalDate = cal.getTime();
+        return finalDate;
+
     }
 
     private void initTextViewListener() {
@@ -690,7 +874,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             }
         });
 
-        ((TextView) findViewById(R.id.bookAuthor)).addTextChangedListener(new TextWatcher() {
+        ((MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted)).addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -701,7 +885,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = ((EditText) findViewById(R.id.bookAuthor)).getText().toString();
+                String text = ((MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted)).getText().toString();
                 boolean equal = false;
                 for (int i = 0; i < retrievedBook.size(); i++) {
                     if (text.equals(LinkTablesDataSource.authorsToString(retrievedBook.get(i).getAuthors()))) {
@@ -712,7 +896,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookAuthor = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookAuthorImageButton)).setImageResource(bookSourcesLogos.get(indexBookAuthor));
-                    book.setAuthors(LinkTablesDataSource.getAuthorsFromEditText((EditText) findViewById(R.id.bookAuthor)));
+                    book.setAuthors(LinkTablesDataSource.getAuthorsFromEditText((EditText) findViewById(R.id.bookAuthorMultiAutoCompleted)));
                 }
             }
         });
@@ -744,7 +928,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             }
         });
 
-        ((TextView) findViewById(R.id.bookCategorie)).addTextChangedListener(new TextWatcher() {
+        ((MultiAutoCompleteTextView) findViewById(R.id.bookCategoryMultiAutoCompleted)).addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -755,7 +939,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = ((EditText) findViewById(R.id.bookCategorie)).getText().toString();
+                String text = ((MultiAutoCompleteTextView) findViewById(R.id.bookCategoryMultiAutoCompleted)).getText().toString();
                 boolean equal = false;
                 for (int i = 0; i < retrievedBook.size(); i++) {
                     if (text.equals(LinkTablesDataSource.categoriesToString(retrievedBook.get(i).getCategories()))) {
@@ -798,7 +982,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             }
         });
 
-        ((TextView) findViewById(R.id.bookPublisher)).addTextChangedListener(new TextWatcher() {
+        ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -809,7 +993,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = ((EditText) findViewById(R.id.bookPublisher)).getText().toString();
+                String text = ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).getText().toString();
                 boolean equal = false;
                 for (int i = 0; i < retrievedBook.size(); i++) {
                     if (text.equals(PublisherLibrary.getInstance().getPublisherById(retrievedBook.get(i).getPublisher_id()).getName())) {

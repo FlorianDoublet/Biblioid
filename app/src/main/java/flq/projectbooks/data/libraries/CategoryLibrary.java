@@ -52,7 +52,7 @@ public class CategoryLibrary {
         return new Category();
     }
 
-    public void deleteBook(Category category) {
+    public void deleteCategory(Category category) {
         categoryList.remove(category);
     }
 

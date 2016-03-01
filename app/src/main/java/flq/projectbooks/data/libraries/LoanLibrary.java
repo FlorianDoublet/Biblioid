@@ -39,7 +39,7 @@ public class LoanLibrary implements Serializable {
     public Loan Add(Loan loan) {
         loanList.add(loan);
         datasource.open();
-        Loan new_loan = datasource.createLoan(loan.getDateLoan().toString(), loan.getDateReminder().toString(), loan.getBook_id(), loan.getFriend_id()); //Add loan to database
+        Loan new_loan = datasource.createLoan(loan.dateToString(loan.getDateLoan()), loan.dateToString(loan.getDateReminder()), loan.getBook_id(), loan.getFriend_id()); //Add loan to database
         loanList = datasource.getAllLoans(); //Update loans
         datasource.close();
         return new_loan;
@@ -53,7 +53,7 @@ public class LoanLibrary implements Serializable {
         return new Loan();
     }
 
-    public void deleteBook(Loan loan) {
+    public void deleteLoan(Loan loan) {
         loanList.remove(loan);
     }
 
@@ -67,7 +67,17 @@ public class LoanLibrary implements Serializable {
     }
 
     //get an loan with his book id
-    public Loan getLoanByBookAndFriend(long book_id, long friend_id) {
+    public Loan getLoanByBookId(long book_id) {
+        for (Loan loan : loanList) {
+            if (loan.getBook_id() == book_id) {
+                return loan;
+            }
+        }
+        return null;
+    }
+
+    //get an loan with his book id and friend id
+    public Loan getLoanByBookAndFriendId(long book_id, long friend_id) {
         for (Loan loan : loanList) {
             if (loan.getBook_id() == book_id && loan.getFriend_id() == friend_id) {
                 return loan;
@@ -104,6 +114,36 @@ public class LoanLibrary implements Serializable {
         }
     }
 
+    public void deleteLoanByLoanId(long loan_id) {
+            Loan temp = this.getLoanById(loan_id);
+            datasource.open();
+            datasource.deleteLoan(temp);
+            datasource.close();
+
+            //Remove from local list
+            loanList.remove(temp);
+    }
+
+    //method used to delete a loan by a book id
+    public void deleteLoanByBookId(long book_id){
+        Loan temp = null;
+        for(Loan loan : loanList){
+            if(loan.getBook_id() == book_id){
+                temp = loan;
+                break;
+            }
+        }
+        if(temp != null){
+            datasource.open();
+            datasource.deleteLoan(temp);
+            datasource.close();
+
+            //Remove from local list
+            loanList.remove(temp);
+        }
+    }
+
+
     public void updateLocalList() {
         datasource.open();
         loanList = datasource.getAllLoans();
@@ -124,7 +164,7 @@ public class LoanLibrary implements Serializable {
             }
         } else {
             datasource.open();
-            id = datasource.createLoan(loan.getDateLoan().toString(), loan.getDateReminder().toString(), loan.getBook_id(), loan.getFriend_id()).getId(); //Add loan to database
+            id = datasource.createLoan(loan.dateToString(loan.getDateLoan()), loan.dateToString(loan.getDateReminder()), loan.getBook_id(), loan.getFriend_id()).getId(); //Add loan to database
             loanList = datasource.getAllLoans(); //Update loans
             datasource.close();
         }

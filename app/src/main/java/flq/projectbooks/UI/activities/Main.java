@@ -24,11 +24,13 @@ import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import flq.projectbooks.R;
 import flq.projectbooks.UI.fragments.NoticeDialogFragment;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
+import flq.projectbooks.data.Loan;
 import flq.projectbooks.data.libraries.AuthorLibrary;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
@@ -37,6 +39,7 @@ import flq.projectbooks.data.libraries.FriendLibrary;
 import flq.projectbooks.data.libraries.LoanLibrary;
 import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.MySQLiteHelper;
+import flq.projectbooks.utilities.BiblioidBroadcastReceiver;
 import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
 
@@ -45,6 +48,7 @@ public class Main extends ActionBarActivity  {
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
     public final static String GIVE_BOOK_WITH_ISBN = "flq.GIVE_BOOK_WITH_ISBN";
+    public final static String ASK_NEW_FRIEND = "flq.ASK_NEW_FRIEND";
 
 
     protected BookLibrary books;
@@ -61,6 +65,10 @@ public class Main extends ActionBarActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*Loan loan = new Loan();
+        Date d = loan.stringToLoanDate("01/01/2012 10:48");
+        String s = loan.dateToString(d);*/
 
         //this.deleteDatabase("books.db"); //Effacer la bdd en cas de bug ou en cas de conflit de versions.
         authors = new AuthorLibrary(this);
@@ -100,6 +108,7 @@ public class Main extends ActionBarActivity  {
         BookFilter.spinnerArrayPossession.add("Prété");
         BookFilter.spinnerArrayPossession.add("Vendu");
         BookFilter.spinnerArrayPossession.add("Perdu");
+        BiblioidBroadcastReceiver.runDateReminderCheckerEveryMinute(this);
 
     }
 
@@ -136,6 +145,12 @@ public class Main extends ActionBarActivity  {
         Intent intent = new Intent(this, CreateBook.class);
         intent.putExtra(GIVE_BOOK_WITH_ISBN, ISBN);
         intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
+        startActivity(intent);
+    }
+
+    public void openCreateFriendActivity(View view) {
+        Intent intent = new Intent(this, CreateFriend.class);
+        intent.putExtra(ASK_NEW_FRIEND, friends.getNewFriend());
         startActivity(intent);
     }
 

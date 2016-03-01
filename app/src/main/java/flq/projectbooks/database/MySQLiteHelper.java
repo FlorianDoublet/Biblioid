@@ -75,8 +75,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FRIEND_LASTNAME = "lastname";
     public static final String COLUMN_FRIEND_CLOUDLINK = "cloudlink";
     //TABLE_LOANS column names
-    public static final String COLUMLN_LOAN_DATELOAN = "dateloan";
-    public static final String COLUMLN_LOAN_DATEREMIDER = "dateremider";
+    public static final String COLUMN_LOAN_DATELOAN = "dateloan";
+    public static final String COLUMN_LOAN_DATEREMIDER = "dateremider";
     //TABLE_BOOK and TABLE_LOAN column names
     public static final String COLUMN_FRIEND_ID = "friend_id";
 
@@ -199,8 +199,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE_LOAN = "create table "
             + TABLE_LOANS + "("
             + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMLN_LOAN_DATELOAN + " text not null, "
-            + COLUMLN_LOAN_DATEREMIDER + " text, "
+            + COLUMN_LOAN_DATELOAN + " text not null, "
+            + COLUMN_LOAN_DATEREMIDER + " text, "
             + COLUMN_BOOK_ID + " integer, "
             + COLUMN_FRIEND_ID + " integer ,"
             + " FOREIGN KEY (" + COLUMN_BOOK_ID + ") REFERENCES " + TABLE_BOOKS + "(" + COLUMN_ID + "),"

@@ -162,7 +162,7 @@ public class LinkTablesDataSource {
         return LinkTablesDataSource.cursorIsntEmpty(cursor);
     }
 
-    public static void feedBookWithAuthor(Book book, EditText author) {
+    public static long feedBookWithAuthor(Book book, EditText author) {
         long book_id = BookLibrary.getInstance().updateOrAddBook(book);
         //manually set the id to the book, to use it later to update this book
         book.setId(book_id);
@@ -194,10 +194,11 @@ public class LinkTablesDataSource {
                 BookLibrary.getInstance().addBooksAuthorsLink(book_id, author_a.getId());
             }
         }
+        return book_id;
 
     }
 
-    public static void feedBookWithCategories(Book book, EditText category) {
+    public static long feedBookWithCategories(Book book, EditText category) {
         long book_id = BookLibrary.getInstance().updateOrAddBook(book);
         //manually set the id to the book, to use it later to update this book
         book.setId(book_id);
@@ -229,10 +230,11 @@ public class LinkTablesDataSource {
                 BookLibrary.getInstance().addBooksCategoriesLink(book_id, category_a.getId());
             }
         }
+        return book_id;
 
     }
 
-    public static void feedBookFilterWithAuthors(BookFilter filter, EditText author) {
+    public static long feedBookFilterWithAuthors(BookFilter filter, EditText author) {
         long book_filter_id = BookFilterCatalog.getInstance().updateOrAddFilter(filter);
         filter.setId(book_filter_id);
 
@@ -262,9 +264,10 @@ public class LinkTablesDataSource {
                 BookFilterCatalog.getInstance().addBookFiltersAuthorsLink(book_filter_id, author_a.getId());
             }
         }
+        return book_filter_id;
     }
 
-    public static void feedBookFilterWithCategories(BookFilter filter, EditText category) {
+    public static long feedBookFilterWithCategories(BookFilter filter, EditText category) {
         long book_filter_id = BookFilterCatalog.getInstance().updateOrAddFilter(filter);
         filter.setId(book_filter_id);
 
@@ -294,16 +297,19 @@ public class LinkTablesDataSource {
                 BookFilterCatalog.getInstance().addBookFiltersCategoriesLink(book_filter_id, category_a.getId());
             }
         }
+        return book_filter_id;
     }
 
     //Get authors from string optionally create new authors
     public static List<Author> getAuthorsFromString(String author){
+        author = author.trim();
         List<Author> authors = new ArrayList<Author>();
         if (!author.equals("")) {
-            String[] authors_s = author.split(",\\s");
+            String[] authors_s = author.split(",");
 
             //check if the author already existe, else add it in the database
             for (String author_name : authors_s) {
+                author_name = author_name.trim();
                 Author a = AuthorLibrary.getInstance().getAuthorByName(author_name);
                 if (a != null) {
                     authors.add(a);
@@ -323,13 +329,14 @@ public class LinkTablesDataSource {
 
     //Get categories from editText optionally create new category
     public static List<Category> getCategoriesFromString(String category) {
-
+        category = category.trim();
         List<Category> categories = new ArrayList<Category>();
         if (!category.equals("")) {
-            String[] categories_s = category.split(",\\s");
+            String[] categories_s = category.split(",");
 
             //check if the category already exist, else add it in the database
             for (String category_name : categories_s) {
+                category_name = category_name.trim();
                 Category a = CategoryLibrary.getInstance().getCategoryByName(category_name);
                 if (a != null) {
                     categories.add(a);
@@ -405,16 +412,16 @@ public class LinkTablesDataSource {
 
     //Method to transform categories of a book into a simple string
     public static String categoriesToString(List<Category> categories) {
-        String author_s = "";
+        String categorie_s = "";
         if (categories != null) {
             for (int i = 0; i < categories.size(); i++) {
                 if (i == 0) {
-                    author_s += categories.get(i).getName();
+                    categorie_s += categories.get(i).getName();
                 } else
-                    author_s += ", " + categories.get(i).getName();
+                    categorie_s += ", " + categories.get(i).getName();
             }
         }
-        return author_s;
+        return categorie_s;
     }
 
 }

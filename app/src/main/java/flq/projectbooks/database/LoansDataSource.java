@@ -6,14 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import flq.projectbooks.data.Loan;
 
@@ -24,9 +21,10 @@ public class LoansDataSource {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
     private String[] allColumns = {MySQLiteHelper.COLUMN_ID,
-            MySQLiteHelper.COLUMLN_LOAN_DATELOAN,
-            MySQLiteHelper.COLUMLN_LOAN_DATEREMIDER,
+            MySQLiteHelper.COLUMN_LOAN_DATELOAN,
+            MySQLiteHelper.COLUMN_LOAN_DATEREMIDER,
             MySQLiteHelper.COLUMN_BOOK_ID,
+            MySQLiteHelper.COLUMN_FRIEND_ID
             };
 
     public LoansDataSource(Context context) {
@@ -44,8 +42,8 @@ public class LoansDataSource {
     public Loan createLoan(String dateLoan, String dateRemider, long book_id, long friend_id) {
         ContentValues values = new ContentValues();
 
-        values.put(MySQLiteHelper.COLUMLN_LOAN_DATELOAN, dateLoan);
-        values.put(MySQLiteHelper.COLUMLN_LOAN_DATEREMIDER, dateRemider);
+        values.put(MySQLiteHelper.COLUMN_LOAN_DATELOAN, dateLoan);
+        values.put(MySQLiteHelper.COLUMN_LOAN_DATEREMIDER, dateRemider);
         values.put(MySQLiteHelper.COLUMN_BOOK_ID, book_id);
         values.put(MySQLiteHelper.COLUMN_FRIEND_ID, friend_id);
 
@@ -64,8 +62,8 @@ public class LoansDataSource {
     public int updateLoan(Loan loan) {
         ContentValues values = new ContentValues();
 
-        values.put(MySQLiteHelper.COLUMLN_LOAN_DATELOAN, loan.getDateLoan().toString());
-        values.put(MySQLiteHelper.COLUMLN_LOAN_DATEREMIDER, loan.getDateReminder().toString());
+        values.put(MySQLiteHelper.COLUMN_LOAN_DATELOAN, loan.dateToString(loan.getDateLoan()));
+        values.put(MySQLiteHelper.COLUMN_LOAN_DATEREMIDER, loan.dateToString(loan.getDateReminder()));
         values.put(MySQLiteHelper.COLUMN_BOOK_ID, loan.getBook_id());
         values.put(MySQLiteHelper.COLUMN_FRIEND_ID, loan.getFriend_id());
 
@@ -101,17 +99,12 @@ public class LoansDataSource {
     private Loan cursorToLoan(Cursor cursor) {
         Loan loan = new Loan();
         loan.setId(cursor.getLong(0));
-        DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        try {
-            Date date = format.parse(cursor.getString(0));
-            loan.setDateLoan(date);
-            Date date2 = format.parse(cursor.getString(1));
-            loan.setDateLoan(date2);
-        } catch (Exception e){
 
-        }
-        loan.setBook_id(cursor.getLong(2));
-        loan.setFriend_id(cursor.getLong(3));
+        loan.setDateLoan(loan.stringToLoanDate(cursor.getString(1)));
+        loan.setDateReminder(loan.stringToLoanDate(cursor.getString(2)));
+
+        loan.setBook_id(cursor.getLong(3));
+        loan.setFriend_id(cursor.getLong(4));
 
         cursor.close();
         return loan;

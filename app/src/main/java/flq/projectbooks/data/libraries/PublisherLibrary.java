@@ -52,7 +52,7 @@ public class PublisherLibrary implements Serializable {
         return new Publisher();
     }
 
-    public void deleteBook(Publisher publisher) {
+    public void deletePublisher(Publisher publisher) {
         publisherList.remove(publisher);
     }
 
