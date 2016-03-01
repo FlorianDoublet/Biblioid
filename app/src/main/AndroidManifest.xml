@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -39,6 +42,9 @@
             android:name=".UI.activities.CreateFilter"
             android:label="@string/title_activity_create_filter" />
         <activity
+            android:name=".UI.activities.CreateFriend"
+            android:label="@string/title_activity_create_friend" />
+        <activity
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
             android:label="@string/app_name"
             android:theme="@style/FilePickerTheme">
@@ -49,6 +55,23 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.activities.ImportExport"></activity>
+
+        <receiver
+            android:enabled="true"
+            android:name="flq.projectbooks.utilities.BiblioidBroadcastReceiver"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+
+        </receiver>
+        <service
+            android:icon="@drawable/amazonlogo"
+            android:name="flq.projectbooks.utilities.DateReminderCheckService"
+            android:label="@string/service_name"
+            />
+
     </application>
+
 
 </manifest>

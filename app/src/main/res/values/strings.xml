@@ -4,7 +4,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_create_book">Création d\'un livre</string>
     <string name="bookTitle">Titre :</string>
-    <string name="bookAuthor">Auteur :</string>
+    <string name="bookAuthor">Auteur(s) :</string>
     <string name="bookISBN">ISBN :</string>
     <string name="btnOK">OK</string>
     <string name="openCreateBookButton">Création d\'un nouveau livre</string>
@@ -35,8 +35,8 @@
     <string name="nameFilter">Nom du filtre:</string>
     <string name="update_filter">Modifier le filtre</string>
     <string name="bookNbPages">Nombre de pages :</string>
-    <string name="bookPublisher">Publisher :</string>
-    <string name="bookCategorie">Genre :</string>
+    <string name="bookPublisher">Editeur :</string>
+    <string name="bookCategorie">Genre(s) :</string>
     <string name="bookCreationDatePublication">Date de publication :</string>
     <string name="btnModif">Modifier</string>
     <string name="seeCover">Voir la couverture</string>
@@ -49,4 +49,14 @@
     <string name="lastCloudSize">Dernière sauvegarde : xx ko</string>
     <string name="exportOnCloud">Creation backup sur le cloud</string>
     <string name="importFromCloud">Lecture backup sur le cloud</string>
+    <string name="friendFirstName">Prénom / Surnom :</string>
+    <string name="friendLastName">Nom (optionel) :</string>
+    <string name="friendCloudLink">Lien cloud :</string>
+    <string name="title_activity_create_friend">Création d\'un ami</string>
+    <string name="loanCheckBox">Loan :</string>
+    <string name="friendSpinner">friend :</string>
+    <string name="loanDateLoan">Date of the loan</string>
+    <string name="loanDateReminder">Reminder for the loan</string>
+    <string name="service_name">Service to notify when a date reminder is achieved</string>
+    <string name="loanDateFormat">JJ/MM/AAAA hh:mm</string>
 </resources>

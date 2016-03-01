@@ -55,6 +55,12 @@
                 android:layout_gravity="center_horizontal"
                 android:onClick="openImportExportActivity"
                 android:text="Import / Export" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:onClick="openCreateFriendActivity"
+                android:text="Create Friend" />
         </TableLayout>
     </ScrollView>
 </LinearLayout>

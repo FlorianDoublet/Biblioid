@@ -3,7 +3,10 @@ package flq.projectbooks.data.libraries;
 import android.content.Context;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import flq.projectbooks.data.Friend;
@@ -52,7 +55,7 @@ public class FriendLibrary implements Serializable{
         return new Friend();
     }
 
-    public void deleteBook(Friend friend) {
+    public void deleteFriend(Friend friend) {
         friendList.remove(friend);
     }
 
@@ -72,6 +75,31 @@ public class FriendLibrary implements Serializable{
                 return friend;
             }
         }
+        return null;
+    }
+
+    //get an friend with his firstName and lastName in the same string
+    public Friend getFriendByFirstNameAndLastName(String completeName) {
+        String[] splitedName = completeName.split("\\s+", 2);
+        List<String> splitedNameList = new ArrayList<String>();
+        splitedNameList.addAll(Arrays.asList(splitedName));
+
+        splitedNameList.removeAll(Arrays.asList("", null));
+
+        if(splitedNameList.size() == 1){
+            for (Friend friend : friendList) {
+                if (friend.getFirstName().equals(splitedNameList.get(0))) {
+                    return friend;
+                }
+            }
+        } else {
+            for (Friend friend : friendList) {
+                if (friend.getFirstName().equals(splitedNameList.get(0)) && friend.getLastName().equals(splitedNameList.get(1))) {
+                    return friend;
+                }
+            }
+        }
+
         return null;
     }
 
