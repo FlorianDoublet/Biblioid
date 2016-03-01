@@ -67,7 +67,7 @@
         </receiver>
         <service
             android:icon="@drawable/amazonlogo"
-            android:name="flq.projectbooks.utilities.DateReminderCheckerService"
+            android:name="flq.projectbooks.utilities.DateReminderCheckService"
             android:label="@string/service_name"
             />
 
