@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import flq.projectbooks.R;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Category;
@@ -37,6 +38,7 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
 
     public GetBookInfoGoogleBooksAPI(Context context) {
         super(context);
+        sourceLogoName = R.drawable.googlelogo;
     }
 
     @Override
@@ -149,7 +151,7 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
                 handler.post(new Runnable() {
 
                     public void run() {
-                        Toast.makeText(mContext, "Aucun livre trouvé.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Source Google : Aucun livre trouvé.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

@@ -96,6 +96,7 @@ public class FriendsDataSource {
         friend.setLastName(cursor.getString(2));
         friend.setCloudLink(cursor.getString(3));
 
+        cursor.close();
         return friend;
     }
 }

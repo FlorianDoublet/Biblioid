@@ -28,7 +28,15 @@ public class BookFiltersDataSource {
             MySQLiteHelper.COLUMN_DATE_PUBLICATION_MAX,
             MySQLiteHelper.COLUMN_PUBLISHER_ID,
             MySQLiteHelper.COLUMN_NB_PAGES_MIN,
-            MySQLiteHelper.COLUMN_NB_PAGES_MAX};
+            MySQLiteHelper.COLUMN_NB_PAGES_MAX,
+            MySQLiteHelper.COLUMN_ADVANCEMENT_STATE,
+            MySQLiteHelper.COLUMN_RATING_MIN,
+            MySQLiteHelper.COLUMN_RATING_MAX,
+            MySQLiteHelper.COLUMN_ON_WISH_LIST,
+            MySQLiteHelper.COLUMN_ON_FAVORITE_LIST,
+            MySQLiteHelper.COLUMN_BOOK_STATE,
+            MySQLiteHelper.COLUMN_POSSESSION_STATE,
+            MySQLiteHelper.COLUMN_COMMENT};
 
     public BookFiltersDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -42,7 +50,7 @@ public class BookFiltersDataSource {
         dbHelper.close();
     }
 
-    public BookFilter createFilter(String name, String title, String isbn, String datePublicationMin, String datePublicationMax, long publisher_id, int nbPagesMin, int nbPagesMax) {
+    public BookFilter createFilter(String name, String title, String isbn, String datePublicationMin, String datePublicationMax, long publisher_id, int nbPagesMin, int nbPagesMax, String advancementState, int ratingMin, int ratingMax, int onWishList, int onFavoriteList, int bookState, int possessionState, String comment) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_FILTER_NAME, name);
@@ -53,6 +61,14 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, publisher_id);
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MIN, nbPagesMin);
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MAX, nbPagesMax);
+        values.put(MySQLiteHelper.COLUMN_ADVANCEMENT_STATE, advancementState);
+        values.put(MySQLiteHelper.COLUMN_RATING_MIN, ratingMin);
+        values.put(MySQLiteHelper.COLUMN_RATING_MAX, ratingMax);
+        values.put(MySQLiteHelper.COLUMN_ON_WISH_LIST, onWishList);
+        values.put(MySQLiteHelper.COLUMN_ON_FAVORITE_LIST, onFavoriteList);
+        values.put(MySQLiteHelper.COLUMN_BOOK_STATE, bookState);
+        values.put(MySQLiteHelper.COLUMN_POSSESSION_STATE, possessionState);
+        values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
 
         long insertId = database.insert(MySQLiteHelper.TABLE_BOOK_FILTERS, null,
                 values);
@@ -76,6 +92,15 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, filter.getPublisher_id());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MIN, filter.getNbPagesMin());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MAX, filter.getNbPagesMax());
+
+        values.put(MySQLiteHelper.COLUMN_ADVANCEMENT_STATE, filter.getAdvancementState());
+        values.put(MySQLiteHelper.COLUMN_RATING_MIN, filter.getRatingMin());
+        values.put(MySQLiteHelper.COLUMN_RATING_MAX, filter.getRatingMax());
+        values.put(MySQLiteHelper.COLUMN_ON_WISH_LIST, filter.getOnWishList());
+        values.put(MySQLiteHelper.COLUMN_ON_FAVORITE_LIST, filter.getOnFavoriteList());
+        values.put(MySQLiteHelper.COLUMN_BOOK_STATE, filter.getBookState());
+        values.put(MySQLiteHelper.COLUMN_POSSESSION_STATE, filter.getPossessionState());
+        values.put(MySQLiteHelper.COLUMN_COMMENT, filter.getComment());
         return database.update(MySQLiteHelper.TABLE_BOOK_FILTERS, values, MySQLiteHelper.COLUMN_ID + " = " + filter.getId(), null);
     }
 
@@ -120,6 +145,16 @@ public class BookFiltersDataSource {
         filter.setDatePublications(cursor.getString(4), cursor.getString(5));
         filter.setPublisher_id(cursor.getLong(6));
         filter.setNbPages(cursor.getInt(7), cursor.getInt(8));
+
+        filter.setAdvancementState(cursor.getString(9));
+        filter.setRatingMin(cursor.getInt(10));
+        filter.setRatingMax(cursor.getInt(11));
+        filter.setOnWishList(cursor.getInt(12));
+        filter.setOnFavoriteList(cursor.getInt(13));
+        filter.setBookState(cursor.getInt(14));
+        filter.setPossessionState(cursor.getInt(15));
+        filter.setComment(cursor.getString(16));
+
         return filter;
     }
 

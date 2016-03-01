@@ -41,12 +41,21 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_DATE_PUBLICATION = "datePublication";
     public static final String COLUMN_NB_PAGES = "nbPages";
+    public static final String COLUMN_ADVANCEMENT_STATE = "advancementState";
+    public static final String COLUMN_RATING = "rating";
+    public static final String COLUMN_ON_WISH_LIST = "onWishList";
+    public static final String COLUMN_ON_FAVORITE_LIST = "onFavoriteList";
+    public static final String COLUMN_BOOK_STATE = "bookState";
+    public static final String COLUMN_POSSESSION_STATE = "possessionState";
+    public static final String COLUMN_COMMENT = "comment";
     //TABLE_BOOK_FILTERS
     public static final String COLUMN_FILTER_NAME = "name";
     public static final String COLUMN_DATE_PUBLICATION_MIN = "datePublicationMin";
     public static final String COLUMN_DATE_PUBLICATION_MAX = "datePublicationMax";
     public static final String COLUMN_NB_PAGES_MIN = "nbPagesMin";
     public static final String COLUMN_NB_PAGES_MAX = "nbPagesMax";
+    public static final String COLUMN_RATING_MIN = "ratingMin";
+    public static final String COLUMN_RATING_MAX = "ratingMax";
     //TABLE_BOOKS - TABLE_BOOK_FILTERS column names
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_DESCRIPTION = "description";
@@ -89,6 +98,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_NB_PAGES + " integer ,"
             + COLUMN_PUBLISHER_ID + " integer,"
             + COLUMN_FRIEND_ID + " integer ,"
+            + COLUMN_ADVANCEMENT_STATE + " text ,"
+            + COLUMN_RATING + " integer ,"
+            + COLUMN_ON_WISH_LIST + " integer ,"
+            + COLUMN_ON_FAVORITE_LIST + " integer,"
+            + COLUMN_BOOK_STATE + " integer ,"
+            + COLUMN_POSSESSION_STATE + " integer ,"
+            + COLUMN_COMMENT + " text ,"
             + " FOREIGN KEY (" + COLUMN_PUBLISHER_ID + ") REFERENCES " + TABLE_PUBLISHERS + "(" + COLUMN_ID + "),"
             + " FOREIGN KEY (" + COLUMN_FRIEND_ID + ") REFERENCES " + TABLE_FRIENDS + "(" + COLUMN_ID + ")"
             + " );";
@@ -107,6 +123,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_NB_PAGES_MIN + " integer ,"
             + COLUMN_NB_PAGES_MAX + " integer ,"
             + COLUMN_PUBLISHER_ID + " integer ,"
+            + COLUMN_ADVANCEMENT_STATE + " text ,"
+            + COLUMN_RATING_MIN + " integer ,"
+            + COLUMN_RATING_MAX + " integer ,"
+            + COLUMN_ON_WISH_LIST + " integer ,"
+            + COLUMN_ON_FAVORITE_LIST + " integer ,"
+            + COLUMN_BOOK_STATE + " integer ,"
+            + COLUMN_POSSESSION_STATE + " integer ,"
+            + COLUMN_COMMENT + " text ,"
             + " FOREIGN KEY (" + COLUMN_PUBLISHER_ID + ") REFERENCES " + TABLE_PUBLISHERS + "(" + COLUMN_ID + ")"
             + " );";
     //TABLE_AUTHORS create statements

@@ -18,6 +18,7 @@ public abstract class GetBookInfo extends AsyncTask<String, Void, Book> {
 
     public AsyncResponse delegate = null;
     protected Context mContext;
+    protected Integer sourceLogoName ;
 
     public GetBookInfo(Context context) {
         mContext = context;
@@ -25,11 +26,11 @@ public abstract class GetBookInfo extends AsyncTask<String, Void, Book> {
 
     @Override
     protected void onPostExecute(Book result) {
-        delegate.processFinish(result);
+        delegate.processFinish(result, sourceLogoName);
     }
 
     public interface AsyncResponse {
-        void processFinish(Book output);
+        void processFinish(Book output, Integer sourceLogoName);
     }
 
 }

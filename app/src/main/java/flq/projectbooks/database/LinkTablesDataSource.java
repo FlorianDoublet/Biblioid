@@ -30,8 +30,10 @@ public class LinkTablesDataSource {
             while (cursor.moveToNext()) {
                 authors.add(AuthorLibrary.getInstance().getAuthorById(cursor.getLong(0)));
             }
+            cursor.close();
             return authors;
         } else {
+            cursor.close();
             return null;
         }
     }
@@ -43,8 +45,10 @@ public class LinkTablesDataSource {
             while (cursor.moveToNext()) {
                 categories.add(CategoryLibrary.getInstance().getCategoryById(cursor.getLong(0)));
             }
+            cursor.close();
             return categories;
         } else {
+            cursor.close();
             return null;
         }
     }

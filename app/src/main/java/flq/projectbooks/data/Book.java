@@ -19,6 +19,16 @@ public class Book implements Serializable {
     private List<Category> categories;
     private int nbPages;
     private long friend_id;
+    private String advancementState;
+    private int rating ;
+    private int onWishList;
+    private int onFavoriteList;
+    private int bookState;
+    private int possessionState;
+    private String comment;
+
+    public static ArrayList<String> spinnerArrayState ;
+    public static ArrayList<String> spinnerArrayPossession ;
 
     public Book() {
         id = -1;
@@ -31,6 +41,13 @@ public class Book implements Serializable {
         categories = new ArrayList<>();
         nbPages = 0;
         friend_id = -1;
+        advancementState = "Not Read";
+        rating = 0;
+        onWishList = 0;
+        onFavoriteList = 0;
+        bookState = 0;
+        possessionState = 0;
+        comment = "";
     }
 
     public String getTitle() {
@@ -126,4 +143,59 @@ public class Book implements Serializable {
         return title;
     }
 
+    public String getAdvancementState() {
+        return advancementState;
+    }
+
+    public void setAdvancementState(String advancementState) {
+        this.advancementState = advancementState;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public int getBookState() {
+        return bookState;
+    }
+
+    public void setBookState(int bookState) {
+        this.bookState = bookState;
+    }
+
+    public int getOnFavoriteList() {
+        return onFavoriteList;
+    }
+
+    public void setOnFavoriteList(int onFavoriteList) {
+        this.onFavoriteList = onFavoriteList;
+    }
+
+    public int getOnWishList() {
+        return onWishList;
+    }
+
+    public void setOnWishList(int onWhishList) {
+        this.onWishList = onWhishList;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public int getPossessionState() {
+        return possessionState;
+    }
+
+    public void setPossessionState(int possessionState) {
+        this.possessionState = possessionState;
+    }
 }

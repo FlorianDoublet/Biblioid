@@ -282,6 +282,8 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             //here it mean that this book have a previous loan but we don't want it anymore so we juste delete this loan.
             LoanLibrary.getInstance().deleteLoanByLoanId(previousLoan.getId());
         }
+        
+		BookLibrary.getInstance().updateOrAddBook(book);
 
         finish();
     }
@@ -325,13 +327,10 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         bookSources.add(new GetBookInfoAmazonAPI(getApplicationContext()));
         bookSources.add(new GetBookInfoGoogleBooksAPI(getApplicationContext()));
 
-        //You have to put a logo for the source, in the same order of the sources in the bookSources list.
-        bookSourcesLogos.add(R.drawable.amazonlogo);
-        bookSourcesLogos.add(R.drawable.googlelogo);
-
-        //The last logo, which represent custom data. Keep it at the end of the list.
+        //The logo which represent custom data. Keep it at the end of the list.
         bookSourcesLogos.add(R.drawable.booklogo);
 
+        findViewById(R.id.loadISBN).setEnabled(false);
         loadFromISBN();
     }
 
@@ -342,17 +341,22 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         if (indexSourceBook < bookSources.size()) {
             bookSources.get(indexSourceBook).delegate = this;
             bookSources.get(indexSourceBook).execute(isbn.getText().toString());
+
+            indexSourceBook++;
+            loadFromISBN();
         } else {
             indexSourceBook = 0;
             isLoadingBookFromSource = false;
         }
     }
 
-    //called by methods like "loadISBN" when the process is finished
+    //called by GetBookInfo class when the process is finished
     @Override
-    public void processFinish(Book output) {
+    public void processFinish(Book output, Integer sourceLogoName) {
 
         if (output != null) {
+            bookSourcesLogos.add(bookSourcesLogos.size() - 1 , sourceLogoName);
+
             retrievedBook.add(output);
 
             if (retrievedBook.size() == 1) {
@@ -365,46 +369,30 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
                     @Override
                     public void onClick(View v) {
-                        if(findViewById(R.id.bookImageImageButton).isEnabled()) {
-                            indexBookImage = bookSourcesLogos.size()-1;
-                            ((TextView) findViewById(R.id.bookTitle)).setText(book.getTitle());
-                            ((ImageButton) findViewById(R.id.bookTitleImageButton)).setImageResource(bookSourcesLogos.get(indexBookImage));
+                        int index = bookSourcesLogos.size() - 1 ;
+                        while (indexBookImage != index && findViewById(R.id.bookImageImageButton).isEnabled()) {
+                            changeImageSource(null);
                         }
-                        if(findViewById(R.id.bookPublisherImageButton).isEnabled()) {
-                            indexBookPublisher = bookSourcesLogos.size()-1;
-                            ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).setText(PublisherLibrary.getInstance().getPublisherById(book.getPublisher_id()).getName());
-                            ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(indexBookPublisher));
+                        while (indexBookPublisher != index && findViewById(R.id.bookPublisherImageButton).isEnabled()) {
+                            changePublisherSource(null);
                         }
-                        if(findViewById(R.id.bookDatePublicationImageButton).isEnabled()) {
-                            indexBookDatePublication = bookSourcesLogos.size()-1;
-                            ((TextView) findViewById(R.id.bookDatePublication)).setText(book.getDatePublication());
-                            ((ImageButton) findViewById(R.id.bookDatePublicationImageButton)).setImageResource(bookSourcesLogos.get(indexBookDatePublication));
+                        while (indexBookDatePublication != index && findViewById(R.id.bookDatePublicationImageButton).isEnabled()) {
+                            changeDatePublicationSource(null);
                         }
-                        if(findViewById(R.id.bookNbPagesImageButton).isEnabled()) {
-                            indexBookNbPages = bookSourcesLogos.size()-1;
-                            ((TextView) findViewById(R.id.bookNbPages)).setText(String.valueOf(book.getNbPages()));
-                            ((ImageButton) findViewById(R.id.bookNbPagesImageButton)).setImageResource(bookSourcesLogos.get(indexBookNbPages));
+                        while (indexBookNbPages != index && findViewById(R.id.bookNbPagesImageButton).isEnabled()) {
+                            changeNbPagesSource(null);
                         }
-                        if(findViewById(R.id.bookTitleImageButton).isEnabled()) {
-                            indexBookTitle = bookSourcesLogos.size()-1;
-                            ((TextView) findViewById(R.id.bookTitle)).setText(book.getTitle());
-                            ((ImageButton) findViewById(R.id.bookTitleImageButton)).setImageResource(bookSourcesLogos.get(indexBookTitle));
+                        while (indexBookTitle != index && findViewById(R.id.bookTitleImageButton).isEnabled()) {
+                            changeTitleSource(null);
                         }
-                        if(findViewById(R.id.bookAuthorImageButton).isEnabled()) {
-                            indexBookAuthor = bookSourcesLogos.size()-1;
-                            ((MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted)).setText(LinkTablesDataSource.authorsToString(book.getAuthors()));
-                            ((ImageButton) findViewById(R.id.bookAuthorImageButton)).setImageResource(bookSourcesLogos.get(indexBookAuthor));
-
+                        while (indexBookAuthor != index && findViewById(R.id.bookAuthorImageButton).isEnabled()) {
+                            changeAuthorSource(null);
                         }
-                        if(findViewById(R.id.bookCategoryImageButton).isEnabled()) {
-                            indexBookCategory = bookSourcesLogos.size()-1;
-                            ((MultiAutoCompleteTextView) findViewById(R.id.bookCategoryMultiAutoCompleted)).setText(LinkTablesDataSource.categoriesToString(book.getCategories()));
-                            ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
+                        while (indexBookCategory != index && findViewById(R.id.bookCategoryImageButton).isEnabled()) {
+                            changeCategorySource(null);
                         }
-                        if(findViewById(R.id.bookDescriptionImageButton).isEnabled()) {
-                            indexBookDescription = bookSourcesLogos.size()-1;
-                            ((TextView) findViewById(R.id.bookDescription)).setText(book.getDescription());
-                            ((ImageButton) findViewById(R.id.bookDescriptionImageButton)).setImageResource(bookSourcesLogos.get(indexBookDescription));
+                        while (indexBookDescription != index && findViewById(R.id.bookDescriptionImageButton).isEnabled()) {
+                            changeDescriptionSource(null);
                         }
                     }
                 });
@@ -482,9 +470,8 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 }
             });
             ((LinearLayout) findViewById(R.id.topMenuCreateBook)).addView(btnSource);
+            indexSourceBook++;
         }
-        indexSourceBook++;
-        loadFromISBN();
     }
 
     @Override
@@ -515,10 +502,15 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             indexBookImage = 0;
         }
         if(indexBookImage != retrievedBook.size()) {
-            Bitmap imageBitmap = BitmapFactory.decodeByteArray(retrievedBook.get(indexBookImage).getImage(), 0, retrievedBook.get(indexBookImage).getImage().length);
-            book.setImage(retrievedBook.get(indexBookImage).getImage());
-            ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
-            ((ImageButton) findViewById(R.id.bookImageImageButton)).setImageResource(bookSourcesLogos.get(indexBookImage));
+            if(retrievedBook.get(indexBookImage).getImage() != null) {
+                Bitmap imageBitmap = BitmapFactory.decodeByteArray(retrievedBook.get(indexBookImage).getImage(), 0, retrievedBook.get(indexBookImage).getImage().length);
+                book.setImage(retrievedBook.get(indexBookImage).getImage());
+                ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
+                ((ImageButton) findViewById(R.id.bookImageImageButton)).setImageResource(bookSourcesLogos.get(indexBookImage));
+            }else{
+                ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
+                ((ImageButton) findViewById(R.id.bookImageImageButton)).setImageResource(bookSourcesLogos.get(indexBookImage));
+            }
         }else{
             if(photo != null){
                 book.setImage(photo);
