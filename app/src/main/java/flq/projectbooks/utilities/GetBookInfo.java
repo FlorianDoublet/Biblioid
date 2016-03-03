@@ -18,7 +18,7 @@ public abstract class GetBookInfo extends AsyncTask<String, Void, Book> {
 
     public AsyncResponse delegate = null;
     protected Context mContext;
-    protected Integer sourceLogoName ;
+    protected Integer sourceLogoName;
 
     public GetBookInfo(Context context) {
         mContext = context;

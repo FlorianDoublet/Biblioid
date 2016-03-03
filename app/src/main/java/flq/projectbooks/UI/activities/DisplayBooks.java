@@ -92,7 +92,7 @@ public class DisplayBooks extends ActionBarActivity implements BookList.OnBookSe
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.listContainer, fragmentList).commit();
-            if(menuFragment != null){
+            if (menuFragment != null) {
                 long book_id = getIntent().getLongExtra("bookId", -1);
                 OnBookSelected(BookLibrary.getInstance().getBookById(book_id));
             }

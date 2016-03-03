@@ -4,12 +4,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,9 +30,9 @@ public class DatePickerFragment extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
         Calendar c = Calendar.getInstance();
-        if(dateLoanBool && dateLoan!=null){
+        if (dateLoanBool && dateLoan != null) {
             c.setTime(dateLoan);
-        } else if(dateReminderBool && dateReminder!=null){
+        } else if (dateReminderBool && dateReminder != null) {
             c.setTime(dateReminder);
         }
 
@@ -50,70 +47,71 @@ public class DatePickerFragment extends DialogFragment
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
 
-        Calendar cal=Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
         String date_s = "";
-        if(dateLoanBool){
+        if (dateLoanBool) {
             this.dateLoan = cal.getTime();
-
         }
-        if(dateReminderBool){
+        if (dateReminderBool) {
             this.dateReminder = cal.getTime();
         }
         date_s = dateToString(cal.getTime());
         this.txtV.setText(date_s);
     }
 
-    public Date getDateLoan(){
+    public Date getDateLoan() {
         return this.dateLoan;
     }
 
-    public Date getDateReminder(){
+    public void setDateLoan(TextView txtV) {
+        this.dateLoanBool = true;
+        this.dateReminderBool = false;
+        if (txtV != null) {
+            this.txtV = txtV;
+        }
+    }
+
+    public Date getDateReminder() {
         return this.dateReminder;
     }
 
-    public void setDateLoan(TextView txtV){
-        this.dateLoanBool = true;
-        this.dateReminderBool = false;
-        this.txtV = txtV;
-    }
-
-    public void setDateReminder(TextView txtV){
+    public void setDateReminder(TextView txtV) {
         this.dateLoanBool = false;
         this.dateReminderBool = true;
-        this.txtV = txtV;
+        if (txtV != null) {
+            this.txtV = txtV;
+        }
     }
 
-    public void initDateLoan(Date date, TextView txtV){
+    public void initDateLoan(Date date, TextView txtV) {
         setDateLoan(txtV);
         this.dateLoan = date;
         this.txtV.setText(dateToString(date));
     }
 
-    public void initDateReminder(Date date, TextView txtV){
+    public void initDateReminder(Date date, TextView txtV) {
         setDateReminder(txtV);
         this.dateReminder = date;
         this.txtV.setText(dateToString(date));
     }
 
-    public void initDateLoan(TextView txtV){
+    public void initDateLoan(TextView txtV) {
         setDateLoan(txtV);
         this.dateLoan = Calendar.getInstance().getTime();
         this.txtV.setText(dateToString(this.dateLoan));
     }
 
-    public void initDateReminder(TextView txtV){
+    public void initDateReminder(TextView txtV) {
         setDateReminder(txtV);
-        this.dateReminder =  Calendar.getInstance().getTime();
+        this.dateReminder = Calendar.getInstance().getTime();
         this.txtV.setText(dateToString(this.dateReminder));
     }
 
-
-
-    public String dateToString(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy",  Locale.FRANCE);
+    public String dateToString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy", Locale.FRANCE);
 
 
         String date_s = null;

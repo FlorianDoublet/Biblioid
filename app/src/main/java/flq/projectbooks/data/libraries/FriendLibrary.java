@@ -3,10 +3,8 @@ package flq.projectbooks.data.libraries;
 import android.content.Context;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import flq.projectbooks.data.Friend;
@@ -15,7 +13,7 @@ import flq.projectbooks.database.FriendsDataSource;
 /**
  * Created by flori on 15/02/2016.
  */
-public class FriendLibrary implements Serializable{
+public class FriendLibrary implements Serializable {
     private static FriendLibrary friends;
     private static Context context;
     List<Friend> friendList;
@@ -86,7 +84,7 @@ public class FriendLibrary implements Serializable{
 
         splitedNameList.removeAll(Arrays.asList("", null));
 
-        if(splitedNameList.size() == 1){
+        if (splitedNameList.size() == 1) {
             for (Friend friend : friendList) {
                 if (friend.getFirstName().equals(splitedNameList.get(0))) {
                     return friend;
@@ -147,11 +145,11 @@ public class FriendLibrary implements Serializable{
         return id;
     }
 
-    public Friend findAndAddAFriend(String firstName, String lastName, String cloudLink){
-        if(firstName.equals(""))
-            return new Friend(-1,"", "", "");
+    public Friend findAndAddAFriend(String firstName, String lastName, String cloudLink) {
+        if (firstName.equals(""))
+            return new Friend(-1, "", "", "");
         Friend friend = getFriendByFirstName(firstName);
-        if(friend == null){
+        if (friend == null) {
             friend = new Friend(-1, firstName, lastName, cloudLink);
         }
         long id = updateOrAddFriend(friend);

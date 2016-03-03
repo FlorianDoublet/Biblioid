@@ -6,10 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import flq.projectbooks.data.Loan;
@@ -25,7 +22,7 @@ public class LoansDataSource {
             MySQLiteHelper.COLUMN_LOAN_DATEREMIDER,
             MySQLiteHelper.COLUMN_BOOK_ID,
             MySQLiteHelper.COLUMN_FRIEND_ID
-            };
+    };
 
     public LoansDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);

@@ -13,7 +13,7 @@ public class Friend implements Serializable {
     private String cloudLink;
 
     //constructors
-    public Friend(){
+    public Friend() {
         id = -1;
         firstName = "";
         lastName = "";

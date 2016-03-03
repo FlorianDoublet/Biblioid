@@ -118,7 +118,7 @@ public class GetBookInfoGoogleBooksAPI extends GetBookInfo {
                 if (responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").has("publisher")) {
                     String publisher = responseJson.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo").getString("publisher");
 
-                    if(publisher != "") {
+                    if (publisher != "") {
                         Publisher p = PublisherLibrary.getInstance().findAndAddAPublisher(publisher);
                         if (p == null) {
                             p = PublisherLibrary.getInstance().getNewPublisher();

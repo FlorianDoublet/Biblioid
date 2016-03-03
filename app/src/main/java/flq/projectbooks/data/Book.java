@@ -8,6 +8,8 @@ import java.util.List;
  * Created by Doublet F. Delvallet Q. and Delvallet L. on 24/09/15.
  */
 public class Book implements Serializable {
+    public static ArrayList<String> spinnerArrayState;
+    public static ArrayList<String> spinnerArrayPossession;
     private long id;
     private String title;
     private List<Author> authors;
@@ -20,15 +22,12 @@ public class Book implements Serializable {
     private int nbPages;
     private long friend_id;
     private String advancementState;
-    private int rating ;
+    private int rating;
     private int onWishList;
     private int onFavoriteList;
     private int bookState;
     private int possessionState;
     private String comment;
-
-    public static ArrayList<String> spinnerArrayState ;
-    public static ArrayList<String> spinnerArrayPossession ;
 
     public Book() {
         id = -1;

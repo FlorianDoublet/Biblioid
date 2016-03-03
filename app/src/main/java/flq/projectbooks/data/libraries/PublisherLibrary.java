@@ -119,11 +119,11 @@ public class PublisherLibrary implements Serializable {
         return id;
     }
 
-    public Publisher findAndAddAPublisher(String name){
-        if(name.equals(""))
-            return new Publisher(-1,"");
+    public Publisher findAndAddAPublisher(String name) {
+        if (name.equals(""))
+            return new Publisher(-1, "");
         Publisher publisher = getPublisherByName(name);
-        if(publisher == null){
+        if (publisher == null) {
             publisher = new Publisher(-1, name);
         }
         long id = updateOrAddPublisher(publisher);

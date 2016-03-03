@@ -4,7 +4,6 @@ import android.content.Context;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import flq.projectbooks.data.Loan;
@@ -115,25 +114,25 @@ public class LoanLibrary implements Serializable {
     }
 
     public void deleteLoanByLoanId(long loan_id) {
-            Loan temp = this.getLoanById(loan_id);
-            datasource.open();
-            datasource.deleteLoan(temp);
-            datasource.close();
+        Loan temp = this.getLoanById(loan_id);
+        datasource.open();
+        datasource.deleteLoan(temp);
+        datasource.close();
 
-            //Remove from local list
-            loanList.remove(temp);
+        //Remove from local list
+        loanList.remove(temp);
     }
 
     //method used to delete a loan by a book id
-    public void deleteLoanByBookId(long book_id){
+    public void deleteLoanByBookId(long book_id) {
         Loan temp = null;
-        for(Loan loan : loanList){
-            if(loan.getBook_id() == book_id){
+        for (Loan loan : loanList) {
+            if (loan.getBook_id() == book_id) {
                 temp = loan;
                 break;
             }
         }
-        if(temp != null){
+        if (temp != null) {
             datasource.open();
             datasource.deleteLoan(temp);
             datasource.close();

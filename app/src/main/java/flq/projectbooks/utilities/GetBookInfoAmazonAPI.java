@@ -83,8 +83,8 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
             return null;
         }
 
-        k = "QUtJQUlXV0JGNE43VDdQWkIzNFE=" ;
-        sec = "cVEzNzF6Q3ZoaWVkdk1STjhFdk9MOW11ZXhrYjdYSDRnbEYvY0lZOA==" ;
+        k = "QUtJQUlXV0JGNE43VDdQWkIzNFE=";
+        sec = "cVEzNzF6Q3ZoaWVkdk1STjhFdk9MOW11ZXhrYjdYSDRnbEYvY0lZOA==";
 
         // Decode data on other side, by processing encoded data
         byte[] valueDecoded = Base64.decodeBase64(k);
@@ -214,7 +214,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                 newBook.setCategories(categories);
                 newBook.setDatePublication(datePublication);
 
-                if(publisher != "") {
+                if (publisher != "") {
                     Publisher p = PublisherLibrary.getInstance().findAndAddAPublisher(publisher);
                     if (p == null) {
                         p = PublisherLibrary.getInstance().getNewPublisher();
@@ -222,7 +222,7 @@ public class GetBookInfoAmazonAPI extends GetBookInfo {
                     }
                     newBook.setPublisher_id(p.getId());
                 }
-                if(nbPages != ""){
+                if (nbPages != "") {
                     newBook.setNbPages(Integer.parseInt(nbPages));
                 }
                 newBook.setDescription(description);

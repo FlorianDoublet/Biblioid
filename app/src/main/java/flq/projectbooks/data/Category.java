@@ -10,7 +10,6 @@ public class Category implements Serializable {
     private String name;
 
 
-
     //constructors
     public Category() {
         id = -1;
@@ -33,12 +32,12 @@ public class Category implements Serializable {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {

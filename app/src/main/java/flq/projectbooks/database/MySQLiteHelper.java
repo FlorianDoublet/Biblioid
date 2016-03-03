@@ -81,8 +81,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FRIEND_ID = "friend_id";
 
 
-
-
     //important variable
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "books.db";
@@ -339,9 +337,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return rc;
     }
 
-    public float getDBSizeInMb(){
+    public float getDBSizeInMb() {
         long size = new File(DB_FILEPATH).length();
-        return (float)size / (float)1024 / (float)1024;
+        return (float) size / (float) 1024 / (float) 1024;
     }
 
 

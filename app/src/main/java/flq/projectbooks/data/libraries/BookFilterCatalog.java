@@ -27,8 +27,8 @@ public class BookFilterCatalog implements Serializable {
         datasource.open();
         bookFilterList = datasource.getAllBookFilters();
         datasource.close();
-        if(bookFilterList.size() == 0){
-            for(int i = 0; i < 10; i++) {
+        if (bookFilterList.size() == 0) {
+            for (int i = 0; i < 10; i++) {
                 BookFilter filterBase1 = new BookFilter();
                 filterBase1.setName("Liste de souhait");
                 filterBase1.setOnWishList(1);

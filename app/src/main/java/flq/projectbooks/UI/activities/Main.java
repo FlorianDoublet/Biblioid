@@ -1,36 +1,25 @@
 package flq.projectbooks.UI.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.nononsenseapps.filepicker.FilePickerActivity;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import flq.projectbooks.R;
-import flq.projectbooks.UI.fragments.NoticeDialogFragment;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
-import flq.projectbooks.data.Loan;
 import flq.projectbooks.data.libraries.AuthorLibrary;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
@@ -40,10 +29,8 @@ import flq.projectbooks.data.libraries.LoanLibrary;
 import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.MySQLiteHelper;
 import flq.projectbooks.utilities.BiblioidBroadcastReceiver;
-import flq.projectbooks.utilities.GetBookInfo;
-import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
 
-public class Main extends ActionBarActivity  {
+public class Main extends ActionBarActivity {
 
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";

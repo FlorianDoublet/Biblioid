@@ -16,7 +16,7 @@ public class Loan {
     private long book_id;
     private long friend_id;
 
-    public Loan(){
+    public Loan() {
         this.id = -1;
         this.dateLoan = null;
         this.dateReminder = null;
@@ -32,7 +32,7 @@ public class Loan {
         this.friend_id = friend_id;
     }
 
-    public Loan( long id, long friend_id, long book_id, Date dateReminder, Date dateLoan) {
+    public Loan(long id, long friend_id, long book_id, Date dateReminder, Date dateLoan) {
         this.friend_id = friend_id;
         this.book_id = book_id;
         this.dateReminder = dateReminder;
@@ -97,7 +97,7 @@ public class Loan {
         this.friend_id = friend_id;
     }
 
-    public Date stringToLoanDate(String date_s){
+    public Date stringToLoanDate(String date_s) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy  H:mm", Locale.FRANCE);
         Date date = null;
         try {
@@ -110,8 +110,8 @@ public class Loan {
         return date;
     }
 
-    public String dateToString(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy  H:mm",  Locale.FRANCE);
+    public String dateToString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy  H:mm", Locale.FRANCE);
 
 
         String date_s = null;
@@ -126,7 +126,7 @@ public class Loan {
     }
 
     //method to add X minute to the date Reminder of a loan
-    public void addXMinutesToDateReminder(int minutes){
+    public void addXMinutesToDateReminder(int minutes) {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getDateReminder());
@@ -136,7 +136,7 @@ public class Loan {
     }
 
     //method to add X hours to the date Reminder of a loan
-    public void addXHoursToDateReminder(int hours){
+    public void addXHoursToDateReminder(int hours) {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getDateReminder());
@@ -146,7 +146,7 @@ public class Loan {
     }
 
     //method to add X hours to the date Reminder of a loan
-    public void addXDaysToDateReminder(int days){
+    public void addXDaysToDateReminder(int days) {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getDateReminder());

@@ -50,7 +50,6 @@ public class BooksDataSource {
     }
 
 
-
     public Book createBook(String title, String isbn, byte[] image, String description, String datePublication, long publisher_id, int nbPages, long friend_id, String advancementState, int rating, int onWishList, int onFavoriteList, int bookState, int possessionState, String comment) {
         ContentValues values = new ContentValues();
 
@@ -79,7 +78,6 @@ public class BooksDataSource {
         cursor.close();
         return newComment;
     }
-
 
 
     public int updateBook(Book book) {

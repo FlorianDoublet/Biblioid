@@ -16,7 +16,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import flq.projectbooks.R;
-import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Publisher;
 import flq.projectbooks.data.libraries.PublisherLibrary;
@@ -50,13 +49,13 @@ public class CreateFilter extends ActionBarActivity {
         ((TextView) findViewById(R.id.filterDatePublicationMax)).setText(filter.getDatePublicationMax());
         Publisher p = PublisherLibrary.getInstance().getPublisherById(filter.getPublisher_id());
         String publisher_name = "";
-        if(p != null) publisher_name = p.getName();
+        if (p != null) publisher_name = p.getName();
         ((TextView) findViewById(R.id.filterPublisher)).setText(publisher_name);
         ((TextView) findViewById(R.id.filterCategorie)).setText(LinkTablesDataSource.categoriesToString(filter.getCategories()));
         ((TextView) findViewById(R.id.filterNbPagesMin)).setText(String.valueOf(filter.getNbPagesMin()));
         ((TextView) findViewById(R.id.filterNbPagesMax)).setText(String.valueOf(filter.getNbPagesMax()));
 
-        switch(filter.getAdvancementState()){
+        switch (filter.getAdvancementState()) {
             case "Read":
                 ((RadioGroup) findViewById(R.id.radioGroupFilter)).check(R.id.radioButtonFilterRead);
                 break;
@@ -71,16 +70,16 @@ public class CreateFilter extends ActionBarActivity {
                 break;
         }
 
-        if(filter.getOnFavoriteList() == 1){
+        if (filter.getOnFavoriteList() == 1) {
             ((CheckBox) findViewById(R.id.checkBoxFilterFavorites)).setChecked(true);
         }
 
-        if(filter.getOnWishList() == 1){
+        if (filter.getOnWishList() == 1) {
             ((CheckBox) findViewById(R.id.checkBoxFilterWishList)).setChecked(true);
         }
 
         Spinner spinnerFilterBookState = ((Spinner) findViewById(R.id.spinnerFilterBookState));
-        Spinner spinnerFilterBookPossession =((Spinner) findViewById(R.id.spinnerFilterPossession));
+        Spinner spinnerFilterBookPossession = ((Spinner) findViewById(R.id.spinnerFilterPossession));
 
 
         ArrayAdapter<String> spinnerArrayAdapterState = new ArrayAdapter<String>(this.getApplicationContext(), android.R.layout.simple_spinner_item, BookFilter.spinnerArrayState); //selected item will look like a spinner set from XML
@@ -169,31 +168,31 @@ public class CreateFilter extends ActionBarActivity {
         filter.setNbPages(Integer.parseInt(nbPages1.getText().toString()), Integer.parseInt(nbPages2.getText().toString()));
 
 
-        if(rbRead.isChecked()){
+        if (rbRead.isChecked()) {
             filter.setAdvancementState("Read");
-        }else{
-            if(rbReading.isChecked()){
+        } else {
+            if (rbReading.isChecked()) {
                 filter.setAdvancementState("Reading");
-            }else{
-                if(rbNotRead.isChecked()){
+            } else {
+                if (rbNotRead.isChecked()) {
                     filter.setAdvancementState("Not Read");
-                }else{
-                    if(rbUndetermined.isChecked()){
+                } else {
+                    if (rbUndetermined.isChecked()) {
                         filter.setAdvancementState("Undetermined");
                     }
                 }
             }
         }
 
-        filter.setRatingMin((int)ratingMin.getSelectedItemId());
-        filter.setRatingMax((int)ratingMax.getSelectedItemId());
-        filter.setOnFavoriteList(cBFavorites.isChecked() ? 1 : 0 );
-        filter.setOnWishList(cBWishList.isChecked() ? 1 : 0 );
+        filter.setRatingMin((int) ratingMin.getSelectedItemId());
+        filter.setRatingMax((int) ratingMax.getSelectedItemId());
+        filter.setOnFavoriteList(cBFavorites.isChecked() ? 1 : 0);
+        filter.setOnWishList(cBWishList.isChecked() ? 1 : 0);
         filter.setBookState(spinnerBookState.getSelectedItemPosition());
         filter.setPossessionState(spinnerPossession.getSelectedItemPosition());
         filter.setComment(comment.getText().toString());
 
-        switch(filter.getAdvancementState()){
+        switch (filter.getAdvancementState()) {
             case "Read":
                 ((RadioGroup) findViewById(R.id.radioGroupFilter)).check(R.id.radioButtonFilterRead);
                 break;
@@ -211,11 +210,11 @@ public class CreateFilter extends ActionBarActivity {
         ((Spinner) findViewById(R.id.spinnerFilterRatingMin)).setSelection(filter.getRatingMin());
         ((Spinner) findViewById(R.id.spinnerFilterRatingMax)).setSelection(filter.getRatingMax());
 
-        if(filter.getOnFavoriteList() == 1){
+        if (filter.getOnFavoriteList() == 1) {
             ((CheckBox) findViewById(R.id.checkBoxFilterFavorites)).setChecked(true);
         }
 
-        if(filter.getOnWishList() == 1){
+        if (filter.getOnWishList() == 1) {
             ((CheckBox) findViewById(R.id.checkBoxFilterWishList)).setChecked(true);
         }
 

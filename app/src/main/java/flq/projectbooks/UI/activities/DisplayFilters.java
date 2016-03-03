@@ -81,11 +81,11 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
             numberOfBookPerFilter.add(0);
         }
 
-        for(Book book : BookLibrary.getInstance().getBookList()){
+        for (Book book : BookLibrary.getInstance().getBookList()) {
             int i = 0;
             for (BookFilter filter : filters.getBookFilterList()) {
                 if (filter.isSelected(book)) {
-                    numberOfBookPerFilter.set(i,numberOfBookPerFilter.get(i) + 1) ;
+                    numberOfBookPerFilter.set(i, numberOfBookPerFilter.get(i) + 1);
                 }
                 i++;
             }

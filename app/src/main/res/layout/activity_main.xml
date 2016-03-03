@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:onClick="openCreateFriendActivity"
-                android:text="Create Friend" />
+                android:text="Ajouter un ami" />
         </TableLayout>
     </ScrollView>
 </LinearLayout>

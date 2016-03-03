@@ -12,6 +12,8 @@ import flq.projectbooks.data.libraries.FilteredBookLibrary;
  * Created by doublet on 01/10/15.
  */
 public class BookFilter implements Serializable {
+    public static ArrayList<String> spinnerArrayState;
+    public static ArrayList<String> spinnerArrayPossession;
     private long id;
     private String name;
     private String title;
@@ -23,7 +25,6 @@ public class BookFilter implements Serializable {
     private List<Category> categories;
     private int nbPagesMin;
     private int nbPagesMax;
-
     private String advancementState;
     private int ratingMin;
     private int ratingMax;
@@ -32,9 +33,6 @@ public class BookFilter implements Serializable {
     private int bookState;
     private int possessionState;
     private String comment;
-
-    public static ArrayList<String> spinnerArrayState ;
-    public static ArrayList<String> spinnerArrayPossession ;
 
     public BookFilter() {
         id = -1;
@@ -193,69 +191,69 @@ public class BookFilter implements Serializable {
 
         //Check if the book match the advancement state
 
-            switch(advancementState){
-                case "Undetermined":
-                    break;
-                case "Read":
-                    if(!book.getAdvancementState().equals(advancementState)){
-                        return false;
-                    }
-                    break;
-                case "Reading":
-                    if(book.getAdvancementState().equals("Read") || book.getAdvancementState().equals("Not Read")){
-                        return false;
-                    }
-                    break;
-                case "Not Read":
-                    if(!book.getAdvancementState().equals(advancementState)){
-                        return false;
-                    }
-                    break;
-            }
+        switch (advancementState) {
+            case "Undetermined":
+                break;
+            case "Read":
+                if (!book.getAdvancementState().equals(advancementState)) {
+                    return false;
+                }
+                break;
+            case "Reading":
+                if (book.getAdvancementState().equals("Read") || book.getAdvancementState().equals("Not Read")) {
+                    return false;
+                }
+                break;
+            case "Not Read":
+                if (!book.getAdvancementState().equals(advancementState)) {
+                    return false;
+                }
+                break;
+        }
 
         //Check if the book fulfill the min rating filter
-        if(ratingMin != 0 && book.getRating() < ratingMin){
+        if (ratingMin != 0 && book.getRating() < ratingMin) {
             return false;
         }
 
         //Check if the book fulfill the max rating filter
-        if(ratingMax != 0 && book.getRating() > ratingMax){
+        if (ratingMax != 0 && book.getRating() > ratingMax) {
             return false;
         }
 
-        if(book.getRating() == 0 && (ratingMax != 0 || ratingMin != 0)){
+        if (book.getRating() == 0 && (ratingMax != 0 || ratingMin != 0)) {
             return false;
         }
 
         //Check if the book is in the favorite list
-        if(onFavoriteList == 1 && book.getOnFavoriteList() != 1){
+        if (onFavoriteList == 1 && book.getOnFavoriteList() != 1) {
             return false;
         }
 
         //Check if the book is in the wish list
-        if(onWishList == 1 && book.getOnWishList() != 1){
+        if (onWishList == 1 && book.getOnWishList() != 1) {
             return false;
         }
 
         //Check if the book state match the filter
-        if(bookState != 0 && book.getBookState() != (bookState-1)){
+        if (bookState != 0 && book.getBookState() != (bookState - 1)) {
             return false;
         }
 
         //Check if the book possession match the filter
-        if(possessionState != 0 && book.getPossessionState() != (possessionState-1)){
+        if (possessionState != 0 && book.getPossessionState() != (possessionState - 1)) {
             return false;
         }
 
         //Check if the book comment contains the filter comment string
-        if(comment.equals("") && !book.getComment().contains(comment)){
+        if (comment.equals("") && !book.getComment().contains(comment)) {
             return false;
         }
 
         return true;
     }
 
-    private boolean isSelectedAuthor(Book book){
+    private boolean isSelectedAuthor(Book book) {
 
         return false;
     }

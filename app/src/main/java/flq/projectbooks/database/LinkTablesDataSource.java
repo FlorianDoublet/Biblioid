@@ -99,19 +99,19 @@ public class LinkTablesDataSource {
     }
 
     public static long createBooksAuthors(SQLiteDatabase database, long book_id, long author_id) {
-        return LinkTablesDataSource.createSimpleLinks(database, MySQLiteHelper.TABLE_BOOKS_AUTHORS, MySQLiteHelper.COLUMN_BOOK_ID, book_id, MySQLiteHelper.COLUMN_AUTHOR_ID,author_id);
+        return LinkTablesDataSource.createSimpleLinks(database, MySQLiteHelper.TABLE_BOOKS_AUTHORS, MySQLiteHelper.COLUMN_BOOK_ID, book_id, MySQLiteHelper.COLUMN_AUTHOR_ID, author_id);
     }
 
     public static long createBooksCategories(SQLiteDatabase database, long book_id, long category_id) {
-        return LinkTablesDataSource.createSimpleLinks(database, MySQLiteHelper.TABLE_BOOKS_CATEGORIES, MySQLiteHelper.COLUMN_BOOK_ID, book_id, MySQLiteHelper.COLUMN_CATEGORY_ID ,category_id);
+        return LinkTablesDataSource.createSimpleLinks(database, MySQLiteHelper.TABLE_BOOKS_CATEGORIES, MySQLiteHelper.COLUMN_BOOK_ID, book_id, MySQLiteHelper.COLUMN_CATEGORY_ID, category_id);
     }
 
     public static long createBookFiltersAuthors(SQLiteDatabase database, long book_filter_id, long author_id) {
-        return LinkTablesDataSource.createSimpleLinks(database, MySQLiteHelper.TABLE_BOOK_FILTERS_AUTHORS, MySQLiteHelper.COLUMN_BOOK_FILTER_ID, book_filter_id, MySQLiteHelper.COLUMN_AUTHOR_ID ,author_id);
+        return LinkTablesDataSource.createSimpleLinks(database, MySQLiteHelper.TABLE_BOOK_FILTERS_AUTHORS, MySQLiteHelper.COLUMN_BOOK_FILTER_ID, book_filter_id, MySQLiteHelper.COLUMN_AUTHOR_ID, author_id);
     }
 
     public static long createBookFiltersCategories(SQLiteDatabase database, long book_filter_id, long category_id) {
-        return LinkTablesDataSource.createSimpleLinks(database, MySQLiteHelper.TABLE_BOOK_FILTERS_CATEGORIES, MySQLiteHelper.COLUMN_BOOK_FILTER_ID, book_filter_id, MySQLiteHelper.COLUMN_CATEGORY_ID ,category_id);
+        return LinkTablesDataSource.createSimpleLinks(database, MySQLiteHelper.TABLE_BOOK_FILTERS_CATEGORIES, MySQLiteHelper.COLUMN_BOOK_FILTER_ID, book_filter_id, MySQLiteHelper.COLUMN_CATEGORY_ID, category_id);
     }
 
     public static boolean cursorIsntEmpty(Cursor cursor) {
@@ -301,7 +301,7 @@ public class LinkTablesDataSource {
     }
 
     //Get authors from string optionally create new authors
-    public static List<Author> getAuthorsFromString(String author){
+    public static List<Author> getAuthorsFromString(String author) {
         author = author.trim();
         List<Author> authors = new ArrayList<Author>();
         if (!author.equals("")) {
@@ -324,7 +324,7 @@ public class LinkTablesDataSource {
 
     //Get authors from editText optionally create new authors
     public static List<Author> getAuthorsFromEditText(EditText author) {
-       return  LinkTablesDataSource.getAuthorsFromString(author.getText().toString());
+        return LinkTablesDataSource.getAuthorsFromString(author.getText().toString());
     }
 
     //Get categories from editText optionally create new category
@@ -356,8 +356,8 @@ public class LinkTablesDataSource {
 
     //delete duplicated authors from an author list
     public static List<Author> deleteDuplicatedAuthors(List<Author> authors) {
-     //I don't use hashet here because it destroy the order in the authors list
-     int size = authors.size();
+        //I don't use hashet here because it destroy the order in the authors list
+        int size = authors.size();
 
         for (int i = 0; i < size - 1; i++) {
             for (int j = i + 1; j < size; j++) {

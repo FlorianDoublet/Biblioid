@@ -9,18 +9,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
-import org.apache.http.impl.cookie.DateUtils;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import flq.projectbooks.R;
 import flq.projectbooks.UI.activities.DisplayBooks;
-import flq.projectbooks.UI.activities.Main;
-import flq.projectbooks.UI.fragments.BookInfo;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Friend;
 import flq.projectbooks.data.Loan;
@@ -37,8 +30,8 @@ public class DateReminderCheckService extends Service {
         List<Loan> loanList = LoanLibrary.getInstance().getLoanList();
         Calendar calendar = Calendar.getInstance();
 
-        for(Loan loan : loanList){
-            if(loan.getDateReminder().before(calendar.getTime())){
+        for (Loan loan : loanList) {
+            if (loan.getDateReminder().before(calendar.getTime())) {
                 showLoadNotification(this, loan);
             }
 
@@ -56,7 +49,7 @@ public class DateReminderCheckService extends Service {
         loan.addXMinutesToDateReminder(5);
         LoanLibrary.getInstance().updateOrAddLoan(loan);
 
-        String message = "Loan reminder for the book " + book.getTitle() + " and the Friend " + friend.getFirstName() + " " + friend.getLastName();
+        String message = "N'oubliez pas votre livre auprès de " + friend.getFirstName() + " " + friend.getLastName();
 
         //create our intent to display bookInfo
         Intent intent = new Intent(context, DisplayBooks.class);
@@ -68,8 +61,8 @@ public class DateReminderCheckService extends Service {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Biblioid notification")
+                        .setSmallIcon(R.drawable.notificon)
+                        .setContentTitle("Biblioid : " + book.getTitle())
                         .setContentText(message);
 
         mBuilder.setContentIntent(contentIntent);
@@ -82,7 +75,7 @@ public class DateReminderCheckService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent){
+    public IBinder onBind(Intent intent) {
 
         return null;
     }

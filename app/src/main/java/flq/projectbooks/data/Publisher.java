@@ -9,7 +9,7 @@ public class Publisher {
     private String name;
 
     //contructors
-    public Publisher(){
+    public Publisher() {
         this.id = -1;
         this.name = "";
     }
