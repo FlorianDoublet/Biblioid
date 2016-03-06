@@ -880,9 +880,11 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 String text = ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).getText().toString();
                 boolean equal = false;
                 for (int i = 0; i < retrievedBook.size(); i++) {
-                    if (text.equals(PublisherLibrary.getInstance().getPublisherById(retrievedBook.get(i).getPublisher_id()).getName())) {
-                        equal = true;
-                        ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(i));
+                    if(retrievedBook.get(i).getPublisher_id() >= 0){
+                        if (text.equals(PublisherLibrary.getInstance().getPublisherById(retrievedBook.get(i).getPublisher_id()).getName())) {
+                            equal = true;
+                            ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(i));
+                        }
                     }
                 }
                 if (!equal && bookSourcesLogos.size() != 0) {
