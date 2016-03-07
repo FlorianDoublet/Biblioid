@@ -8,6 +8,7 @@ import android.text.format.DateFormat;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.Locale;
  * Created by flori on 28/02/2016.
  */
 public class TimePickerFragment extends DialogFragment
-        implements TimePickerDialog.OnTimeSetListener {
+        implements TimePickerDialog.OnTimeSetListener, Serializable {
 
     protected Date dateLoan = null;
     protected Date dateReminder = null;

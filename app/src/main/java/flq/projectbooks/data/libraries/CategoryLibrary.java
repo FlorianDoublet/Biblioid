@@ -35,6 +35,13 @@ public class CategoryLibrary {
         return categories;
     }
 
+    public static CategoryLibrary getInstanceOrInitialize(Context _context){
+        if(categories == null){
+            new CategoryLibrary(_context);
+        }
+        return categories;
+    }
+
     public Category Add(Category category) {
         categoryList.add(category);
         datasource.open();

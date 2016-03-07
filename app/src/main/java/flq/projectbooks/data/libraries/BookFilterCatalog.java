@@ -92,6 +92,14 @@ public class BookFilterCatalog implements Serializable {
         return bookFilters;
     }
 
+    public static BookFilterCatalog getInstanceOrInitialize(Context _context){
+        if(bookFilters == null){
+            new BookFilterCatalog(_context);
+        }
+        return bookFilters;
+    }
+
+
     public void Add(BookFilter filter) {
         //Add in the database
         datasource.open();

@@ -9,23 +9,40 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import flq.projectbooks.R;
 import flq.projectbooks.UI.activities.DisplayBooks;
+import flq.projectbooks.UI.fragments.BookInfo;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Friend;
 import flq.projectbooks.data.Loan;
+import flq.projectbooks.data.libraries.AuthorLibrary;
+import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.data.libraries.CategoryLibrary;
 import flq.projectbooks.data.libraries.FriendLibrary;
 import flq.projectbooks.data.libraries.LoanLibrary;
+import flq.projectbooks.data.libraries.PublisherLibrary;
 
 
 public class DateReminderCheckService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        //initialize all library if it's needed
+        AuthorLibrary.getInstanceOrInitialize(this);
+        CategoryLibrary.getInstanceOrInitialize(this);
+        PublisherLibrary.getInstanceOrInitialize(this);
+        FriendLibrary.getInstanceOrInitialize(this);
+        BookLibrary.getInstanceOrInitialize(this);
+        LoanLibrary.getInstanceOrInitialize(this);
+        BookFilterCatalog.getInstanceOrInitialize(this);
 
         List<Loan> loanList = LoanLibrary.getInstance().getLoanList();
         Calendar calendar = Calendar.getInstance();
@@ -34,10 +51,10 @@ public class DateReminderCheckService extends Service {
             if (loan.getDateReminder().before(calendar.getTime())) {
                 showLoadNotification(this, loan);
             }
-
         }
 
-        return Service.START_NOT_STICKY;
+        //to keep the service alive if the app is killed
+        return Service.START_STICKY;
     }
 
     private void showLoadNotification(Context context, Loan loan) {
@@ -45,11 +62,16 @@ public class DateReminderCheckService extends Service {
         Friend friend = FriendLibrary.getInstance().getFriendById(loan.getFriend_id());
         Book book = BookLibrary.getInstance().getBookById(loan.getBook_id());
 
+        Date oldReminder = loan.getDateReminder();
+        //update the dateReminder to the local Date
+        loan.setDateReminder(Calendar.getInstance().getTime());
+
         //we add 5 minute to the date reminder and update to loan in the database
         loan.addXMinutesToDateReminder(5);
         LoanLibrary.getInstance().updateOrAddLoan(loan);
 
-        String message = "N'oubliez pas votre livre auprès de " + friend.getFirstName() + " " + friend.getLastName();
+        String message = "Rappel prêt livre auprès de " + friend.getFirstName() + " " + friend.getLastName();
+        message += "\n échéance : " + dateToString(oldReminder);
 
         //create our intent to display bookInfo
         Intent intent = new Intent(context, DisplayBooks.class);
@@ -78,6 +100,21 @@ public class DateReminderCheckService extends Service {
     public IBinder onBind(Intent intent) {
 
         return null;
+    }
+
+    public String dateToString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy  H:mm", Locale.FRANCE);
+
+
+        String date_s = null;
+        try {
+
+            date_s = formatter.format(date);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date_s;
     }
 }
 

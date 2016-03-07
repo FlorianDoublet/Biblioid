@@ -112,6 +112,7 @@ public class BookInfo extends Fragment implements Parcelable {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_info, container, false);
+        Book.initSpinnerArrayStateAndSpinnerArrayPossession();
         displayBook(view);
 
         return view;
@@ -447,6 +448,13 @@ public class BookInfo extends Fragment implements Parcelable {
             }
         });
 
+        view.findViewById(R.id.btnRemoveLoan).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteLoan(view);
+            }
+        });
+
         initFriendSpinner(view);
 
         Loan loan = LoanLibrary.getInstance().getLoanByBookId(book.getId());
@@ -469,6 +477,7 @@ public class BookInfo extends Fragment implements Parcelable {
             this.timePickerFragment.initDateLoan((TextView) view.findViewById(R.id.loanDateLoanTextViewTime));
             this.timePickerFragment.initDateReminder((TextView) view.findViewById(R.id.loanDateReminderTextViewTime));
         }
+
     }
 
     public void validateLoan(View view) {
@@ -505,10 +514,38 @@ public class BookInfo extends Fragment implements Parcelable {
             book.setBookState(1);
             //here it mean that this book have a previous loan but we don't want it anymore so we juste delete this loan.
             LoanLibrary.getInstance().deleteLoanByLoanId(previousLoan.getId());
+            //and reset all loan field
+            resetLoanField(view);
         }
 
         TabHost tabs = (TabHost) getView().findViewById(R.id.tabHost);
         tabs.setCurrentTab(0);
+    }
+
+    public void deleteLoan(View view){
+
+        Loan previousLoan = LoanLibrary.getInstance().getLoanByBookId(book.getId());
+        if (previousLoan != null) {
+            //here it mean that this book have a previous loan but we don't want it anymore so we juste delete this loan.
+            LoanLibrary.getInstance().deleteLoanByLoanId(previousLoan.getId());
+        }
+
+        //we set all field to default value
+        resetLoanField(view);
+
+        TabHost tabs = (TabHost) getView().findViewById(R.id.tabHost);
+        tabs.setCurrentTab(0);
+    }
+
+    //reset all loan field
+    private void resetLoanField(View view){
+        ((CheckBox) getView().findViewById(R.id.loanCheckBox)).setChecked(false);
+        ((Spinner) getView().findViewById(R.id.friendSpinner)).setSelection(0);
+        this.datePickerFragment.initDateLoan((TextView) getView().findViewById(R.id.loanDateLoanTextViewDate));
+        this.datePickerFragment.initDateReminder((TextView) getView().findViewById(R.id.loanDateReminderTextViewDate));
+        //init the dates textview
+        this.timePickerFragment.initDateLoan((TextView) getView().findViewById(R.id.loanDateLoanTextViewTime));
+        this.timePickerFragment.initDateReminder((TextView) getView().findViewById(R.id.loanDateReminderTextViewTime));
     }
 
     private void initFriendSpinner(View view) {
@@ -552,7 +589,7 @@ public class BookInfo extends Fragment implements Parcelable {
         datePickerFragment.show(myContext.getFragmentManager(), "datePicker");
     }
 
-    public Date createOneDateWithDateAndTime(Date date, Date time) {
+    public static Date createOneDateWithDateAndTime(Date date, Date time) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         Calendar timecal = Calendar.getInstance();
@@ -562,7 +599,6 @@ public class BookInfo extends Fragment implements Parcelable {
         cal.set(Calendar.MINUTE, timecal.get(Calendar.MINUTE));
         Date finalDate = cal.getTime();
         return finalDate;
-
     }
 
     @Override
