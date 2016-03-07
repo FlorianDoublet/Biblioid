@@ -219,6 +219,15 @@ public class BookInfo extends Fragment implements Parcelable {
 
 
         spinnerBookState.setSelection(book.getBookState());
+
+
+        Loan previousLoan = LoanLibrary.getInstance().getLoanByBookId(book.getId());
+        if(previousLoan != null){
+            spinnerBookPossession.setEnabled(false);
+        }else{
+            spinnerBookPossession.setEnabled(true);
+        }
+
         spinnerBookPossession.setSelection(book.getPossessionState());
 
         spinnerBookState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
