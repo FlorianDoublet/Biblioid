@@ -59,4 +59,8 @@
     <string name="loanDateReminder">Reminder for the loan</string>
     <string name="service_name">Service to notify when a date reminder is achieved</string>
     <string name="loanDateFormat">JJ/MM/AAAA hh:mm</string>
+    <string name="importExport">Import / Export</string>
+    <string name="addFriend">Ajouter un ami</string>
+    <string name="option">Paramètres</string>
+    <string name="Info">Informations</string>
 </resources>
