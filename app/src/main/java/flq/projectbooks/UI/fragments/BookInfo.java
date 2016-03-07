@@ -530,6 +530,9 @@ public class BookInfo extends Fragment implements Parcelable {
             LoanLibrary.getInstance().deleteLoanByLoanId(previousLoan.getId());
         }
 
+        ((Spinner)getView().findViewById(R.id.spinnerBookPossession)).setSelection(1);
+        book.setBookState(1);
+
         //we set all field to default value
         resetLoanField(view);
 
