@@ -36,6 +36,13 @@ public class FriendLibrary implements Serializable {
         return friends;
     }
 
+    public static FriendLibrary getInstanceOrInitialize(Context _context){
+        if(friends == null){
+            new FriendLibrary(_context);
+        }
+        return friends;
+    }
+
     public Friend Add(Friend friend) {
         friendList.add(friend);
         datasource.open();

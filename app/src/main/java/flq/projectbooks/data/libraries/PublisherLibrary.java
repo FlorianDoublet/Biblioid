@@ -35,6 +35,13 @@ public class PublisherLibrary implements Serializable {
         return publishers;
     }
 
+    public static PublisherLibrary getInstanceOrInitialize(Context _context){
+        if(publishers == null){
+            new PublisherLibrary(_context);
+        }
+        return publishers;
+    }
+
     public Publisher Add(Publisher publisher) {
         publisherList.add(publisher);
         datasource.open();

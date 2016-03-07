@@ -50,14 +50,6 @@ public class BiblioidBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //create an instance of all the library
-        new AuthorLibrary(context);
-        new CategoryLibrary(context);
-        new PublisherLibrary(context);
-        new FriendLibrary(context);
-        new BookLibrary(context);
-        new LoanLibrary(context);
-        new BookFilterCatalog(context);
 
         runDateReminderCheckerEveryMinute(context);
 

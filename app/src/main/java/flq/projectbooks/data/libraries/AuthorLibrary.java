@@ -35,6 +35,13 @@ public class AuthorLibrary implements Serializable {
         return authors;
     }
 
+    public static AuthorLibrary getInstanceOrInitialize(Context _context){
+        if(authors == null){
+            new AuthorLibrary(_context);
+        }
+        return authors;
+    }
+
     public Author Add(Author author) {
         authorList.add(author);
         datasource.open();

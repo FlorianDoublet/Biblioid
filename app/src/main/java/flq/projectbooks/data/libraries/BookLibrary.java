@@ -38,6 +38,13 @@ public class BookLibrary implements Serializable {
         return books;
     }
 
+    public static BookLibrary getInstanceOrInitialize(Context _context){
+        if(books == null){
+            new BookLibrary(_context);
+        }
+        return books;
+    }
+
     public void Add(Book book) {
         bookList.add(book);
         datasource.open();

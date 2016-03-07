@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.Locale;
  * Created by flori on 28/02/2016.
  */
 public class DatePickerFragment extends DialogFragment
-        implements DatePickerDialog.OnDateSetListener {
+        implements DatePickerDialog.OnDateSetListener, Serializable {
 
     public static final String ARG_PARAM1 = "param1";
 

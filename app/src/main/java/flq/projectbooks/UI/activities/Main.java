@@ -58,27 +58,15 @@ public class Main extends ActionBarActivity {
         String s = loan.dateToString(d);*/
 
         //this.deleteDatabase("books.db"); //Effacer la bdd en cas de bug ou en cas de conflit de versions.
-        authors = new AuthorLibrary(this);
-        categories = new CategoryLibrary(this);
-        publishers = new PublisherLibrary(this);
-        friends = new FriendLibrary(this);
-        books = new BookLibrary(this);
-        loans = new LoanLibrary(this);
-        filters = new BookFilterCatalog(this);
+        authors = AuthorLibrary.getInstanceOrInitialize(this);
+        categories = CategoryLibrary.getInstanceOrInitialize(this);
+        publishers = PublisherLibrary.getInstanceOrInitialize(this);
+        friends =  FriendLibrary.getInstanceOrInitialize(this);
+        books =  BookLibrary.getInstanceOrInitialize(this);
+        loans =  LoanLibrary.getInstanceOrInitialize(this);
+        filters = BookFilterCatalog.getInstanceOrInitialize(this);
 
-        Book.spinnerArrayState = new ArrayList<>();
-        Book.spinnerArrayPossession = new ArrayList<>();
-        Book.spinnerArrayState.add("Comme neuf");
-        Book.spinnerArrayState.add("Très bon état");
-        Book.spinnerArrayState.add("Bon état");
-        Book.spinnerArrayState.add("État correct");
-        Book.spinnerArrayState.add("Mauvais état");
-        Book.spinnerArrayState.add("Incomplet");
-        Book.spinnerArrayPossession.add("Liste de souhait");
-        Book.spinnerArrayPossession.add("Possédé");
-        Book.spinnerArrayPossession.add("Prété");
-        Book.spinnerArrayPossession.add("Vendu");
-        Book.spinnerArrayPossession.add("Perdu");
+        Book.initSpinnerArrayStateAndSpinnerArrayPossession();
 
         BookFilter.spinnerArrayState = new ArrayList<>();
         BookFilter.spinnerArrayPossession = new ArrayList<>();
