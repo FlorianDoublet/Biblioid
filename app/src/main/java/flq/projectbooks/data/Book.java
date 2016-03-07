@@ -197,4 +197,26 @@ public class Book implements Serializable {
     public void setPossessionState(int possessionState) {
         this.possessionState = possessionState;
     }
+
+    public static void initSpinnerArrayStateAndSpinnerArrayPossession(){
+        if(Book.spinnerArrayState == null){
+            Book.spinnerArrayState = new ArrayList<>();
+            Book.spinnerArrayState.add("Comme neuf");
+            Book.spinnerArrayState.add("Très bon état");
+            Book.spinnerArrayState.add("Bon état");
+            Book.spinnerArrayState.add("État correct");
+            Book.spinnerArrayState.add("Mauvais état");
+            Book.spinnerArrayState.add("Incomplet");
+        }
+        if(Book.spinnerArrayPossession == null) {
+            Book.spinnerArrayPossession = new ArrayList<>();
+            Book.spinnerArrayPossession.add("Liste de souhait");
+            Book.spinnerArrayPossession.add("Possédé");
+            Book.spinnerArrayPossession.add("Prété");
+            Book.spinnerArrayPossession.add("Vendu");
+            Book.spinnerArrayPossession.add("Perdu");
+        }
+
+    }
+
 }

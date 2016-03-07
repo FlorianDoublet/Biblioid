@@ -35,6 +35,13 @@ public class LoanLibrary implements Serializable {
         return loans;
     }
 
+    public static LoanLibrary getInstanceOrInitialize(Context _context){
+        if(loans == null){
+            new LoanLibrary(_context);
+        }
+        return loans;
+    }
+
     public Loan Add(Loan loan) {
         loanList.add(loan);
         datasource.open();
