@@ -246,7 +246,7 @@ public class BookInfo extends Fragment implements Parcelable {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (avoidInitialisation) {
-                    book.setBookState(i);
+                    book.setPossessionState(i);
                     BookLibrary.getInstance().updateOrAddBook(book);
                 } else {
                     avoidInitialisation = true;
@@ -464,12 +464,17 @@ public class BookInfo extends Fragment implements Parcelable {
 
     public void validateLoan(View view) {
         //treatment for the loan system
+
         Spinner friend = (Spinner) getView().findViewById(R.id.friendSpinner);
         CheckBox loanCheckbox = (CheckBox) getView().findViewById(R.id.loanCheckBox);
 
         Loan previousLoan = LoanLibrary.getInstance().getLoanByBookId(book.getId());
 
         if (loanCheckbox.isChecked()) {
+            //Set the book in the possession state "Lend"
+            ((Spinner)getView().findViewById(R.id.spinnerBookPossession)).setSelection(2);
+            book.setBookState(2);
+
             long friend_id = FriendLibrary.getInstance().getFriendByFirstNameAndLastName(friend.getSelectedItem().toString()).getId();
             Loan loan = LoanLibrary.getInstance().getLoanByBookAndFriendId(book.getId(), friend_id);
             Date dateLoan = createOneDateWithDateAndTime(datePickerFragment.getDateLoan(), timePickerFragment.getDateLoan());
@@ -486,6 +491,9 @@ public class BookInfo extends Fragment implements Parcelable {
             }
             LoanLibrary.getInstance().updateOrAddLoan(loan);
         } else if (previousLoan != null) {
+            //Set the book in the possession state "Possessed"
+            ((Spinner)getView().findViewById(R.id.spinnerBookPossession)).setSelection(1);
+            book.setBookState(1);
             //here it mean that this book have a previous loan but we don't want it anymore so we juste delete this loan.
             LoanLibrary.getInstance().deleteLoanByLoanId(previousLoan.getId());
         }
