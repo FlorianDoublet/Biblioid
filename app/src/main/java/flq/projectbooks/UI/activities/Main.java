@@ -4,13 +4,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ContextThemeWrapper;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -85,6 +92,15 @@ public class Main extends ActionBarActivity {
         BookFilter.spinnerArrayPossession.add("Perdu");
         BiblioidBroadcastReceiver.runDateReminderCheckerEveryMinute(this);
 
+
+        ((ImageView)findViewById(R.id.imgViewCreateBook)).setImageDrawable(this.ResizeImage(R.drawable.book));
+        ((ImageView)findViewById(R.id.imgViewDisplayBooks)).setImageDrawable(this.ResizeImage(R.drawable.library));
+        ((ImageView)findViewById(R.id.imgViewDisplayFilters)).setImageDrawable(this.ResizeImage(R.drawable.filter));
+        ((ImageView)findViewById(R.id.imgViewScanBook)).setImageDrawable(this.ResizeImage(R.drawable.barcode));
+        ((ImageView)findViewById(R.id.imgViewImportExport)).setImageDrawable(this.ResizeImage(R.drawable.importexport));
+        ((ImageView)findViewById(R.id.imgViewAddFriend)).setImageDrawable(this.ResizeImage(R.drawable.friend));
+        ((ImageView)findViewById(R.id.imgViewOptions)).setImageDrawable(this.ResizeImage(R.drawable.option));
+        ((ImageView)findViewById(R.id.imgViewInformations)).setImageDrawable(this.ResizeImage(R.drawable.info));
     }
 
     @Override
@@ -197,6 +213,47 @@ public class Main extends ActionBarActivity {
     public void openImportExportActivity(View view) {
         Intent i = new Intent(this, ImportExport.class);
         startActivity(i);
+    }
+
+    public  Drawable ResizeImage(int imageID) {
+        // Get device dimensions
+        Display display = getWindowManager().getDefaultDisplay();
+        double deviceWidth = display.getWidth();
+
+        BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(
+                imageID);
+        double imageHeight = bd.getBitmap().getHeight();
+        double imageWidth = bd.getBitmap().getWidth();
+
+        double ratio = deviceWidth / imageWidth;
+        int newImageHeight = (int) (imageHeight * ratio);
+
+        Bitmap bMap = BitmapFactory.decodeResource(getResources(), imageID);
+        Drawable drawable = new BitmapDrawable(this.getResources(),
+                getResizedBitmap(bMap, newImageHeight, (int) deviceWidth));
+
+        return drawable;
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        float scaleWidth = ((float) newWidth/2) / width;
+        float scaleHeight = ((float) newHeight/2) / height;
+
+        // create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
+                matrix, false);
+
+        return resizedBitmap;
     }
 
 }

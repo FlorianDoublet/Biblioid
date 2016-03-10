@@ -53,11 +53,11 @@
     <string name="friendLastName">Nom (optionel) :</string>
     <string name="friendCloudLink">Lien cloud :</string>
     <string name="title_activity_create_friend">Création d\'un ami</string>
-    <string name="loanCheckBox">Loan :</string>
-    <string name="friendSpinner">friend :</string>
-    <string name="loanDateLoan">Date of the loan</string>
-    <string name="loanDateReminder">Reminder for the loan</string>
-    <string name="service_name">Service to notify when a date reminder is achieved</string>
+    <string name="loanCheckBox">Prêter le livre :</string>
+    <string name="friendSpinner">Choissisez un ami :</string>
+    <string name="loanDateLoan">Date du prêt :</string>
+    <string name="loanDateReminder">Date de rappel pour le prêt :</string>
+    <string name="service_name">Service qui notifie l'utilisateur quand une date de rappel à été atteinte</string>
     <string name="loanDateFormat">JJ/MM/AAAA hh:mm</string>
     <string name="importExport">Import / Export</string>
     <string name="addFriend">Ajouter un ami</string>

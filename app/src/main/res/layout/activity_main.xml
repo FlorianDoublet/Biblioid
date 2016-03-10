@@ -37,6 +37,7 @@
                         android:layout_margin="3dp">
 
                         <ImageView
+                            android:id="@+id/imgViewCreateBook"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:adjustViewBounds="true"
@@ -63,6 +64,7 @@
                         android:layout_margin="3dp">
 
                         <ImageView
+                            android:id="@+id/imgViewDisplayBooks"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:adjustViewBounds="true"
@@ -97,6 +99,7 @@
                     android:layout_margin="3dp">
 
                     <ImageView
+                        android:id="@+id/imgViewDisplayFilters"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:paddingTop="3dp"
@@ -123,6 +126,7 @@
                     android:layout_margin="3dp">
 
                     <ImageView
+                        android:id="@+id/imgViewScanBook"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:paddingTop="3dp"
@@ -157,6 +161,7 @@
                     android:layout_margin="3dp">
 
                     <ImageView
+                        android:id="@+id/imgViewImportExport"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:paddingTop="3dp"
@@ -183,6 +188,7 @@
                     android:layout_margin="3dp">
 
                     <ImageView
+                        android:id="@+id/imgViewAddFriend"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:paddingTop="3dp"
@@ -217,6 +223,7 @@
                     android:layout_margin="3dp">
 
                     <ImageView
+                        android:id="@+id/imgViewOptions"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:paddingTop="3dp"
@@ -243,6 +250,7 @@
                     android:layout_margin="3dp">
 
                     <ImageView
+                        android:id="@+id/imgViewInformations"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:paddingTop="3dp"
