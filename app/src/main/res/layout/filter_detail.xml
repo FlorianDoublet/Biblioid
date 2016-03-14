@@ -14,35 +14,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
                     android:orientation="horizontal"
-                    android:padding="2dp">
-
+                    android:padding="2dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false">
                 </LinearLayout>
-
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:background="#77000000">
+                    android:background="#55000000"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false">
 
                     <TextView
                         android:id="@+id/name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
-                        android:paddingLeft="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         android:textSize="26sp"
                         android:textStyle="bold"
-                        android:layout_gravity="center_vertical|right"
+                        android:layout_gravity="center_vertical|end"
                         android:shadowColor="#000000"
                         android:shadowRadius="7"
                         android:shadowDx="3"
                         android:shadowDy="3"
-                        android:inputType="textMultiLine"
                         android:textColor="@color/white"
-                        tools:text="Nom du filtre"/>
+                        tools:text="Nom du filtre"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
 
                     <TextView
                         android:id="@+id/nbLivre"
@@ -50,9 +56,14 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:paddingTop="50dp"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
                         android:textSize="13sp"
                         android:textStyle="italic"
-                        tools:text="3 livre(s)" />
+                        tools:text="3 livre(s)"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" />
                 </LinearLayout>
         </RelativeLayout>
 

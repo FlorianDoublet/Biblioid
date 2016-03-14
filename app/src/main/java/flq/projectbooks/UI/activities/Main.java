@@ -92,15 +92,16 @@ public class Main extends ActionBarActivity {
         BookFilter.spinnerArrayPossession.add("Perdu");
         BiblioidBroadcastReceiver.runDateReminderCheckerEveryMinute(this);
 
-
-        ((ImageView)findViewById(R.id.imgViewCreateBook)).setImageDrawable(this.ResizeImage(R.drawable.book));
-        ((ImageView)findViewById(R.id.imgViewDisplayBooks)).setImageDrawable(this.ResizeImage(R.drawable.library));
-        ((ImageView)findViewById(R.id.imgViewDisplayFilters)).setImageDrawable(this.ResizeImage(R.drawable.filter));
-        ((ImageView)findViewById(R.id.imgViewScanBook)).setImageDrawable(this.ResizeImage(R.drawable.barcode));
-        ((ImageView)findViewById(R.id.imgViewImportExport)).setImageDrawable(this.ResizeImage(R.drawable.importexport));
-        ((ImageView)findViewById(R.id.imgViewAddFriend)).setImageDrawable(this.ResizeImage(R.drawable.friend));
-        ((ImageView)findViewById(R.id.imgViewOptions)).setImageDrawable(this.ResizeImage(R.drawable.option));
-        ((ImageView)findViewById(R.id.imgViewInformations)).setImageDrawable(this.ResizeImage(R.drawable.info));
+        if(findViewById(R.id.imgViewCreateBook) != null){
+            ((ImageView)findViewById(R.id.imgViewCreateBook)).setImageDrawable(this.ResizeImage(R.drawable.book));
+            ((ImageView)findViewById(R.id.imgViewDisplayBooks)).setImageDrawable(this.ResizeImage(R.drawable.library));
+            ((ImageView)findViewById(R.id.imgViewDisplayFilters)).setImageDrawable(this.ResizeImage(R.drawable.filter));
+            ((ImageView)findViewById(R.id.imgViewScanBook)).setImageDrawable(this.ResizeImage(R.drawable.barcode));
+            ((ImageView)findViewById(R.id.imgViewImportExport)).setImageDrawable(this.ResizeImage(R.drawable.importexport));
+            ((ImageView)findViewById(R.id.imgViewAddFriend)).setImageDrawable(this.ResizeImage(R.drawable.friend));
+            ((ImageView)findViewById(R.id.imgViewOptions)).setImageDrawable(this.ResizeImage(R.drawable.option));
+            ((ImageView)findViewById(R.id.imgViewInformations)).setImageDrawable(this.ResizeImage(R.drawable.info));
+        }
     }
 
     @Override
@@ -256,4 +257,8 @@ public class Main extends ActionBarActivity {
         return resizedBitmap;
     }
 
+    public void openInformationActivity(View view){
+        Intent i = new Intent(this, Informations.class);
+        startActivity(i);
+    }
 }

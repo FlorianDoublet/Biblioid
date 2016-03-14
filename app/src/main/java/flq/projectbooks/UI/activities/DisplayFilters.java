@@ -47,6 +47,7 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         setContentView(R.layout.activity_display_filters);
 
         filterList = (ListView) findViewById(R.id.filterList);
+        filterList.setItemsCanFocus(false);
 
         filterList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
