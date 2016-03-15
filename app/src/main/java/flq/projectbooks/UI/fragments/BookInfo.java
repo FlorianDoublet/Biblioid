@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -169,8 +171,18 @@ public class BookInfo extends Fragment implements Parcelable {
         }
         textViewAuthor.setText(author_s);
 
-        TextView textViewDescription = (TextView) view.findViewById(R.id.bookInfoDescription);
-        textViewDescription.setText(book.getDescription());
+        String htmlText = " %s ";
+        String myData = "<html><body style=\"text-align:justify\" bgcolor=\"#" + Integer.toHexString(getResources().getColor(R.color.background_material_dark) & 0x00ffffff)  + "\">" + "<font color=\"#"+ Integer.toHexString(getResources().getColor(R.color.dim_foreground_material_dark) & 0x00ffffff) +"\">" + book.getDescription() + "</font></body></Html>";
+
+        WebView webView = (WebView) view.findViewById(R.id.bookInfoDescription);
+
+        webView.loadData(String.format(htmlText, myData), "text/html; charset=utf-8", "utf-8");
+
+        //TextView textViewDescription = (TextView) view.findViewById(R.id.bookInfoDescription);
+        //textViewDescription.setText(book.getDescription());
+
+        TextView textViewInfoTitle = (TextView) view.findViewById(R.id.bookInfoTitle);
+        textViewInfoTitle.setText(book.getTitle());
 
         TextView textViewDatePub = (TextView) view.findViewById(R.id.bookInfoDatePublication);
         if (!book.getDatePublication().equals("")) {

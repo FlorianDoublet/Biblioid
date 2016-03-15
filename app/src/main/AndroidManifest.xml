@@ -8,8 +8,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -54,24 +52,23 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.activities.ImportExport"></activity>
+        <activity android:name=".UI.activities.ImportExport" />
 
         <receiver
+            android:name=".utilities.BiblioidBroadcastReceiver"
             android:enabled="true"
-            android:name="flq.projectbooks.utilities.BiblioidBroadcastReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-
         </receiver>
+
         <service
+            android:name=".utilities.DateReminderCheckService"
             android:icon="@drawable/amazonlogo"
-            android:name="flq.projectbooks.utilities.DateReminderCheckService"
-            android:label="@string/service_name"
-            />
+            android:label="@string/service_name" />
 
+        <activity android:name=".UI.activities.Informations"></activity>
     </application>
-
 
 </manifest>

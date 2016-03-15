@@ -14,7 +14,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp">
 
         <ImageView
             android:id="@+id/coverView"
@@ -108,13 +110,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/bookTitle" />
+                        android:text="@string/bookTitle"/>
 
                     <EditText
                         android:id="@+id/bookTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8" />
+                        android:layout_weight="8"/>
 
                     <ImageButton
                         android:id="@+id/bookTitleImageButton"
@@ -152,7 +154,8 @@
                         android:id="@+id/bookAuthorMultiAutoCompleted"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8" />
+                        android:layout_weight="8"
+                        android:hint="Victor Hugo, Stendhal, Tolkien"/>
 
                     <ImageButton
                         android:id="@+id/bookAuthorImageButton"
@@ -190,7 +193,8 @@
                         android:id="@+id/bookDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8" />
+                        android:layout_weight="8"
+                        android:hint=""/>
 
                     <ImageButton
                         android:id="@+id/bookDescriptionImageButton"
@@ -304,7 +308,8 @@
                         android:id="@+id/bookCategoryMultiAutoCompleted"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8" />
+                        android:layout_weight="8"
+                        android:hint="Fantastique, Bande dessinée, Astérix"/>
 
                     <ImageButton
                         android:id="@+id/bookCategoryImageButton"

@@ -58,6 +58,9 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
     protected List<GetBookInfo> bookSources;
     protected boolean isLoadingBookFromSource;
     private Book book;
+    private String customAuthor;
+    private String customPublisher;
+    private String customCategories;
     private int indexSourceBook;
     private ArrayAdapter<String> autocompetedArrayAdapterPublisher;
     private ArrayAdapter<String> multiAutocompetedArrayAdapterAuthor;
@@ -213,7 +216,10 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         book.setDatePublication(datePub.getText().toString());
         book.setPublisher_id(PublisherLibrary.getInstance().findAndAddAPublisher(publisher.getText().toString().trim()).getId());
         book.setNbPages(Integer.parseInt(nbPages.getText().toString()));
-
+        book.setAuthors(LinkTablesDataSource.getAuthorsFromEditText((EditText) findViewById(R.id.bookAuthorMultiAutoCompleted)));
+        String text = ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).getText().toString();
+        book.setPublisher_id(PublisherLibrary.getInstance().findAndAddAPublisher(text).getId());
+        book.setCategories(LinkTablesDataSource.getCategoriesFromString(text));
         //will feed the book with the good authors
         long book_id = LinkTablesDataSource.feedBookWithAuthor(book, author);
         //will feed the book with the good categories
@@ -780,7 +786,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookAuthor = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookAuthorImageButton)).setImageResource(bookSourcesLogos.get(indexBookAuthor));
-                    book.setAuthors(LinkTablesDataSource.getAuthorsFromEditText((EditText) findViewById(R.id.bookAuthorMultiAutoCompleted)));
+                    customAuthor = ((EditText)findViewById(R.id.bookAuthorMultiAutoCompleted)).getText().toString();
                 }
             }
         });
@@ -834,7 +840,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookCategory = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
-                    book.setCategories(LinkTablesDataSource.getCategoriesFromString(text));
+                   customCategories = text;
                 }
             }
         });
@@ -890,7 +896,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookPublisher = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(indexBookPublisher));
-                    book.setPublisher_id(PublisherLibrary.getInstance().findAndAddAPublisher(text).getId());
+                    customPublisher = text;
                 }
             }
         });

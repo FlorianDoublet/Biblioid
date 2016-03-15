@@ -30,11 +30,306 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
+
+                <LinearLayout
+                    android:id="@+id/Details"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/bookInfoTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="4dp"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:textColor="@color/primary"
+                                tools:text="Titre" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/bookInfoImage"
+                                    android:layout_width="150dp"
+                                    android:layout_height="230dp"
+                                    android:padding="8dp"
+                                    tools:src="@drawable/picturebook" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/bookInfoAuthor"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="4dp"
+                                        android:textSize="20sp"
+                                        android:textColor="@color/primary"
+                                        tools:text="Auteurs" />
+
+                                    <TextView
+                                        android:id="@+id/bookInfoDatePublication"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="16sp"
+                                        tools:text="JJ/MM/AAAA" />
+
+                                    <TextView
+                                        android:id="@+id/bookInfoPublisher"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingRight="16dp"
+                                        android:textSize="16sp"
+                                        tools:text="Publisher" />
+
+
+                                    <TextView
+                                        android:id="@+id/bookInfoCategorie"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="16sp"
+                                        tools:text="Genres" />
+
+                                    <TextView
+                                        android:id="@+id/bookInfoNbPages"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="14sp"
+                                        tools:text="0 Pages" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <WebView
+                                android:id="@+id/bookInfoDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                tools:text="Je suis une longue description qui sers a voir comment je suis placé sur l'écran. C'est cool non ?" />
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="20dp"
+                                android:onClick="modifBook"
+                                android:text="@string/btnModif" />
+
+
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Informations"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal">
+
+                            <RadioGroup
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/radioGroupBookState"
+                                android:layout_below="@+id/textView"
+                                android:layout_alignParentStart="true">
+
+                                <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Non lu"
+                                    android:id="@+id/radioButtonNotRead" />
+
+                                <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="En cours"
+                                    android:id="@+id/radioButtonReading" />
+
+                                <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Lu"
+                                    android:id="@+id/radioButtonRead" />
+                            </RadioGroup>
+
+                            <EditText
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:ems="10"
+                                android:id="@+id/editTextNbPages"
+                                android:editable="false"
+                                android:enabled="false"
+                                android:hint="N° de page"
+                                android:layout_alignBottom="@+id/radioGroupBookState"
+                                android:layout_toEndOf="@+id/radioGroupBookState"
+                                android:layout_marginStart="19dp"
+                                android:layout_marginBottom="25dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Etat d&apos;avancement du livre :"
+                                android:id="@+id/textView"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentStart="true" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Note attribuée au livre à titre d&apos;indication :"
+                                android:id="@+id/textView2"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentStart="true" />
+
+                            <RatingBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/ratingBar"
+                                android:layout_below="@+id/textView2"
+                                android:layout_centerInParent="true"
+                                android:numStars="5"
+                                android:stepSize="1"
+                                android:nestedScrollingEnabled="false" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ajouter à la liste de souhait"
+                                android:id="@+id/checkBoxWishList"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentStart="true" />
+
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ajouter à la liste des favoris"
+                                android:id="@+id/checkBoxFavoriteList"
+                                android:layout_below="@+id/checkBoxWishList"
+                                android:layout_alignParentStart="true" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Etat du livre :"
+                                android:id="@+id/textView3"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentStart="true" />
+
+                            <Spinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/spinnerBookState"
+                                android:layout_alignParentTop="true"
+                                android:layout_toEndOf="@+id/textView3"
+                                android:spinnerMode="dropdown"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Possession :"
+                                android:id="@+id/textView4"
+                                android:layout_below="@+id/textView3"
+                                android:layout_marginTop="10dp"
+                                android:layout_alignParentStart="true" />
+
+                            <Spinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/spinnerBookPossession"
+                                android:layout_below="@+id/textView3"
+                                android:layout_toEndOf="@+id/textView3"
+                                android:layout_marginTop="10dp"/>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Commentaire personnel :"
+                                android:id="@+id/textView5"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentStart="true" />
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textMultiLine"
+                                android:ems="10"
+                                android:id="@+id/editTextComment"
+                                android:layout_below="@+id/textView5"
+                                android:layout_alignParentStart="true" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/Pret"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
 
 
                     <LinearLayout
@@ -230,277 +525,10 @@
                             android:layout_marginBottom="10dp"/>
 
                     </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/Details"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:id="@+id/bookInfoImage"
-                                    android:layout_width="150dp"
-                                    android:layout_height="230dp"
-                                    android:padding="8dp"
-                                    tools:src="@drawable/picturebook" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-                                    <TextView
-                                        android:id="@+id/bookInfoAuthor"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:paddingTop="4dp"
-                                        android:textSize="20sp"
-                                        android:textColor="@color/primary"
-                                        tools:text="Auteurs" />
-
-                                    <TextView
-                                        android:id="@+id/bookInfoDatePublication"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="16sp"
-                                        tools:text="JJ/MM/AAAA" />
-
-                                    <TextView
-                                        android:id="@+id/bookInfoPublisher"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:paddingRight="16dp"
-                                        android:textSize="16sp"
-                                        tools:text="Publisher" />
-
-
-                                    <TextView
-                                        android:id="@+id/bookInfoCategorie"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="16sp"
-                                        tools:text="Genres" />
-
-                                    <TextView
-                                        android:id="@+id/bookInfoNbPages"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="14sp"
-                                        tools:text="0 Pages" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/bookInfoDescription"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                tools:text="Je suis une longue description qui sers a voir comment je suis placé sur l'écran. C'est cool non ?" />
-
-                            <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="20dp"
-                                android:onClick="modifBook"
-                                android:text="@string/btnModif" />
-
-
                         </LinearLayout>
                     </ScrollView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/Informations"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal">
-
-                            <RadioGroup
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/radioGroupBookState"
-                                android:layout_below="@+id/textView"
-                                android:layout_alignParentStart="true">
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Non lu"
-                                    android:id="@+id/radioButtonNotRead" />
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="En cours"
-                                    android:id="@+id/radioButtonReading" />
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Lu"
-                                    android:id="@+id/radioButtonRead" />
-                            </RadioGroup>
-
-                            <EditText
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:inputType="number"
-                                android:ems="10"
-                                android:id="@+id/editTextNbPages"
-                                android:editable="false"
-                                android:enabled="false"
-                                android:hint="N° de page"
-                                android:layout_alignBottom="@+id/radioGroupBookState"
-                                android:layout_toEndOf="@+id/radioGroupBookState"
-                                android:layout_marginStart="19dp"
-                                android:layout_marginBottom="25dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Etat d&apos;avancement du livre :"
-                                android:id="@+id/textView"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentStart="true" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Note attribuée au livre à titre d&apos;indication :"
-                                android:id="@+id/textView2"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentStart="true" />
-
-                            <RatingBar
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/ratingBar"
-                                android:layout_below="@+id/textView2"
-                                android:layout_centerInParent="true"
-                                android:numStars="5"
-                                android:stepSize="1"
-                                android:nestedScrollingEnabled="false" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Ajouter à la liste de souhait"
-                                android:id="@+id/checkBoxWishList"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentStart="true" />
-
-                            <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Ajouter à la liste des favoris"
-                                android:id="@+id/checkBoxFavoriteList"
-                                android:layout_below="@+id/checkBoxWishList"
-                                android:layout_alignParentStart="true" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Etat du livre :"
-                                android:id="@+id/textView3"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentStart="true" />
-
-                            <Spinner
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/spinnerBookState"
-                                android:layout_alignParentTop="true"
-                                android:layout_toEndOf="@+id/textView3"
-                                android:spinnerMode="dropdown"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Possession :"
-                                android:id="@+id/textView4"
-                                android:layout_below="@+id/textView3"
-                                android:layout_marginTop="10dp"
-                                android:layout_alignParentStart="true" />
-
-                            <Spinner
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/spinnerBookPossession"
-                                android:layout_below="@+id/textView3"
-                                android:layout_toEndOf="@+id/textView3"
-                                android:layout_marginTop="10dp"/>
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Commentaire personnel :"
-                                android:id="@+id/textView5"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentStart="true" />
-
-                            <EditText
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textMultiLine"
-                                android:ems="10"
-                                android:id="@+id/editTextComment"
-                                android:layout_below="@+id/textView5"
-                                android:layout_alignParentStart="true" />
-                        </RelativeLayout>
-                    </LinearLayout>
 
                 </LinearLayout>
-
 
 
             </FrameLayout>
