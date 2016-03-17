@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notification_interval_entries">
+        <item>"1 minute"</item>
+        <item>"5 minutes"</item>
+        <item>"10 minutes"</item>
+        <item>"15 minutes"</item>
+        <item>"30 minutes"</item>
+        <item>"1 heure"</item>
+        <item>"2 heures"</item>
+        <item>"3 heures"</item>
+        <item>"4 heures"</item>
+        <item>"5 heures"</item>
+        <item>"7 heures"</item>
+        <item>"10 heures"</item>
+        <item>"15 heures"</item>
+        <item>"20 heures"</item>
+        <item>"24 heures"</item>
+    </string-array>
+
+    <string-array name="notification_interval_values">
+        <item>0.01</item>
+        <item>0.05</item>
+        <item>0.10</item>
+        <item>0.15</item>
+        <item>0.30</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>7</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>24</item>
+    </string-array>
+
+    
+</resources>

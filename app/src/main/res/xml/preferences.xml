@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/notification_category"
+        android:key="pref_notification_category">
+
+        <SwitchPreference
+            android:key="pref_notif"
+            android:title="@string/enable_notification"
+            android:summary="@string/enable_notification_sum"
+            android:defaultValue="true"/>
+
+        <ListPreference
+            android:dependency="pref_notif"
+            android:key="pref_notif_interval"
+            android:title="@string/notification_interval"
+            android:dialogTitle="@string/notification_interval"
+            android:summary="%s"
+            android:entries="@array/notification_interval_entries"
+            android:entryValues="@array/notification_interval_values"
+            android:defaultValue="0.05"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
