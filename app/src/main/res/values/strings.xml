@@ -63,4 +63,7 @@
     <string name="addFriend">Ajouter un ami</string>
     <string name="option">Paramètres</string>
     <string name="Info">Informations</string>
+    <string name="title_activity_google_drive_rest_sharing_code">
+        GoogleDriveRestSharingCodeActivity
+    </string>
 </resources>

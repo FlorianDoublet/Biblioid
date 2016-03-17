@@ -91,6 +91,7 @@
                     />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/cloudStatut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -139,7 +140,17 @@
                     android:onClick="readDatabaseOnCloud"
                     android:visibility="gone"/>
 
+                <Button
+                    android:id="@+id/SharingButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Obtenir le code de partage"
+                    android:visibility="gone"
+                    android:onClick="openShareActivity"/>
+
             </LinearLayout>
+
+
 
         </LinearLayout>
     </ScrollView>
