@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import flq.projectbooks.R;
+
 /**
  * Created by flori on 28/02/2016.
  */
@@ -42,6 +44,7 @@ public class DatePickerFragment extends DialogFragment
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         // Create a new instance of DatePickerDialog and return it
+        //return new DatePickerDialog(getActivity(), R.style.DatePickerTheme, this, year, month, day);
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
