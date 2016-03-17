@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
@@ -59,6 +60,8 @@ public class Main extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //line used to be sure that our prefered value are greatly initialized
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         /*Loan loan = new Loan();
         Date d = loan.stringToLoanDate("01/01/2012 10:48");
@@ -90,7 +93,10 @@ public class Main extends ActionBarActivity {
         BookFilter.spinnerArrayPossession.add("Prété");
         BookFilter.spinnerArrayPossession.add("Vendu");
         BookFilter.spinnerArrayPossession.add("Perdu");
-        BiblioidBroadcastReceiver.runDateReminderCheckerEveryMinute(this);
+
+        //if the notificationPendingIntent is null then we launch the service for notifications
+        if(BiblioidBroadcastReceiver.notificationPendingIntent == null)
+            BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this);
 
         if(findViewById(R.id.imgViewCreateBook) != null){
             ((ImageView)findViewById(R.id.imgViewCreateBook)).setImageDrawable(this.ResizeImage(R.drawable.book));
@@ -213,6 +219,11 @@ public class Main extends ActionBarActivity {
 
     public void openImportExportActivity(View view) {
         Intent i = new Intent(this, ImportExport.class);
+        startActivity(i);
+    }
+
+    public void openSettingsActivity(View view){
+        Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);
     }
 
