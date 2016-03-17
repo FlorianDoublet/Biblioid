@@ -62,7 +62,7 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
     private static final int RC_SIGN_IN = 9001;
     private static final int DRIVE_SIGN_IN = 9002;
     public GoogleApiClient mGoogleApiClient;
-    private DriveId biblioidFolderDriveID = null;
+    static public DriveId biblioidFolderDriveID = null;
     private MySQLiteHelper db;
     private Uri uri;
 
@@ -191,6 +191,11 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
                     public void onResult(DriveApi.MetadataBufferResult result) {
                         // Iterate over the matching Metadata instances in mdResultSet
                         if (result.getStatus().isSuccess() && result.getMetadataBuffer().getCount() > 0 && result.getMetadataBuffer().get(0).isExplicitlyTrashed() == false) {
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             biblioidFolderDriveID = result.getMetadataBuffer().get(0).getDriveId();
                             if (saveDBB) {
                                 createEmptyBiblioidDatabase();
@@ -204,6 +209,7 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
                                 findViewById(R.id.readDatabaseOnCloudButton).setVisibility(View.VISIBLE);
                                 findViewById(R.id.backupInfoDate).setVisibility(View.VISIBLE);
                                 findViewById(R.id.backupInfoPoids).setVisibility(View.VISIBLE);
+                                findViewById(R.id.SharingButton).setVisibility(View.VISIBLE);
 
                                 Query query = new Query.Builder()
                                         .addFilter(Filters.and(Filters.eq(SearchableField.TITLE, "books.db"), Filters.eq(SearchableField.TRASHED, false)))
@@ -244,6 +250,7 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
                                                         instantAgo = "";
                                                     }
                                                     ((TextView) findViewById(R.id.backupInfoDate)).setText(text + instantAgo);
+
                                                 }
                                             }
                                         });
@@ -256,6 +263,12 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
                     }
 
                 });
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void readDatabaseOnCloud(View view) {
@@ -355,13 +368,15 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
                                                     findViewById(R.id.readDatabaseOnCloudButton).setVisibility(View.VISIBLE);
                                                     findViewById(R.id.backupInfoDate).setVisibility(View.VISIBLE);
                                                     findViewById(R.id.backupInfoPoids).setVisibility(View.VISIBLE);
-                                                    ((TextView) findViewById(R.id.backupInfoDate)).setText("Dernière sauvegarde : à l'instant");
+                                                    findViewById(R.id.SharingButton).setVisibility(View.VISIBLE);
+                                                            ((TextView) findViewById(R.id.backupInfoDate)).setText("Dernière sauvegarde : à l'instant");
 
                                                     DecimalFormat df = new DecimalFormat("##.##");
                                                     df.setRoundingMode(RoundingMode.DOWN);
                                                     ((TextView) findViewById(R.id.backupInfoPoids)).setText("Dernière sauvegarde : " + df.format(db.getDBSizeInMb()) + " mo");
 
                                                     displayMessage("Base de données sauvegardé sur le cloud !");
+                                                    getDriveIdIfBiblioidFolderExist(false);
                                                 }
                                             });
 
@@ -489,5 +504,10 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
 
     private void displayMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    public void openShareActivity(View view){
+        Intent i = new Intent(this, GoogleDriveRestSharingCode.class);
+        startActivity(i);
     }
 }

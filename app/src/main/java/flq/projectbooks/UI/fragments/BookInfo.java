@@ -131,21 +131,22 @@ public class BookInfo extends Fragment implements Parcelable {
         TabHost tabs = (TabHost) view.findViewById(R.id.tabHost);
         tabs.setup();
 
+        if(tabs.getTabWidget().getTabCount() != 3) {
+            TabHost.TabSpec detailsTab = tabs.newTabSpec("Détails");
+            detailsTab.setIndicator("Détails");
+            detailsTab.setContent(R.id.Details);
+            tabs.addTab(detailsTab);
 
-        TabHost.TabSpec detailsTab = tabs.newTabSpec("Détails");
-        detailsTab.setIndicator("Détails");
-        detailsTab.setContent(R.id.Details);
-        tabs.addTab(detailsTab);
+            TabHost.TabSpec informationTab = tabs.newTabSpec("Informations");
+            informationTab.setIndicator("Informations");
+            informationTab.setContent(R.id.Informations);
+            tabs.addTab(informationTab);
 
-        TabHost.TabSpec informationTab = tabs.newTabSpec("Informations");
-        informationTab.setIndicator("Informations");
-        informationTab.setContent(R.id.Informations);
-        tabs.addTab(informationTab);
-
-        TabHost.TabSpec pretTab = tabs.newTabSpec("Prêt");
-        pretTab.setIndicator("Prêt");
-        pretTab.setContent(R.id.Pret);
-        tabs.addTab(pretTab);
+            TabHost.TabSpec pretTab = tabs.newTabSpec("Prêt");
+            pretTab.setIndicator("Prêt");
+            pretTab.setContent(R.id.Pret);
+            tabs.addTab(pretTab);
+        }
 
         final Spinner spinnerBookState = (Spinner) view.findViewById(R.id.spinnerBookState);
         ArrayAdapter<String> spinnerArrayAdapterState = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, Book.spinnerArrayState); //selected item will look like a spinner set from XML

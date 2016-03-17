@@ -32,6 +32,7 @@ import flq.projectbooks.UI.activities.DisplayBooks;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.utilities.BookAdapter;
 
 
 /**
@@ -49,7 +50,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     private int selectedBookIndex;
     private GridView gridViewBooks;
     private List<Map<String, Object>> listOfBooks;
-    private SimpleAdapter listAdapter;
+    private BookAdapter listAdapter;
     private BookLibrary bookLibrary;
     private BookFilter bookFilter;
 
@@ -91,7 +92,6 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -123,6 +123,26 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
         bookLibrary = BookLibrary.getInstance();
         createGridView(view);
+
+        view.findViewById(R.id.layoutZoomPlusGrid).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int nbColumns = gridViewBooks.getNumColumns();
+                if (nbColumns > 1) {
+                    gridViewBooks.setNumColumns(nbColumns - 1);
+                }
+
+            }
+        });
+
+        view.findViewById(R.id.layoutZoomMinusGrid).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int nbColumns = gridViewBooks.getNumColumns();
+                gridViewBooks.setNumColumns(nbColumns + 1);
+            }
+        });
+
         return view;
     }
 
@@ -151,114 +171,10 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         if (bookFilter != null) {
             bookLibrary = bookFilter.getFilteredLibrary();
         }
-        listOfBooks = new ArrayList<>();
 
-        for (Book book : bookLibrary.getBookList()) {
-            Map<String, Object> bookMap = new HashMap<>();
-            if (book.getImage() != null) {
-                byte[] img = book.getImage();
-                bookMap.put("img", new BitmapDrawable(BitmapFactory.decodeByteArray(img, 0, img.length)));
-            } else {
+        listAdapter = new BookAdapter(bookLibrary.getBookList(), view.getContext(), gridViewBooks);
 
-                bookMap.put("img", String.valueOf(R.drawable.picturebook));
-            }
-            bookMap.put("author", book.getAuthors());
-            bookMap.put("title", book.getTitle());
-            bookMap.put("isbn", book.getIsbn());
-            listOfBooks.add(bookMap);
-        }
-
-        listAdapter = new SimpleAdapter(getActivity().getBaseContext(), listOfBooks, R.layout.book_detail,
-                new String[]{"img", "title"},
-                new int[]{R.id.img, R.id.text});
-
-        listAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
-
-            @Override
-            public boolean setViewValue(View view, Object data, String textRepresentation) {
-                if (view.getId() == R.id.img) {
-                    if (data.getClass() != String.class) {
-                        ImageView imageView = (ImageView) view;
-                        Drawable drawable = (Drawable) data;
-                        imageView.setImageDrawable(drawable);
-                    } else {
-                        ImageView imageView = (ImageView) view;
-                        imageView.setImageResource(getResources().getIdentifier(data.toString(), "drawable", "flq.projectbooks"));
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
-
-
-        //gridViewBooks.setAdapter(new listAdapter(this));
         gridViewBooks.setAdapter(listAdapter);
-    }
-
-    private void createListView(View view, int bookListCode, boolean evenBooks) {
-        if (bookFilter != null) {
-            bookLibrary = bookFilter.getFilteredLibrary();
-        }
-
-
-        listOfBooks = new ArrayList<>();
-        ListView bookList = (ListView) view.findViewById(bookListCode);
-
-
-        List<Book> subList = new ArrayList<Book>();
-        List<Book> tempBookList = bookLibrary.getBookList();
-
-        if (evenBooks) {
-            for (int i = 0; i < tempBookList.size(); i += 2) {
-                subList.add(tempBookList.get(i));
-            }
-        } else {
-            for (int i = 1; i < tempBookList.size() - 1; i += 2) {
-                subList.add(tempBookList.get(i));
-            }
-        }
-
-        for (Book book : subList) {
-            Map<String, Object> bookMap = new HashMap<>();
-            if (book.getImage() != null) {
-                byte[] img = book.getImage();
-                bookMap.put("img", new BitmapDrawable(BitmapFactory.decodeByteArray(img, 0, img.length)));
-            } else {
-
-                bookMap.put("img", String.valueOf(R.drawable.picturebook));
-            }
-            bookMap.put("author", book.getAuthors());
-            bookMap.put("title", book.getTitle());
-            bookMap.put("isbn", book.getIsbn());
-            listOfBooks.add(bookMap);
-        }
-
-        listAdapter = new SimpleAdapter(getActivity().getBaseContext(), listOfBooks, R.layout.book_detail,
-                new String[]{"img", "author", "title", "isbn"},
-                new int[]{R.id.img});
-
-        listAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
-
-            @Override
-            public boolean setViewValue(View view, Object data, String textRepresentation) {
-                if (view.getId() == R.id.img) {
-                    if (data.getClass() != String.class) {
-                        ImageView imageView = (ImageView) view;
-                        Drawable drawable = (Drawable) data;
-                        imageView.setImageDrawable(drawable);
-                    } else {
-                        ImageView imageView = (ImageView) view;
-                        imageView.setImageResource(getResources().getIdentifier(data.toString(), "drawable", "flq.projectbooks"));
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
-
-
-        bookList.setAdapter(listAdapter);
     }
 
     @Override

@@ -174,13 +174,57 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         if (photo == null) {
             ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
         }
+        if(intent.hasExtra(DisplayBooks.GIVE_BOOK)){
+            if(book.getImage() != null){
+                Bitmap imageBitmap = BitmapFactory.decodeByteArray(book.getImage(), 0, book.getImage().length);
+                ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
+            }else{
+                ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
+            }
+        }
+
+        if(savedInstanceState != null){
+            if(indexBookImage == retrievedBook.size()){
+                if (photo == null) {
+                    ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
+                }
+            }else {
+                if (retrievedBook.get(indexBookImage).getImage() != null) {
+                    Bitmap imageBitmap = BitmapFactory.decodeByteArray(retrievedBook.get(indexBookImage).getImage(), 0, retrievedBook.get(indexBookImage).getImage().length);
+                    ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
+                } else {
+                    ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
+                }
+            }
+            if(retrievedBook.size() >= 1){
+                addCustomSetAllButton();
+                for(int index = 0; index < retrievedBook.size(); index++) {
+                    addSourceSetAllButton(index);
+                }
+
+                indexBookImage--;
+                indexBookTitle--;
+                indexBookDescription--;
+                indexBookAuthor--;
+                indexBookDatePublication--;
+                indexBookPublisher--;
+                indexBookCategory--;
+                indexBookNbPages--;
+                changeImageSource(null);
+                changeDescriptionSource(null);
+                changeCategorySource(null);
+                changeAuthorSource(null);
+                changeTitleSource(null);
+                changeNbPagesSource(null);
+                changeDatePublicationSource(null);
+                changePublisherSource(null);
+            }
+        }
 
         //init of our (multi) auto-completed text view
         initPublisherAutoCompletion();
         initAuthorsMultiAutoCompletion();
         initCategoriesMultiAutoCompletion();
-
-
     }
 
     @Override
@@ -302,43 +346,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
             retrievedBook.add(output);
 
             if (retrievedBook.size() == 1) {
-                ImageButton btnSource = new ImageButton(this);
-                int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
-                btnSource.setLayoutParams(new LinearLayout.LayoutParams(size, size));
-                btnSource.setScaleType(ImageView.ScaleType.FIT_XY);
-                btnSource.setImageResource(bookSourcesLogos.get(bookSourcesLogos.size() - 1));
-                btnSource.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        int index = bookSourcesLogos.size() - 1;
-                        while (indexBookImage != index && findViewById(R.id.bookImageImageButton).isEnabled()) {
-                            changeImageSource(null);
-                        }
-                        while (indexBookPublisher != index && findViewById(R.id.bookPublisherImageButton).isEnabled()) {
-                            changePublisherSource(null);
-                        }
-                        while (indexBookDatePublication != index && findViewById(R.id.bookDatePublicationImageButton).isEnabled()) {
-                            changeDatePublicationSource(null);
-                        }
-                        while (indexBookNbPages != index && findViewById(R.id.bookNbPagesImageButton).isEnabled()) {
-                            changeNbPagesSource(null);
-                        }
-                        while (indexBookTitle != index && findViewById(R.id.bookTitleImageButton).isEnabled()) {
-                            changeTitleSource(null);
-                        }
-                        while (indexBookAuthor != index && findViewById(R.id.bookAuthorImageButton).isEnabled()) {
-                            changeAuthorSource(null);
-                        }
-                        while (indexBookCategory != index && findViewById(R.id.bookCategoryImageButton).isEnabled()) {
-                            changeCategorySource(null);
-                        }
-                        while (indexBookDescription != index && findViewById(R.id.bookDescriptionImageButton).isEnabled()) {
-                            changeDescriptionSource(null);
-                        }
-                    }
-                });
-                ((LinearLayout) findViewById(R.id.topMenuCreateBook)).addView(btnSource);
+                addCustomSetAllButton();
 
                 ((TextView) findViewById(R.id.bookTitle)).setText(output.getTitle());
                 ((TextView) findViewById(R.id.bookISBN)).setText(output.getIsbn());
@@ -376,42 +384,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 findViewById(R.id.bookImageImageButtonLock).setVisibility(View.VISIBLE);
             }
             final int index = indexSourceBook;
-            ImageButton btnSource = new ImageButton(this);
-            int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
-            btnSource.setLayoutParams(new LinearLayout.LayoutParams(size, size));
-            btnSource.setScaleType(ImageView.ScaleType.FIT_XY);
-            btnSource.setImageResource(bookSourcesLogos.get(indexSourceBook));
-            btnSource.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    while (indexBookImage != index && findViewById(R.id.bookImageImageButton).isEnabled()) {
-                        changeImageSource(null);
-                    }
-                    while (indexBookPublisher != index && findViewById(R.id.bookPublisherImageButton).isEnabled()) {
-                        changePublisherSource(null);
-                    }
-                    while (indexBookDatePublication != index && findViewById(R.id.bookDatePublicationImageButton).isEnabled()) {
-                        changeDatePublicationSource(null);
-                    }
-                    while (indexBookNbPages != index && findViewById(R.id.bookNbPagesImageButton).isEnabled()) {
-                        changeNbPagesSource(null);
-                    }
-                    while (indexBookTitle != index && findViewById(R.id.bookTitleImageButton).isEnabled()) {
-                        changeTitleSource(null);
-                    }
-                    while (indexBookAuthor != index && findViewById(R.id.bookAuthorImageButton).isEnabled()) {
-                        changeAuthorSource(null);
-                    }
-                    while (indexBookCategory != index && findViewById(R.id.bookCategoryImageButton).isEnabled()) {
-                        changeCategorySource(null);
-                    }
-                    while (indexBookDescription != index && findViewById(R.id.bookDescriptionImageButton).isEnabled()) {
-                        changeDescriptionSource(null);
-                    }
-                }
-            });
-            ((LinearLayout) findViewById(R.id.topMenuCreateBook)).addView(btnSource);
+            addSourceSetAllButton(index);
             indexSourceBook++;
         }
     }
@@ -886,7 +859,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 String text = ((AutoCompleteTextView) findViewById(R.id.bookPublisherAutoCompleted)).getText().toString();
                 boolean equal = false;
                 for (int i = 0; i < retrievedBook.size(); i++) {
-                    if(retrievedBook.get(i).getPublisher_id() >= 0){
+                    if (retrievedBook.get(i).getPublisher_id() >= 0) {
                         if (text.equals(PublisherLibrary.getInstance().getPublisherById(retrievedBook.get(i).getPublisher_id()).getName())) {
                             equal = true;
                             ((ImageButton) findViewById(R.id.bookPublisherImageButton)).setImageResource(bookSourcesLogos.get(i));
@@ -900,6 +873,85 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 }
             }
         });
+    }
+
+    private void addSourceSetAllButton(final int index){
+        ImageButton btnSource = new ImageButton(this);
+        int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+        btnSource.setLayoutParams(new LinearLayout.LayoutParams(size, size));
+        btnSource.setScaleType(ImageView.ScaleType.FIT_XY);
+        btnSource.setImageResource(bookSourcesLogos.get(index));
+        btnSource.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                while (indexBookImage != index && findViewById(R.id.bookImageImageButton).isEnabled()) {
+                    changeImageSource(null);
+                }
+                while (indexBookPublisher != index && findViewById(R.id.bookPublisherImageButton).isEnabled()) {
+                    changePublisherSource(null);
+                }
+                while (indexBookDatePublication != index && findViewById(R.id.bookDatePublicationImageButton).isEnabled()) {
+                    changeDatePublicationSource(null);
+                }
+                while (indexBookNbPages != index && findViewById(R.id.bookNbPagesImageButton).isEnabled()) {
+                    changeNbPagesSource(null);
+                }
+                while (indexBookTitle != index && findViewById(R.id.bookTitleImageButton).isEnabled()) {
+                    changeTitleSource(null);
+                }
+                while (indexBookAuthor != index && findViewById(R.id.bookAuthorImageButton).isEnabled()) {
+                    changeAuthorSource(null);
+                }
+                while (indexBookCategory != index && findViewById(R.id.bookCategoryImageButton).isEnabled()) {
+                    changeCategorySource(null);
+                }
+                while (indexBookDescription != index && findViewById(R.id.bookDescriptionImageButton).isEnabled()) {
+                    changeDescriptionSource(null);
+                }
+            }
+        });
+        ((LinearLayout) findViewById(R.id.topMenuCreateBook)).addView(btnSource);
+    }
+
+    private void addCustomSetAllButton(){
+        ImageButton btnSource = new ImageButton(this);
+        int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+        btnSource.setLayoutParams(new LinearLayout.LayoutParams(size, size));
+        btnSource.setScaleType(ImageView.ScaleType.FIT_XY);
+        btnSource.setImageResource(bookSourcesLogos.get(bookSourcesLogos.size() - 1));
+        btnSource.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                int index = bookSourcesLogos.size() - 1;
+                while (indexBookImage != index && findViewById(R.id.bookImageImageButton).isEnabled()) {
+                    changeImageSource(null);
+                }
+                while (indexBookPublisher != index && findViewById(R.id.bookPublisherImageButton).isEnabled()) {
+                    changePublisherSource(null);
+                }
+                while (indexBookDatePublication != index && findViewById(R.id.bookDatePublicationImageButton).isEnabled()) {
+                    changeDatePublicationSource(null);
+                }
+                while (indexBookNbPages != index && findViewById(R.id.bookNbPagesImageButton).isEnabled()) {
+                    changeNbPagesSource(null);
+                }
+                while (indexBookTitle != index && findViewById(R.id.bookTitleImageButton).isEnabled()) {
+                    changeTitleSource(null);
+                }
+                while (indexBookAuthor != index && findViewById(R.id.bookAuthorImageButton).isEnabled()) {
+                    changeAuthorSource(null);
+                }
+                while (indexBookCategory != index && findViewById(R.id.bookCategoryImageButton).isEnabled()) {
+                    changeCategorySource(null);
+                }
+                while (indexBookDescription != index && findViewById(R.id.bookDescriptionImageButton).isEnabled()) {
+                    changeDescriptionSource(null);
+                }
+            }
+        });
+        ((LinearLayout) findViewById(R.id.topMenuCreateBook)).addView(btnSource);
     }
 }
 

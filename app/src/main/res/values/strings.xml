@@ -63,6 +63,9 @@
     <string name="addFriend">Ajouter un ami</string>
     <string name="option">Paramètres</string>
     <string name="Info">Informations</string>
+    <string name="title_activity_google_drive_rest_sharing_code">
+        GoogleDriveRestSharingCodeActivity
+    </string>
     <string name="enable_notification">Active les notifications</string>
     <string name="enable_notification_sum">Autorise biblioid à vous envoyer des notifications</string>
     <string name="notification_category">NOTIFICATION</string>
