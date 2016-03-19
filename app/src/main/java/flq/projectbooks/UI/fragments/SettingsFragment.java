@@ -53,14 +53,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this.getActivity());
             }else{
                 //we cancel the alarmTime for notification if we uncheck the switch
-                BiblioidBroadcastReceiver.cancelAlarmIfExists(this.getActivity(), BiblioidBroadcastReceiver.notificationPendingIntent);
+                BiblioidBroadcastReceiver.cancelAlarmIfExists(this.getActivity(), BiblioidBroadcastReceiver.NOTIFICATION_TIMER);
             }
 
 
         }
         if (key.equals(KEY_PREF_NOTIF_INTERVAL)) {
             //if we change the interval we relaunch the alarmTimer for the service notification. This methode will "update" the alarmTimer
-            BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this.getActivity());
+            //BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this.getActivity());
         }
     }
 }

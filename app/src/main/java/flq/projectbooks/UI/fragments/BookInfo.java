@@ -21,9 +21,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
@@ -426,6 +428,16 @@ public class BookInfo extends Fragment implements Parcelable {
             }
         });
 
+
+        //part for loan
+
+        final LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final Button validateLoanButton = (Button)view.findViewById(R.id.btnValidateLoan);
+        final Button removeLoanButton = (Button)view.findViewById(R.id.btnRemoveLoan);
+
+        validateLoanButton.setVisibility(View.GONE);
+        removeLoanButton.setVisibility(View.GONE);
+
         view.findViewById(R.id.loanDateLoanTextViewTime).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -470,8 +482,19 @@ public class BookInfo extends Fragment implements Parcelable {
 
         initFriendSpinner(view);
 
+
+
         Loan loan = LoanLibrary.getInstance().getLoanByBookId(book.getId());
         if (loan != null) {
+
+            //we show the buttons
+            p.weight = 1;
+            removeLoanButton.setLayoutParams(p);
+            validateLoanButton.setLayoutParams(p);
+            removeLoanButton.setVisibility(View.VISIBLE);
+            validateLoanButton.setVisibility(View.VISIBLE);
+            validateLoanButton.setText(R.string.loan_button_modify);
+
             Friend friend = FriendLibrary.getInstance().getFriendById(loan.getFriend_id());
             ((CheckBox) view.findViewById(R.id.loanCheckBox)).setChecked(true);
             //use to automatically select the right friend
@@ -490,6 +513,31 @@ public class BookInfo extends Fragment implements Parcelable {
             this.timePickerFragment.initDateLoan((TextView) view.findViewById(R.id.loanDateLoanTextViewTime));
             this.timePickerFragment.initDateReminder((TextView) view.findViewById(R.id.loanDateReminderTextViewTime));
         }
+
+        CheckBox loanCheckbox = ((CheckBox) view.findViewById(R.id.loanCheckBox));
+        loanCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                    if(isChecked){
+
+                        if(removeLoanButton.getVisibility() == View.VISIBLE)
+                            p.weight = 1;
+                        else
+                            p.weight = 2;
+                        validateLoanButton.setLayoutParams(p);
+                        validateLoanButton.setVisibility(View.VISIBLE);
+
+
+                    } else {
+                        if(removeLoanButton.getVisibility() == View.VISIBLE){
+                            p.weight = 2;
+                            removeLoanButton.setLayoutParams(p);
+                        }
+                        validateLoanButton.setVisibility(View.GONE);
+                    }
+                }
+            }
+        );
 
     }
 

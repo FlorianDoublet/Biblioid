@@ -6,8 +6,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +21,7 @@ import java.util.Locale;
 import flq.projectbooks.R;
 import flq.projectbooks.UI.activities.DisplayBooks;
 import flq.projectbooks.UI.fragments.BookInfo;
+import flq.projectbooks.UI.fragments.SettingsFragment;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Friend;
 import flq.projectbooks.data.Loan;
@@ -66,8 +70,22 @@ public class DateReminderCheckService extends Service {
         //update the dateReminder to the local Date
         loan.setDateReminder(Calendar.getInstance().getTime());
 
-        //we add 5 minute to the date reminder and update to loan in the database
-        loan.addXMinutesToDateReminder(5);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+
+        float notificationIntervalFloat = Float.valueOf(sharedPref.getString(SettingsFragment.KEY_PREF_NOTIF_INTERVAL, "1"));
+        int notficiationInterval;
+        if(notificationIntervalFloat < 1){
+            notficiationInterval = (int)(notificationIntervalFloat * 100);
+            //we add notificationInterval minutes to the date reminder and update to loan in the database
+            loan.addXMinutesToDateReminder(notficiationInterval);
+        }else{
+            notficiationInterval = (int)notificationIntervalFloat;
+            //we add notificationInterval hours to the date reminder and update to loan in the database
+            loan.addXHoursToDateReminder(notficiationInterval);
+        }
+
+
+
         LoanLibrary.getInstance().updateOrAddLoan(loan);
 
         String message = "Rappel prêt livre auprès de " + friend.getFirstName() + " " + friend.getLastName();

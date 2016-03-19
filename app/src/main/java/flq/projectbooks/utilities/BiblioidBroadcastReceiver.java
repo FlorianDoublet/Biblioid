@@ -22,67 +22,48 @@ import flq.projectbooks.UI.fragments.SettingsFragment;
 public class BiblioidBroadcastReceiver extends BroadcastReceiver {
 
     public static final int NOTIFICATION_TIMER = 666;
-    public static PendingIntent notificationPendingIntent = null;
 
     public static void runDateReminderCheckerEveryXMinutes(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        float minfloat = Float.parseFloat(sharedPref.getString(SettingsFragment.KEY_PREF_NOTIF_INTERVAL, ""));
-        int minutes = 0;
-        //it mean that it's minutes
-        if(minfloat < 1){
-            minutes = (int)(minfloat*100);
-        } else {
-            //it mean that it's hours
-            minutes = ((int)minfloat)*60;
+        boolean notificationEnabled = sharedPref.getBoolean(SettingsFragment.KEY_PREF_NOTIF, false);
+        if(notificationEnabled){
+
+                Intent intentForService = new Intent(context.getApplicationContext(), DateReminderCheckService.class);
+                PendingIntent notificationPendingIntent = PendingIntent.getService(context, BiblioidBroadcastReceiver.NOTIFICATION_TIMER,
+                        intentForService, PendingIntent.FLAG_CANCEL_CURRENT);
+
+           // BiblioidBroadcastReceiver.cancelAlarmIfExists(context, NOTIFICATION_TIMER);
+
+            //and then we set up a new one
+            final Calendar time = Calendar.getInstance();
+            time.set(Calendar.MINUTE, 0);
+            time.set(Calendar.SECOND, 0);
+            time.set(Calendar.MILLISECOND, 0);
+
+            AlarmManager alarmManager = (AlarmManager) context
+                    .getSystemService(Context.ALARM_SERVICE);
+
+            int minutes = 1;
+            long oneMinute = 60000;
+            //will run the service each minutes * oneMinute ( by default each minute )
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time.getTime()
+                    .getTime(), minutes * oneMinute, notificationPendingIntent);
         }
-
-        if(notificationPendingIntent == null){
-            Intent intentForService = new Intent(context.getApplicationContext(), DateReminderCheckService.class);
-            notificationPendingIntent = PendingIntent.getService(context, BiblioidBroadcastReceiver.NOTIFICATION_TIMER,
-                    intentForService, PendingIntent.FLAG_CANCEL_CURRENT);
-        }
-
-
-        //we cancel our current alarm timer
-        BiblioidBroadcastReceiver.cancelAlarmIfExists(context, notificationPendingIntent);
-
-        //and then we set up a new one
-        final Calendar time = Calendar.getInstance();
-        time.set(Calendar.MINUTE, 0);
-        time.set(Calendar.SECOND, 0);
-        time.set(Calendar.MILLISECOND, 0);
-
-        final AlarmManager alarmManager = (AlarmManager) context
-                .getSystemService(Context.ALARM_SERVICE);
-
-
-        long oneMinute = 60000;
-        //will run the service each minutes * oneMinute ( by default each minute )
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time.getTime()
-                .getTime(), minutes * oneMinute, notificationPendingIntent);
 
     }
 
-    public static void cancelAlarmIfExists(Context context,PendingIntent notificationPendingIntent){
-        try{
-            AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-            am.cancel(notificationPendingIntent);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public static void cancelAlarmIfExists(Context context,int Id){
+        Intent intentForService = new Intent(context.getApplicationContext(), DateReminderCheckService.class);
+        PendingIntent notificationPendingIntent = PendingIntent.getService(context.getApplicationContext(), Id,
+                intentForService, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context
+                .getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(notificationPendingIntent);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-
-        boolean notificationEnabled = sharedPref.getBoolean(SettingsFragment.KEY_PREF_NOTIF, false);
-        if(notificationEnabled){
-
-            runDateReminderCheckerEveryXMinutes(context);
-
-        }
-
+        runDateReminderCheckerEveryXMinutes(context);
     }
 
 }

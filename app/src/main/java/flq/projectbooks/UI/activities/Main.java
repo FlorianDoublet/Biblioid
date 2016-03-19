@@ -63,10 +63,6 @@ public class Main extends ActionBarActivity {
         //line used to be sure that our prefered value are greatly initialized
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        /*Loan loan = new Loan();
-        Date d = loan.stringToLoanDate("01/01/2012 10:48");
-        String s = loan.dateToString(d);*/
-
         //this.deleteDatabase("books.db"); //Effacer la bdd en cas de bug ou en cas de conflit de versions.
         authors = AuthorLibrary.getInstanceOrInitialize(this);
         categories = CategoryLibrary.getInstanceOrInitialize(this);
@@ -95,7 +91,7 @@ public class Main extends ActionBarActivity {
         BookFilter.spinnerArrayPossession.add("Perdu");
 
         //if the notificationPendingIntent is null then we launch the service for notifications
-        if(BiblioidBroadcastReceiver.notificationPendingIntent == null)
+        //if(BiblioidBroadcastReceiver.notificationPendingIntent == null)
             BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this);
 
         if(findViewById(R.id.imgViewCreateBook) != null){
