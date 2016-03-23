@@ -234,6 +234,28 @@ public class LinkTablesDataSource {
 
     }
 
+    public static long feedBookWithCategories(Book book, List<Category> cs) {
+        long book_id = BookLibrary.getInstance().updateOrAddBook(book);
+        //manually set the id to the book, to use it later to update this book
+        book.setId(book_id);
+
+        cs = LinkTablesDataSource.deleteDuplicatedCategories(cs);
+        //then add the categories list to the book
+        book.setCategories(cs);
+        //update the library
+        BookLibrary.getInstance().updateOrAddBook(book);
+
+
+        //will update the BooksCategories Table if a link between the current book and one of his categories don't exist
+        for (Category category_a : cs) {
+            if (!BookLibrary.getInstance().checkIfBooksCategoriesLinkExist(book_id, category_a.getId())) {
+                BookLibrary.getInstance().addBooksCategoriesLink(book_id, category_a.getId());
+            }
+        }
+        return book_id;
+
+    }
+
     public static long feedBookFilterWithAuthors(BookFilter filter, EditText author) {
         long book_filter_id = BookFilterCatalog.getInstance().updateOrAddFilter(filter);
         filter.setId(book_filter_id);
@@ -293,6 +315,26 @@ public class LinkTablesDataSource {
 
         //will update the BooksAuthors Table if a link between the current books and one of his authors don't exist
         for (Category category_a : categories) {
+            if (!BookFilterCatalog.getInstance().checkIfBookFiltersCategoriesLinkExist(book_filter_id, category_a.getId())) {
+                BookFilterCatalog.getInstance().addBookFiltersCategoriesLink(book_filter_id, category_a.getId());
+            }
+        }
+        return book_filter_id;
+    }
+
+    public static long feedBookFilterWithCategories(BookFilter filter, List<Category> cs) {
+        long book_filter_id = BookFilterCatalog.getInstance().updateOrAddFilter(filter);
+        filter.setId(book_filter_id);
+
+
+        cs = LinkTablesDataSource.deleteDuplicatedCategories(cs);
+        //then add the categories list to the book
+        filter.setCategories(cs);
+        //update the library
+        BookFilterCatalog.getInstance().updateOrAddFilter(filter);
+
+        //will update the BooksAuthors Table if a link between the current books and one of his authors don't exist
+        for (Category category_a : cs) {
             if (!BookFilterCatalog.getInstance().checkIfBookFiltersCategoriesLinkExist(book_filter_id, category_a.getId())) {
                 BookFilterCatalog.getInstance().addBookFiltersCategoriesLink(book_filter_id, category_a.getId());
             }

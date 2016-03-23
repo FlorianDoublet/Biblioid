@@ -35,7 +35,7 @@
 
             <LinearLayout
                 android:id="@+id/layoutZoomMinusGrid"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -49,8 +49,56 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/multiSelectionDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/delete"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/multiSelectionNewFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/newfilter"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/multiSelectionCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/cancel"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/layoutZoomPlusGrid"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
