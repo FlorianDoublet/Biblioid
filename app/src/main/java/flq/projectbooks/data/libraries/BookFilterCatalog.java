@@ -115,7 +115,7 @@ public class BookFilterCatalog implements Serializable {
         datasource.close();
 
         //Add in the local list
-        bookFilterList.add(filter);
+        bookFilterList.add(newFilter);
         return newFilter;
     }
 
@@ -139,6 +139,26 @@ public class BookFilterCatalog implements Serializable {
                 datasource.open();
                 datasource.deleteBookFilter(temp);
                 datasource.close();
+
+                //remove all filters_authors link
+                List<Author> authors = getAllAuthorFromABookFilter(temp);
+                if(authors != null) {
+                    for (Author author : authors) {
+                        if (checkIfBookFiltersAuthorLinkExist(temp.getId(), author.getId())) {
+                            deleteBookFilterAuthorsLink(temp.getId(), author.getId());
+                        }
+                    }
+                }
+
+                //remove all books_categories link
+                List<Category> categories = getAllCategoryFromABookFilter(temp);
+                if(categories != null) {
+                    for (Category category : categories) {
+                        if (checkIfBookFiltersCategoriesLinkExist(temp.getId(), category.getId())) {
+                            deleteBookFilterCategoriesLink(temp.getId(), category.getId());
+                        }
+                    }
+                }
 
                 //Remove from local list
                 bookFilterList.remove(j);

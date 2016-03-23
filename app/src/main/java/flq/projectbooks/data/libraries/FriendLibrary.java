@@ -148,7 +148,6 @@ public class FriendLibrary implements Serializable {
                             BookFilterCatalog.getInstance().deleteFilterById(filter.getId());
                     }
                 }
-
                 return;
             }
         }

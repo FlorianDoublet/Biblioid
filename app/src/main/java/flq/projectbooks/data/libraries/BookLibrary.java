@@ -63,10 +63,10 @@ public class BookLibrary implements Serializable {
     }
 
     public Book Add(Book book) {
-        bookList.add(book);
         datasource.open();
         Book newBook = datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getPublisher_id(), book.getNbPages(), book.getFriend_id(), book.getAdvancementState(), book.getRating(), book.getOnWishList(), book.getOnFavoriteList(), book.getBookState(), book.getPossessionState(), book.getComment()); //Add book to database
         datasource.close();
+        bookList.add(newBook);
         return newBook;
     }
 
@@ -111,6 +111,15 @@ public class BookLibrary implements Serializable {
                     for (Author author : authors) {
                         if (checkIfBooksAuthorLinkExist(temp.getId(), author.getId())) {
                             deleteBooksAuthorsLink(temp.getId(), author.getId());
+                        }
+                    }
+                }
+                //remove all books_categories link
+                List<Category> categories = getAllCategoryFromABook(temp);
+                if(categories != null) {
+                    for (Category category : categories) {
+                        if (checkIfBooksCategoriesLinkExist(temp.getId(), category.getId())) {
+                            deleteBooksCategoriesLink(temp.getId(), category.getId());
                         }
                     }
                 }
