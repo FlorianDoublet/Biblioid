@@ -63,6 +63,7 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
     private static final int DRIVE_SIGN_IN = 9002;
     public GoogleApiClient mGoogleApiClient;
     static public DriveId biblioidFolderDriveID = null;
+    static public DriveId biblioidFileDriveID = null;
     private MySQLiteHelper db;
     private Uri uri;
 
@@ -222,6 +223,8 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
                                             @Override
                                             public void onResult(DriveApi.MetadataBufferResult result) {
                                                 if (result.getStatus().isSuccess() && result.getMetadataBuffer().getCount() > 0 && result.getMetadataBuffer().get(0).isExplicitlyTrashed() == false) {
+                                                    biblioidFileDriveID = result.getMetadataBuffer().get(0).getDriveId();
+
                                                     float size = ((float) result.getMetadataBuffer().get(0).getFileSize() / (float) 1024 / (float) 1024);
                                                     DecimalFormat df = new DecimalFormat("##.##");
                                                     df.setRoundingMode(RoundingMode.DOWN);

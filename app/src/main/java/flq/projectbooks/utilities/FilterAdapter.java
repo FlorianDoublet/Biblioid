@@ -23,17 +23,21 @@ public class FilterAdapter  extends BaseAdapter {
     private List<List<ImageView>> mListImagesViews;
     private List<String> names ;
     private List<String> filterNbBooks ;
+    private List<String> filterNbFriendBooks ;
+    private List<Boolean> belongToAFriend ;
     private boolean elementDeleted = false;
 
     private Context mContext;
 
     private LayoutInflater mInflater;
 
-    public FilterAdapter(List<List<ImageView>> mListImagesViews, List<String> names, List<String> filterNbBooks, Context mContext){
+    public FilterAdapter(List<List<ImageView>> mListImagesViews, List<String> names, List<String> filterNbBooks, List<String> filterNbFriendBooks,  List<Boolean> belongToAFriend, Context mContext){
         this.mListImagesViews = mListImagesViews;
         this.names = names;
         this.filterNbBooks = filterNbBooks;
         this.mContext = mContext;
+        this.filterNbFriendBooks = filterNbFriendBooks;
+        this.belongToAFriend = belongToAFriend;
 
         mInflater = LayoutInflater.from(mContext);
     }
@@ -72,8 +76,16 @@ public class FilterAdapter  extends BaseAdapter {
         }
         TextView name = (TextView)layoutItem.findViewById(R.id.name);
         TextView nbBooks = (TextView)layoutItem.findViewById(R.id.nbLivre);
+        TextView nbBooksFriend = (TextView)layoutItem.findViewById(R.id.nbLivreFriend);
         name.setText(names.get(i));
         nbBooks.setText(filterNbBooks.get(i));
+        nbBooksFriend.setText(filterNbFriendBooks.get(i));
+
+        if(belongToAFriend.get(i)){
+            layoutItem.findViewById(R.id.filterBelongToFriendIcon).setVisibility(View.VISIBLE);
+        }else{
+            layoutItem.findViewById(R.id.filterBelongToFriendIcon).setVisibility(View.GONE);
+        }
 
         return layoutItem;
     }
