@@ -23,8 +23,6 @@ import flq.projectbooks.database.LinkTablesDataSource;
 
 
 public class CreateFilter extends ActionBarActivity {
-
-
     BookFilter filter = new BookFilter();
 
     @Override

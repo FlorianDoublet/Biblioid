@@ -1,6 +1,10 @@
 package flq.projectbooks.data.libraries;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.text.InputType;
+import android.widget.EditText;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,6 +12,7 @@ import java.util.List;
 
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
+import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Category;
 import flq.projectbooks.database.BooksDataSource;
 import flq.projectbooks.database.MySQLiteHelper;
@@ -196,6 +201,4 @@ public class BookLibrary implements Serializable {
         datasource.close();
         return categories;
     }
-
-
 }

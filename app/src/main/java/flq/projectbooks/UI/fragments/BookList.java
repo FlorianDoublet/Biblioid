@@ -1,6 +1,8 @@
 package flq.projectbooks.UI.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,13 +11,16 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.SimpleAdapter;
@@ -31,7 +36,10 @@ import flq.projectbooks.UI.activities.CreateBook;
 import flq.projectbooks.UI.activities.DisplayBooks;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
+import flq.projectbooks.data.Category;
+import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.database.LinkTablesDataSource;
 import flq.projectbooks.utilities.BookAdapter;
 
 
@@ -49,7 +57,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
     private int selectedBookIndex;
     private GridView gridViewBooks;
-    private List<Map<String, Object>> listOfBooks;
+    //private List<Map<String, Object>> listOfBooks;
     private BookAdapter listAdapter;
     private BookLibrary bookLibrary;
     private BookFilter bookFilter;
@@ -71,6 +79,22 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         args.putSerializable(ARG_PARAM1, bookFilter);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private void displayMultiSelectionButtons(){
+        getView().findViewById(R.id.multiSelectionCancel).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.multiSelectionNewFilter).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.multiSelectionDelete).setVisibility(View.VISIBLE);
+        LinearLayout l = (LinearLayout)getView().findViewById(R.id.gridzoomLayout);
+        l.setWeightSum(5);
+    }
+
+    private void hideMultiSelectionButtons(){
+        getView().findViewById(R.id.multiSelectionCancel).setVisibility(View.GONE);
+        getView().findViewById(R.id.multiSelectionNewFilter).setVisibility(View.GONE);
+        getView().findViewById(R.id.multiSelectionDelete).setVisibility(View.GONE);
+        LinearLayout l = (LinearLayout)getView().findViewById(R.id.gridzoomLayout);
+        l.setWeightSum(2);
     }
 
     @Override
@@ -99,15 +123,22 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
         gridViewBooks = (GridView) view.findViewById(R.id.gridViewBooks);
 
+        bookLibrary = BookLibrary.getInstance();
+        createGridView(view);
 
         gridViewBooks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedBookIndex = position;
+                displayMultiSelectionButtons();
+                listAdapter.activateMultiSelection();
+                listAdapter.changeSelection(position);
+                listAdapter.notifyDataSetInvalidated();
+                gridViewBooks.invalidate();
+                /*selectedBookIndex = position;
                 PopupMenu popupMenu = new PopupMenu(getActivity(), view);
                 popupMenu.setOnMenuItemClickListener(BookList.this);
                 popupMenu.inflate(R.menu.bookclickpopup);
-                popupMenu.show();
+                popupMenu.show();*/
 
                 return true;
             }
@@ -117,12 +148,15 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mBookListener.OnBookSelected(bookLibrary.getBookList().get(position));
+                if (listAdapter.isMultiSelectionActivated()) {
+                    listAdapter.changeSelection(position);
+                    listAdapter.notifyDataSetInvalidated();
+                    gridViewBooks.invalidate();
+                } else {
+                    mBookListener.OnBookSelected(bookLibrary.getBookList().get(position));
+                }
             }
         });
-
-        bookLibrary = BookLibrary.getInstance();
-        createGridView(view);
 
         view.findViewById(R.id.layoutZoomPlusGrid).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +174,46 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
             public void onClick(View view) {
                 int nbColumns = gridViewBooks.getNumColumns();
                 gridViewBooks.setNumColumns(nbColumns + 1);
+            }
+        });
+
+        view.findViewById(R.id.multiSelectionCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listAdapter.desactivateMultiSelection();
+                hideMultiSelectionButtons();
+                listAdapter.notifyDataSetInvalidated();
+                gridViewBooks.invalidate();
+            }
+        });
+
+        view.findViewById(R.id.multiSelectionDelete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(view.getContext())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Suppression de livre(s)")
+                        .setMessage("Êtes-vous sûr de procéder à la suppression de votre sélection ?")
+                        .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                listAdapter.deleteSelectedBooks();
+                                listAdapter.desactivateMultiSelection();
+                                hideMultiSelectionButtons();
+                                listAdapter.notifyDataSetInvalidated();
+                                gridViewBooks.invalidate();
+                            }
+
+                        })
+                        .setNegativeButton("Non", null)
+                        .show();
+            }
+        });
+
+        view.findViewById(R.id.multiSelectionNewFilter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createFilterWithBooksDialogs(view);
             }
         });
 
@@ -175,6 +249,10 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         listAdapter = new BookAdapter(bookLibrary.getBookList(), view.getContext(), gridViewBooks);
 
         gridViewBooks.setAdapter(listAdapter);
+
+
+        listAdapter.notifyDataSetInvalidated();
+        gridViewBooks.invalidate();
     }
 
     @Override
@@ -192,14 +270,6 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         return super.onOptionsItemSelected(item);
     }
 
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getActivity().getMenuInflater().inflate(R.menu.menu_display_books, menu);
-        return true;
-    }*/
-
     public boolean onMenuItemClick(MenuItem item) {
 
         switch (item.getItemId()) {
@@ -211,8 +281,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
                 return true;
             case R.id.delete_book:
-                BookLibrary.getInstance().deleteBookById(bookLibrary.getBookList().get(selectedBookIndex).getId());
-                listOfBooks.remove(selectedBookIndex);
+                BookLibrary.getInstance().deleteBookById((int) bookLibrary.getBookList().get(selectedBookIndex).getId());
                 listAdapter.notifyDataSetChanged();
                 Toast.makeText(getActivity(), "Livre effacé", Toast.LENGTH_SHORT).show();
 
@@ -230,6 +299,51 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     // Container Activity must implement this interface
     public interface OnBookSelected {
         public void OnBookSelected(Book book);
+    }
+
+    public void createFilterWithBooksDialogs(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setTitle("Ajouter le titre du filtre qui contiendra les livres choisis");
+
+        // Set up the input
+        final EditText input = new EditText(view.getContext());
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String name = input.getText().toString();
+
+                        BookFilter filter = new BookFilter();
+                        filter.setName(name);
+                        List<Category> cs = LinkTablesDataSource.getCategoriesFromString(name);
+                        //filter.setCategories(cs);
+                        LinkTablesDataSource.feedBookFilterWithCategories(filter, cs);
+                        //BookFilterCatalog.getInstance().Add(filter);
+
+                        listAdapter.addBooksToFilter(cs);
+                        listAdapter.desactivateMultiSelection();
+                        hideMultiSelectionButtons();
+                        listAdapter.notifyDataSetInvalidated();
+                        gridViewBooks.invalidate();
+                    }
+                }
+        );
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }
+
+        );
+
+        builder.show();
     }
 
 }

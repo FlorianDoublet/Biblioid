@@ -122,7 +122,7 @@ public class BookInfo extends Fragment implements Parcelable {
         return view;
     }
 
-    public void displayBook(final View view) {
+    public void displayBook(View view) {
 
         //TextView textViewTitle = (TextView) view.findViewById(R.id.bookInfoTitle);
         //textViewTitle.setText(book.getTitle());
