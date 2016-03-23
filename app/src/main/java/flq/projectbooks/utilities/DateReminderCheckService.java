@@ -51,9 +51,11 @@ public class DateReminderCheckService extends Service {
         List<Loan> loanList = LoanLibrary.getInstance().getLoanList();
         Calendar calendar = Calendar.getInstance();
 
-        for (Loan loan : loanList) {
-            if (loan.getDateReminder().before(calendar.getTime())) {
-                showLoadNotification(this, loan);
+        if(loanList != null) {
+            for (Loan loan : loanList) {
+                if (loan.getDateReminder().before(calendar.getTime())) {
+                    showLoadNotification(this, loan);
+                }
             }
         }
 

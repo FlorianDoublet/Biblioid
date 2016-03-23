@@ -12,6 +12,8 @@ import java.util.List;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Category;
+import flq.projectbooks.data.libraries.AuthorLibrary;
+import flq.projectbooks.data.libraries.CategoryLibrary;
 
 /**
  * Created by Quentin on 22/10/2015.
@@ -36,10 +38,21 @@ public class BookFiltersDataSource {
             MySQLiteHelper.COLUMN_ON_FAVORITE_LIST,
             MySQLiteHelper.COLUMN_BOOK_STATE,
             MySQLiteHelper.COLUMN_POSSESSION_STATE,
-            MySQLiteHelper.COLUMN_COMMENT};
+            MySQLiteHelper.COLUMN_COMMENT,
+            MySQLiteHelper.COLUMN_FRIEND_ID
+    };
 
     public BookFiltersDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
+    }
+
+    //constructor only for external friend database
+    public BookFiltersDataSource(Context context, String dbName, int dbVersion) {
+        dbHelper = new MySQLiteHelper(context, dbName, dbVersion);
+    }
+
+    public MySQLiteHelper getDbHelper(){
+        return dbHelper;
     }
 
     public void open() throws SQLException {
@@ -50,7 +63,7 @@ public class BookFiltersDataSource {
         dbHelper.close();
     }
 
-    public BookFilter createFilter(String name, String title, String isbn, String datePublicationMin, String datePublicationMax, long publisher_id, int nbPagesMin, int nbPagesMax, String advancementState, int ratingMin, int ratingMax, int onWishList, int onFavoriteList, int bookState, int possessionState, String comment) {
+    public BookFilter createFilter(String name, String title, String isbn, String datePublicationMin, String datePublicationMax, long publisher_id, int nbPagesMin, int nbPagesMax, String advancementState, int ratingMin, int ratingMax, int onWishList, int onFavoriteList, int bookState, int possessionState, String comment, long friend_id) {
         ContentValues values = new ContentValues();
 
         values.put(MySQLiteHelper.COLUMN_FILTER_NAME, name);
@@ -69,6 +82,7 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_BOOK_STATE, bookState);
         values.put(MySQLiteHelper.COLUMN_POSSESSION_STATE, possessionState);
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
+        values.put(MySQLiteHelper.COLUMN_FRIEND_ID, friend_id);
 
         long insertId = database.insert(MySQLiteHelper.TABLE_BOOK_FILTERS, null,
                 values);
@@ -92,7 +106,6 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_PUBLISHER_ID, filter.getPublisher_id());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MIN, filter.getNbPagesMin());
         values.put(MySQLiteHelper.COLUMN_NB_PAGES_MAX, filter.getNbPagesMax());
-
         values.put(MySQLiteHelper.COLUMN_ADVANCEMENT_STATE, filter.getAdvancementState());
         values.put(MySQLiteHelper.COLUMN_RATING_MIN, filter.getRatingMin());
         values.put(MySQLiteHelper.COLUMN_RATING_MAX, filter.getRatingMax());
@@ -101,6 +114,7 @@ public class BookFiltersDataSource {
         values.put(MySQLiteHelper.COLUMN_BOOK_STATE, filter.getBookState());
         values.put(MySQLiteHelper.COLUMN_POSSESSION_STATE, filter.getPossessionState());
         values.put(MySQLiteHelper.COLUMN_COMMENT, filter.getComment());
+        values.put(MySQLiteHelper.COLUMN_FRIEND_ID, filter.getFriend_id());
         return database.update(MySQLiteHelper.TABLE_BOOK_FILTERS, values, MySQLiteHelper.COLUMN_ID + " = " + filter.getId(), null);
     }
 
@@ -135,6 +149,31 @@ public class BookFiltersDataSource {
         return filters;
     }
 
+    //used to get all books from friend Database
+    public List<BookFilter> getAllBookFilters(AuthorLibrary authorLibrary, CategoryLibrary categoryLibrary) {
+        List<BookFilter> filters = new ArrayList<>();
+
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOK_FILTERS,
+                allColumns, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            BookFilter filter = cursorToBookFilter(cursor);
+            filters.add(filter);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        //used to fill the Authors Array
+        for (BookFilter filter : filters) {
+            filter.setAuthors(getAllAuthorFromABookFilter(authorLibrary, filter));
+        }
+        //used to fill the Categories Array
+        for (BookFilter filter : filters) {
+            filter.setCategories(getAllCategoryFromABookFilter(categoryLibrary, filter));
+        }
+        return filters;
+    }
+
 
     private BookFilter cursorToBookFilter(Cursor cursor) {
         BookFilter filter = new BookFilter();
@@ -154,6 +193,7 @@ public class BookFiltersDataSource {
         filter.setBookState(cursor.getInt(14));
         filter.setPossessionState(cursor.getInt(15));
         filter.setComment(cursor.getString(16));
+        filter.setFriend_id(cursor.getLong(17));
 
         return filter;
     }
@@ -168,6 +208,11 @@ public class BookFiltersDataSource {
 
     public List<Author> getAllAuthorFromABookFilter(BookFilter filter) {
         return LinkTablesDataSource.getAllAuthorFromABookFilter(database, filter);
+    }
+
+    //only used for external friend database
+    public List<Author> getAllAuthorFromABookFilter(AuthorLibrary authorLibrary, BookFilter filter) {
+        return LinkTablesDataSource.getAllAuthorFromABookFilter(authorLibrary, database, filter);
     }
 
     public void deleteBookFilterAuthors(long book_filter_id, long author_id) {
@@ -187,6 +232,11 @@ public class BookFiltersDataSource {
 
     public List<Category> getAllCategoryFromABookFilter(BookFilter filter) {
         return LinkTablesDataSource.getAllCategoryFromABookFilter(database, filter);
+    }
+
+    //only used for external friend database
+    public List<Category> getAllCategoryFromABookFilter(CategoryLibrary categoryLibrary, BookFilter filter) {
+        return LinkTablesDataSource.getAllCategoryFromABookFilter(categoryLibrary, database, filter);
     }
 
     public void deleteBookFilterCategories(long book_filter_id, long category_id) {

@@ -73,4 +73,5 @@
     <string name="notification_interval_sum">Intervale des notifications en minute ou heure</string>
     <string name="loan_button_create">Creer Prêt</string>
     <string name="loan_button_modify">Modifier Prêt</string>
+    <string name="delete_friend">Supprimer l\'ami</string>
 </resources>

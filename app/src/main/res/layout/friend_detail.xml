@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:background="#55000000">
+
+            <TextView
+                android:id="@+id/friendCompleteName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical|end"
+                android:shadowColor="#000000"
+                android:shadowRadius="7"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:textColor="@color/white"
+                tools:hint="Nom de l'ami" />
+
+
+
+                <ImageButton
+                    android:id="@+id/download_friendDB_button"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/download"/>
+
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

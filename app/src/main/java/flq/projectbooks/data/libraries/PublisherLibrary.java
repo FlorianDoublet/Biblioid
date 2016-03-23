@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import flq.projectbooks.data.Publisher;
+import flq.projectbooks.database.MySQLiteHelper;
 import flq.projectbooks.database.PublishersDataSource;
 
 /**
@@ -21,6 +22,14 @@ public class PublisherLibrary implements Serializable {
     public PublisherLibrary() {
         publisherList = new ArrayList<>();
         datasource = new PublishersDataSource(context);
+        datasource.open();
+        publisherList = datasource.getAllPublishers();
+        datasource.close();
+    }
+
+    public PublisherLibrary(MySQLiteHelper dbHelper) {
+        publisherList = new ArrayList<>();
+        datasource = new PublishersDataSource(dbHelper);
         datasource.open();
         publisherList = datasource.getAllPublishers();
         datasource.close();

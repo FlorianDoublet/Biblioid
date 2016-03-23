@@ -23,9 +23,11 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import flq.projectbooks.R;
+import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.libraries.AuthorLibrary;
@@ -39,12 +41,15 @@ import flq.projectbooks.database.MySQLiteHelper;
 import flq.projectbooks.utilities.BiblioidBroadcastReceiver;
 
 public class Main extends ActionBarActivity {
+    //for DataBase
+
+    public final static String EXTERNAL_DB_NAME = "external.db";
+    public final static int DB_VERSION = 1;
 
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
     public final static String GIVE_BOOK_WITH_ISBN = "flq.GIVE_BOOK_WITH_ISBN";
     public final static String ASK_NEW_FRIEND = "flq.ASK_NEW_FRIEND";
-
 
     protected BookLibrary books;
     protected BookFilterCatalog filters;
@@ -71,6 +76,19 @@ public class Main extends ActionBarActivity {
         books =  BookLibrary.getInstanceOrInitialize(this);
         loans =  LoanLibrary.getInstanceOrInitialize(this);
         filters = BookFilterCatalog.getInstanceOrInitialize(this);
+
+        //UGLY hack to write another dbfile because cloud don't work for me
+        MySQLiteHelper db = new MySQLiteHelper(this);
+        try {
+            db.backupDatabase("/data/data/" + this.getPackageName() + "/databases/", EXTERNAL_DB_NAME);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        BookLibrary bookLibraryFriend = new BookLibrary(this, EXTERNAL_DB_NAME, DB_VERSION);
 
         Book.initSpinnerArrayStateAndSpinnerArrayPossession();
 
@@ -143,8 +161,10 @@ public class Main extends ActionBarActivity {
     }
 
     public void openCreateFriendActivity(View view) {
-        Intent intent = new Intent(this, CreateFriend.class);
+        /*Intent intent = new Intent(this, CreateFriend.class);
         intent.putExtra(ASK_NEW_FRIEND, friends.getNewFriend());
+        startActivity(intent);*/
+        Intent intent = new Intent(this, DisplayFriends.class);
         startActivity(intent);
     }
 

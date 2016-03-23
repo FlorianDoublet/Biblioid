@@ -265,7 +265,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         book.setPublisher_id(PublisherLibrary.getInstance().findAndAddAPublisher(text).getId());
         book.setCategories(LinkTablesDataSource.getCategoriesFromString(text));
         //will feed the book with the good authors
-        long book_id = LinkTablesDataSource.feedBookWithAuthor(book, author);
+        LinkTablesDataSource.feedBookWithAuthor(book, author);
         //will feed the book with the good categories
         LinkTablesDataSource.feedBookWithCategories(book, category);
 

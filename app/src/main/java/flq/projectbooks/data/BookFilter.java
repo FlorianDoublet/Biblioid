@@ -33,6 +33,7 @@ public class BookFilter implements Serializable {
     private int bookState;
     private int possessionState;
     private String comment;
+    private long friend_id;
 
     public BookFilter() {
         id = -1;
@@ -54,6 +55,7 @@ public class BookFilter implements Serializable {
         bookState = 0;
         possessionState = 0;
         comment = "";
+        friend_id = -1;
     }
 
     public List<Category> getCategories() {
@@ -78,6 +80,14 @@ public class BookFilter implements Serializable {
 
     public String getDatePublicationMax() {
         return datePublicationMax;
+    }
+
+    public long getFriend_id() {
+        return friend_id;
+    }
+
+    public void setFriend_id(long friend_id) {
+        this.friend_id = friend_id;
     }
 
     public void setDatePublications(String datePublicationMin, String datePublicationMax) {
@@ -140,6 +150,11 @@ public class BookFilter implements Serializable {
     }
 
     public boolean isSelected(Book book) {
+
+        //to filtrate on friend books
+        if(friend_id != -1 && book.getFriend_id() != friend_id){
+            return false;
+        }
 
         //check if all authors in the filter are in the book
         if (authors != null && authors.size() != 0) {

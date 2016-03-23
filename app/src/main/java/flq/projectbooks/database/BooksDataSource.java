@@ -12,6 +12,8 @@ import java.util.List;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Category;
+import flq.projectbooks.data.libraries.AuthorLibrary;
+import flq.projectbooks.data.libraries.CategoryLibrary;
 
 /**
  * Created by Quentin on 22/10/2015.
@@ -39,6 +41,15 @@ public class BooksDataSource {
 
     public BooksDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
+    }
+
+    //constructor only for external friend database
+    public BooksDataSource(Context context, String dbName, int dbVersion) {
+        dbHelper = new MySQLiteHelper(context, dbName, dbVersion);
+    }
+
+    public MySQLiteHelper getDbHelper(){
+        return dbHelper;
     }
 
     public void open() throws SQLException {
@@ -110,7 +121,8 @@ public class BooksDataSource {
                 + " = " + id, null);
     }
 
-    public List<Book> getAllBooks() {
+    //get all books but without external table feature like Author or Category
+    public List<Book> getAllBooksWithoutExternalTable(){
         List<Book> comments = new ArrayList<>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
@@ -124,6 +136,11 @@ public class BooksDataSource {
         }
 
         cursor.close();
+        return comments;
+    }
+
+    public List<Book> getAllBooks() {
+        List<Book> comments = getAllBooksWithoutExternalTable();
 
         //used to fill the Authors Array
         for (Book book : comments) {
@@ -132,6 +149,22 @@ public class BooksDataSource {
         //used to fill the Categories Array
         for (Book book : comments) {
             book.setCategories(getAllCategoryFromABook(book));
+        }
+
+        return comments;
+    }
+
+    //used to get all books from friend Database
+    public List<Book> getAllBooks(AuthorLibrary authorLibrary, CategoryLibrary categoryLibrary) {
+        List<Book> comments = getAllBooksWithoutExternalTable();
+
+        //used to fill the Authors Array
+        for (Book book : comments) {
+            book.setAuthors(getAllAuthorFromABook(authorLibrary, book));
+    }
+        //used to fill the Categories Array
+        for (Book book : comments) {
+            book.setCategories(getAllCategoryFromABook(categoryLibrary, book));
         }
 
         return comments;
@@ -168,6 +201,11 @@ public class BooksDataSource {
         return LinkTablesDataSource.getAllAuthorFromABook(database, book);
     }
 
+    //only used for external friend database
+    public List<Author> getAllAuthorFromABook(AuthorLibrary authorLibrary, Book book) {
+        return LinkTablesDataSource.getAllAuthorFromABook(authorLibrary, database, book);
+    }
+
     public long createBooksAuthors(long book_id, long author_id) {
         return LinkTablesDataSource.createBooksAuthors(database, book_id, author_id);
     }
@@ -185,6 +223,11 @@ public class BooksDataSource {
 
     public List<Category> getAllCategoryFromABook(Book book) {
         return LinkTablesDataSource.getAllCategoriesFromABook(database, book);
+    }
+
+    //only used for external friend database
+    public List<Category> getAllCategoryFromABook(CategoryLibrary categoryLibrary, Book book) {
+        return LinkTablesDataSource.getAllCategoriesFromABook(categoryLibrary, database, book);
     }
 
     public long createBooksCategories(long book_id, long category_id) {
