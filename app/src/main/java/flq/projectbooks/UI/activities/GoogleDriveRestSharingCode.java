@@ -288,7 +288,7 @@ public class GoogleDriveRestSharingCode extends ActionBarActivity {
         protected void onPostExecute(Permission output) {
             if (output != null) {
                 mIndication.setText("Ce code vous permet de partager votre bibliothèque avec vos amis :");
-                mOutputText.setText(ImportExport.biblioidFolderDriveID.getResourceId());
+                mOutputText.setText(ImportExport.biblioidFileDriveID.getResourceId());
                 mInformation.setVisibility(View.VISIBLE);
             }
         }

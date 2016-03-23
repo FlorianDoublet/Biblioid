@@ -83,9 +83,11 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         ListView filterList = (ListView) findViewById(R.id.filterList);
 
         List<Integer> numberOfBookPerFilter = new ArrayList<>();
+        List<Integer> numberOfFriendBookPerFilter = new ArrayList<>();
         List<List<ImageView>> mListImagesViews = new ArrayList<>();
         for (BookFilter filter : filters.getBookFilterList()) {
             numberOfBookPerFilter.add(0);
+            numberOfFriendBookPerFilter.add(0);
             mListImagesViews.add(new ArrayList<ImageView>());
         }
         int width = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
@@ -96,7 +98,12 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
             int i = 0;
             for (BookFilter filter : filters.getBookFilterList()) {
                 if (filter.isSelected(book)) {
-                    numberOfBookPerFilter.set(i, numberOfBookPerFilter.get(i) + 1);
+                    if(book.getFriend_id() == -1){
+                        numberOfBookPerFilter.set(i, numberOfBookPerFilter.get(i) + 1);
+                    }else{
+                        numberOfFriendBookPerFilter.set(i, numberOfFriendBookPerFilter.get(i) + 1);
+                    }
+
 
                     ImageView imgView = new ImageView(getApplicationContext());
                     imgView.setLayoutParams(lp);
@@ -116,20 +123,35 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         int i = 0;
         List<String> names = new ArrayList<>();
         List<String> filterNbBooks = new ArrayList<>();
+        List<String> filterNbFriendBooks = new ArrayList<>();
+        List<Boolean> belongToFriends = new ArrayList<>();
         for (BookFilter filter : filters.getBookFilterList()) {
-            String nbLivreString;
+            String nbBookString;
+            String nbFriendBookString;
             int size = numberOfBookPerFilter.get(i);
             if (size > 1) {
-                nbLivreString = size + " livres";
+                nbBookString = size + " livres +";
             } else {
-                nbLivreString = size + " livre";
+                nbBookString = size + " livre +";
             }
-            filterNbBooks.add(nbLivreString);
+            if(filter.getFriend_id() != -1){
+                nbBookString = "";
+            }
+            size = numberOfFriendBookPerFilter.get(i);
+            if (size > 1) {
+                nbFriendBookString = size + " livres d'ami";
+            } else {
+                nbFriendBookString = size + " livre d'ami";
+            }
+            filterNbBooks.add(nbBookString);
+            filterNbFriendBooks.add(nbFriendBookString);
             names.add(filter.getName());
+
+            belongToFriends.add(filter.getFriend_id() != -1);
             i++;
         }
 
-        listAdapter = new FilterAdapter(mListImagesViews, names, filterNbBooks, this.getBaseContext());
+        listAdapter = new FilterAdapter(mListImagesViews, names, filterNbBooks, filterNbFriendBooks, belongToFriends, this.getBaseContext());
 
         filterList.setAdapter(listAdapter);
     }

@@ -20,6 +20,7 @@
                     android:focusableInTouchMode="false">
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
@@ -29,6 +30,8 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false">
+
+
 
                     <TextView
                         android:id="@+id/name"
@@ -50,21 +53,53 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"/>
 
-                    <TextView
-                        android:id="@+id/nbLivre"
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|right"
-                        android:paddingTop="50dp"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="5dp"
-                        android:textSize="13sp"
-                        android:textStyle="italic"
-                        tools:text="3 livre(s)"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/nbLivre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:paddingTop="30dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:textSize="13sp"
+                            android:textStyle="italic|bold"
+                            tools:text="30 livre(s) +"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false" />
+
+                        <TextView
+                            android:id="@+id/nbLivreFriend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:textSize="13sp"
+                            android:textStyle="italic"
+                            tools:text="15 livre(s) d'ami"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false" />
+
+
+                    </LinearLayout>
                 </LinearLayout>
+
+            <ImageView
+                android:id="@+id/filterBelongToFriendIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="-5dp"
+                android:src="@drawable/friendicon"/>
+
         </RelativeLayout>
 
 </LinearLayout>
