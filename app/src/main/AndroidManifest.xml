@@ -80,6 +80,9 @@
         <activity android:name=".UI.activities.Informations"></activity>
         <activity android:name=".UI.activities.SettingsActivity"
             android:label="Préférence de l'application" />
+        <activity android:name=".UI.activities.DisplayFriends"
+            android:label="Liste des amis" />
+
     </application>
 
 </manifest>

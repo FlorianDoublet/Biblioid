@@ -103,7 +103,7 @@ public class LoanLibrary implements Serializable {
         return loans;
     }
 
-    public void deleteLoanById(int id) {
+    public void deleteLoanById(long id) {
         for (int j = 0; j < loanList.size(); j++) {
             if (loanList.get(j).getId() == id) {
                 //Remove from database

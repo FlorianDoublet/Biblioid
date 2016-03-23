@@ -38,12 +38,42 @@ public class LinkTablesDataSource {
         }
     }
 
+    //Global methode to get all Authors from a cursor for external friend database
+    public static List<Author> getAllAuthorFromCursor(AuthorLibrary authorLibrary, Cursor cursor) {
+        if (cursor != null && cursor.getCount() > 0) {
+            List<Author> authors = new ArrayList<Author>();
+            while (cursor.moveToNext()) {
+                authors.add(authorLibrary.getAuthorById(cursor.getLong(0)));
+            }
+            cursor.close();
+            return authors;
+        } else {
+            cursor.close();
+            return null;
+        }
+    }
+
     //Global methode to get all Categories from a cursor
     public static List<Category> getAllCategoryFromCursor(Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
             List<Category> categories = new ArrayList<Category>();
             while (cursor.moveToNext()) {
                 categories.add(CategoryLibrary.getInstance().getCategoryById(cursor.getLong(0)));
+            }
+            cursor.close();
+            return categories;
+        } else {
+            cursor.close();
+            return null;
+        }
+    }
+
+    //Global methode to get all Categories from a cursor  for external friend database
+    public static List<Category> getAllCategoryFromCursor(CategoryLibrary categoryLibrary, Cursor cursor) {
+        if (cursor != null && cursor.getCount() > 0) {
+            List<Category> categories = new ArrayList<Category>();
+            while (cursor.moveToNext()) {
+                categories.add(categoryLibrary.getCategoryById(cursor.getLong(0)));
             }
             cursor.close();
             return categories;
@@ -61,12 +91,30 @@ public class LinkTablesDataSource {
         return LinkTablesDataSource.getAllAuthorFromCursor(cursor);
     }
 
+    //only used for external friend database
+    public static List<Author> getAllAuthorFromABookFilter(AuthorLibrary authorLibrary,SQLiteDatabase database, BookFilter filter) {
+        long book_filter_id = filter.getId();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOK_FILTERS_AUTHORS, new String[]{MySQLiteHelper.COLUMN_AUTHOR_ID},
+                MySQLiteHelper.COLUMN_BOOK_FILTER_ID + "=? ", new String[]{Long.toString(book_filter_id)}, null, null, null);
+
+        return LinkTablesDataSource.getAllAuthorFromCursor(authorLibrary, cursor);
+    }
+
     public static List<Category> getAllCategoryFromABookFilter(SQLiteDatabase database, BookFilter filter) {
         long book_filter_id = filter.getId();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOK_FILTERS_CATEGORIES, new String[]{MySQLiteHelper.COLUMN_CATEGORY_ID},
                 MySQLiteHelper.COLUMN_BOOK_FILTER_ID + "=? ", new String[]{Long.toString(book_filter_id)}, null, null, null);
 
         return LinkTablesDataSource.getAllCategoryFromCursor(cursor);
+    }
+
+    //only used for external friend database
+    public static List<Category> getAllCategoryFromABookFilter(CategoryLibrary categoryLibrary, SQLiteDatabase database, BookFilter filter) {
+        long book_filter_id = filter.getId();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOK_FILTERS_CATEGORIES, new String[]{MySQLiteHelper.COLUMN_CATEGORY_ID},
+                MySQLiteHelper.COLUMN_BOOK_FILTER_ID + "=? ", new String[]{Long.toString(book_filter_id)}, null, null, null);
+
+        return LinkTablesDataSource.getAllCategoryFromCursor(categoryLibrary, cursor);
     }
 
     public static List<Author> getAllAuthorFromABook(SQLiteDatabase database, Book book) {
@@ -77,12 +125,30 @@ public class LinkTablesDataSource {
         return LinkTablesDataSource.getAllAuthorFromCursor(cursor);
     }
 
+    //only used for external friend database
+    public static List<Author> getAllAuthorFromABook(AuthorLibrary authorLibrary,SQLiteDatabase database, Book book) {
+        long book_id = book.getId();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS_AUTHORS, new String[]{MySQLiteHelper.COLUMN_AUTHOR_ID},
+                MySQLiteHelper.COLUMN_BOOK_ID + "=? ", new String[]{Long.toString(book_id)}, null, null, null);
+
+        return LinkTablesDataSource.getAllAuthorFromCursor(authorLibrary, cursor);
+    }
+
     public static List<Category> getAllCategoriesFromABook(SQLiteDatabase database, Book book) {
         long book_id = book.getId();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS_CATEGORIES, new String[]{MySQLiteHelper.COLUMN_CATEGORY_ID},
                 MySQLiteHelper.COLUMN_BOOK_ID + "=? ", new String[]{Long.toString(book_id)}, null, null, null);
 
         return LinkTablesDataSource.getAllCategoryFromCursor(cursor);
+    }
+
+    //only used for external friend database
+    public static List<Category> getAllCategoriesFromABook(CategoryLibrary categoryLibrary, SQLiteDatabase database, Book book) {
+        long book_id = book.getId();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS_CATEGORIES, new String[]{MySQLiteHelper.COLUMN_CATEGORY_ID},
+                MySQLiteHelper.COLUMN_BOOK_ID + "=? ", new String[]{Long.toString(book_id)}, null, null, null);
+
+        return LinkTablesDataSource.getAllCategoryFromCursor(categoryLibrary, cursor);
     }
 
     //Global method to add a link between 2 tables (only for a link table with 2 foreign key)

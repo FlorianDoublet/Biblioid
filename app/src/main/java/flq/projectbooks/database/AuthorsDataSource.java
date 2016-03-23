@@ -23,6 +23,8 @@ public class AuthorsDataSource {
         dbHelper = new MySQLiteHelper(context);
     }
 
+    public AuthorsDataSource(MySQLiteHelper dbHelper) { this.dbHelper = dbHelper;};
+
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
     }

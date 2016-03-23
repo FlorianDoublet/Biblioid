@@ -7,6 +7,7 @@ import java.util.List;
 
 import flq.projectbooks.data.Category;
 import flq.projectbooks.database.CategoriesDataSource;
+import flq.projectbooks.database.MySQLiteHelper;
 
 /**
  * Created by flori on 08/02/2016.
@@ -21,6 +22,14 @@ public class CategoryLibrary {
     public CategoryLibrary() {
         categoryList = new ArrayList<>();
         datasource = new CategoriesDataSource(context);
+        datasource.open();
+        categoryList = datasource.getAllCategories();
+        datasource.close();
+    }
+
+    public CategoryLibrary(MySQLiteHelper dbHelper) {
+        categoryList = new ArrayList<>();
+        datasource = new CategoriesDataSource(dbHelper);
         datasource.open();
         categoryList = datasource.getAllCategories();
         datasource.close();

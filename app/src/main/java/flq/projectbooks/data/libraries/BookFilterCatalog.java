@@ -81,6 +81,16 @@ public class BookFilterCatalog implements Serializable {
         }
     }
 
+    public BookFilterCatalog(Context _context, String dbName, int dbVersion) {
+        bookFilterList = new ArrayList<>();
+        datasource = new BookFiltersDataSource(_context, dbName, dbVersion);
+        AuthorLibrary authorLibrary = new AuthorLibrary(datasource.getDbHelper());
+        CategoryLibrary categoryLibrary = new CategoryLibrary(datasource.getDbHelper());
+        datasource.open();
+        bookFilterList = datasource.getAllBookFilters(authorLibrary, categoryLibrary);
+        datasource.close();
+    }
+
     public BookFilterCatalog(Context _context) {
         context = _context;
         bookFilters = new BookFilterCatalog();
@@ -98,14 +108,15 @@ public class BookFilterCatalog implements Serializable {
     }
 
 
-    public void Add(BookFilter filter) {
+    public BookFilter Add(BookFilter filter) {
         //Add in the database
         datasource.open();
-        datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getPublisher_id(), filter.getNbPagesMin(), filter.getNbPagesMax(), filter.getAdvancementState(), filter.getRatingMin(), filter.getRatingMax(), filter.getOnWishList(), filter.getOnFavoriteList(), filter.getBookState(), filter.getPossessionState(), filter.getComment());
+        BookFilter newFilter = datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getPublisher_id(), filter.getNbPagesMin(), filter.getNbPagesMax(), filter.getAdvancementState(), filter.getRatingMin(), filter.getRatingMax(), filter.getOnWishList(), filter.getOnFavoriteList(), filter.getBookState(), filter.getPossessionState(), filter.getComment(), filter.getFriend_id());
         datasource.close();
 
         //Add in the local list
         bookFilterList.add(filter);
+        return newFilter;
     }
 
     public List<BookFilter> getBookFilterList() {
@@ -120,7 +131,7 @@ public class BookFilterCatalog implements Serializable {
         bookFilterList.remove(filter);
     }
 
-    public void deleteFilterById(int id) {
+    public void deleteFilterById(long id) {
         for (int j = 0; j < bookFilterList.size(); j++) {
             if (bookFilterList.get(j).getId() == id) {
                 //Remove from database
@@ -156,7 +167,7 @@ public class BookFilterCatalog implements Serializable {
             }
         } else {
             datasource.open();
-            filter = datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getPublisher_id(), filter.getNbPagesMin(), filter.getNbPagesMax(), filter.getAdvancementState(), filter.getRatingMin(), filter.getRatingMax(), filter.getOnWishList(), filter.getOnFavoriteList(), filter.getBookState(), filter.getPossessionState(), filter.getComment()); //Add book to database
+            filter = datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getPublisher_id(), filter.getNbPagesMin(), filter.getNbPagesMax(), filter.getAdvancementState(), filter.getRatingMin(), filter.getRatingMax(), filter.getOnWishList(), filter.getOnFavoriteList(), filter.getBookState(), filter.getPossessionState(), filter.getComment(), filter.getFriend_id()); //Add book to database
             bookFilterList = datasource.getAllBookFilters(); //Update books
             datasource.close();
         }

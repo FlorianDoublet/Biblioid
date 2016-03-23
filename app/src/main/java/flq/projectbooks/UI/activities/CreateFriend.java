@@ -1,7 +1,9 @@
 package flq.projectbooks.UI.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +16,7 @@ import flq.projectbooks.data.libraries.FriendLibrary;
 /**
  * Created by flori on 20/02/2016.
  */
-public class CreateFriend extends ActionBarActivity {
+public class CreateFriend extends AppCompatActivity {
     Friend friend = new Friend();
 
     @Override

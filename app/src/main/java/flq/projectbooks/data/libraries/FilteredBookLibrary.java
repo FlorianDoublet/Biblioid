@@ -14,7 +14,8 @@ public class FilteredBookLibrary extends BookLibrary {
     }
 
     @Override
-    public void Add(Book book) {
+    public Book Add(Book book) {
         bookList.add(book);
+        return book;
     }
 }

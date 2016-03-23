@@ -25,6 +25,10 @@ public class CategoriesDataSource {
         dbHelper = new MySQLiteHelper(context);
     }
 
+    public CategoriesDataSource(MySQLiteHelper dbHelper) {
+        this.dbHelper = dbHelper;
+    }
+
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
     }

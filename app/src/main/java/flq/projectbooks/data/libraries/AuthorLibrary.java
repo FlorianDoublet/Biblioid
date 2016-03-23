@@ -8,6 +8,7 @@ import java.util.List;
 
 import flq.projectbooks.data.Author;
 import flq.projectbooks.database.AuthorsDataSource;
+import flq.projectbooks.database.MySQLiteHelper;
 
 /**
  * Created by flori on 25/01/2016.
@@ -29,6 +30,14 @@ public class AuthorLibrary implements Serializable {
     public AuthorLibrary(Context _context) {
         context = _context;
         authors = new AuthorLibrary();
+    }
+
+    public AuthorLibrary(MySQLiteHelper dbHelper){
+        authorList = new ArrayList<>();
+        datasource = new AuthorsDataSource(dbHelper);
+        datasource.open();
+        authorList = datasource.getAllAuthors();
+        datasource.close();
     }
 
     public static AuthorLibrary getInstance() {

@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import flq.projectbooks.data.Book;
+import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Friend;
+import flq.projectbooks.data.Loan;
 import flq.projectbooks.database.FriendsDataSource;
 
 /**
@@ -119,6 +122,32 @@ public class FriendLibrary implements Serializable {
 
                 //Remove from local list
                 friendList.remove(j);
+
+                //remove Loan if exist
+                List<Loan> loanList = new ArrayList<Loan>(LoanLibrary.getInstance().getAllLoansByFriendID(temp.getId()));
+                if(loanList != null) {
+                    for (Loan loan : loanList) {
+                        LoanLibrary.getInstance().deleteLoanById(loan.getId());
+                    }
+                }
+
+                //remove books of our friend
+                List<Book> bookList = new ArrayList<Book>(BookLibrary.getInstance().getBookList());
+                if(bookList != null) {
+                    for (Book book : bookList) {
+                        if(book.getFriend_id() == temp.getId())
+                            BookLibrary.getInstance().deleteBookById(book.getId());
+                    }
+                }
+
+                //remove filters of our friend
+                List<BookFilter> bookFilters = new ArrayList<BookFilter>(BookFilterCatalog.getInstance().getBookFilterList());
+                if(bookFilters != null) {
+                    for (BookFilter filter : bookFilters) {
+                        if(filter.getFriend_id() == temp.getId())
+                            BookFilterCatalog.getInstance().deleteFilterById(filter.getId());
+                    }
+                }
 
                 return;
             }

@@ -77,13 +77,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     //TABLE_LOANS column names
     public static final String COLUMN_LOAN_DATELOAN = "dateloan";
     public static final String COLUMN_LOAN_DATEREMIDER = "dateremider";
-    //TABLE_BOOK and TABLE_LOAN column names
+    //TABLE_BOOK, TABLE_LOAN and TABLE_BOOKFILTER column names
     public static final String COLUMN_FRIEND_ID = "friend_id";
 
 
     //important variable
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "books.db";
+    private static final String DATABASE_SEC_NAME = "test.db";
     //TABLE_BOOKS create statement
     private static final String DATABASE_CREATE_BOOKS = "create table "
             + TABLE_BOOKS + "("
@@ -129,7 +130,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_BOOK_STATE + " integer ,"
             + COLUMN_POSSESSION_STATE + " integer ,"
             + COLUMN_COMMENT + " text ,"
-            + " FOREIGN KEY (" + COLUMN_PUBLISHER_ID + ") REFERENCES " + TABLE_PUBLISHERS + "(" + COLUMN_ID + ")"
+            + COLUMN_FRIEND_ID + " integer ,"
+            + " FOREIGN KEY (" + COLUMN_PUBLISHER_ID + ") REFERENCES " + TABLE_PUBLISHERS + "(" + COLUMN_ID + "),"
+            + " FOREIGN KEY (" + COLUMN_FRIEND_ID + ") REFERENCES " + TABLE_FRIENDS + "(" + COLUMN_ID + ")"
             + " );";
     //TABLE_AUTHORS create statements
     private static final String DATABASE_CREATE_AUTHORS = "create table "
@@ -208,12 +211,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private final String DB_FILEPATH;
 
-
     //Utility
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         final String packageName = context.getPackageName();
         DB_FILEPATH = "/data/data/" + packageName + "/databases/books.db";
+    }
+
+    public MySQLiteHelper(Context context, String dbName, int dbVersion) {
+        super(context, dbName, null, dbVersion);
+        final String packageName = context.getPackageName();
+        DB_FILEPATH = "/data/data/" + packageName + "/databases/"+dbName;
     }
 
     @Override

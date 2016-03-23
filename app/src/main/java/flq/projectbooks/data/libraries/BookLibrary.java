@@ -10,6 +10,7 @@ import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.Category;
 import flq.projectbooks.database.BooksDataSource;
+import flq.projectbooks.database.MySQLiteHelper;
 
 /**
  * Created by Doublet F. Delvallet Q. and Delvallet L. on 24/09/15.
@@ -29,10 +30,21 @@ public class BookLibrary implements Serializable {
         datasource.close();
     }
 
+    public BookLibrary(Context _context, String dbName, int dbVersion) {
+        bookList = new ArrayList<>();
+        datasource = new BooksDataSource(_context, dbName, dbVersion);
+        AuthorLibrary authorLibrary = new AuthorLibrary(datasource.getDbHelper());
+        CategoryLibrary categoryLibrary = new CategoryLibrary(datasource.getDbHelper());
+        datasource.open();
+        bookList = datasource.getAllBooks(authorLibrary, categoryLibrary);
+        datasource.close();
+    }
+
     public BookLibrary(Context _context) {
         context = _context;
         books = new BookLibrary();
     }
+
 
     public static BookLibrary getInstance() {
         return books;
@@ -45,11 +57,12 @@ public class BookLibrary implements Serializable {
         return books;
     }
 
-    public void Add(Book book) {
+    public Book Add(Book book) {
         bookList.add(book);
         datasource.open();
-        datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getPublisher_id(), book.getNbPages(), book.getFriend_id(), book.getAdvancementState(), book.getRating(), book.getOnWishList(), book.getOnFavoriteList(), book.getBookState(), book.getPossessionState(), book.getComment()); //Add book to database
+        Book newBook = datasource.createBook(book.getTitle(), book.getIsbn(), book.getImage(), book.getDescription(), book.getDatePublication(), book.getPublisher_id(), book.getNbPages(), book.getFriend_id(), book.getAdvancementState(), book.getRating(), book.getOnWishList(), book.getOnFavoriteList(), book.getBookState(), book.getPossessionState(), book.getComment()); //Add book to database
         datasource.close();
+        return newBook;
     }
 
     public List<Book> getBookList() {
@@ -73,7 +86,7 @@ public class BookLibrary implements Serializable {
         return null;
     }
 
-    public void deleteBookById(int id) {
+    public void deleteBookById(long id) {
         for (int j = 0; j < bookList.size(); j++) {
             if (bookList.get(j).getId() == id) {
                 //Remove from database
@@ -82,9 +95,20 @@ public class BookLibrary implements Serializable {
                 datasource.deleteBook(temp);
                 datasource.close();
 
+
+
                 //if this book was in a loan, delete the loan
                 LoanLibrary.getInstance().deleteLoanByBookId(temp.getId());
 
+                //remove all books_authors link
+                List<Author> authors = getAllAuthorFromABook(temp);
+                if(authors != null) {
+                    for (Author author : authors) {
+                        if (checkIfBooksAuthorLinkExist(temp.getId(), author.getId())) {
+                            deleteBooksAuthorsLink(temp.getId(), author.getId());
+                        }
+                    }
+                }
                 //Remove from local list
                 bookList.remove(j);
 

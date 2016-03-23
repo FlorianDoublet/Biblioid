@@ -24,6 +24,10 @@ public class PublishersDataSource {
         dbHelper = new MySQLiteHelper(context);
     }
 
+    public PublishersDataSource(MySQLiteHelper dbHelper) {
+        this.dbHelper = dbHelper;
+    }
+
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
     }
