@@ -183,9 +183,13 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         switch (item.getItemId()) {
             case R.id.update_filter:
                 BookFilter filter = bookFilterCatalog.getBookFilterList().get(selectedFilterIndex);
-                Intent intent = new Intent(this, CreateFilter.class);
-                intent.putExtra(DisplayFilters.GIVE_FILTER, filter);
-                startActivityForResult(intent, 0);
+                if(filter.getFriend_id() == -1){
+                    Intent intent = new Intent(this, CreateFilter.class);
+                    intent.putExtra(DisplayFilters.GIVE_FILTER, filter);
+                    startActivityForResult(intent, 0);
+                }else{
+                    Toast.makeText(this, "Ce filtre ne peut pas être modifié car il appartient à un ami.", Toast.LENGTH_LONG).show();
+                }
 
                 return true;
             case R.id.delete_filter:
