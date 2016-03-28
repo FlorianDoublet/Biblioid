@@ -1,12 +1,18 @@
 package flq.projectbooks.data.libraries;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import flq.projectbooks.UI.fragments.SettingsFragment;
 import flq.projectbooks.data.Author;
+import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Category;
 import flq.projectbooks.database.BookFiltersDataSource;
@@ -24,10 +30,27 @@ public class BookFilterCatalog implements Serializable {
     public BookFilterCatalog() {
         bookFilterList = new ArrayList<>();
         datasource = new BookFiltersDataSource(context);
-        datasource.open();
-        bookFilterList = datasource.getAllBookFilters();
-        datasource.close();
-        if (bookFilterList.size() == 0) {
+        loadBookFiltersWithPref(false);
+    }
+
+    public void loadBookFiltersWithPref(boolean withContext){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String pref_order = sharedPref.getString(SettingsFragment.KEY_PREF_FILTER_DISPLAY_ORDER, "1");
+
+
+        if(withContext){
+            AuthorLibrary authorLibrary = new AuthorLibrary(datasource.getDbHelper());
+            CategoryLibrary categoryLibrary = new CategoryLibrary(datasource.getDbHelper());
+            datasource.open();
+            bookFilterList = datasource.getAllBookFilters(authorLibrary, categoryLibrary);
+            datasource.close();
+        }else{
+            datasource.open();
+            bookFilterList = datasource.getAllBookFilters();
+            datasource.close();
+        }
+
+        /*if (bookFilterList.size() == 0) {
             BookFilter filterBase1 = new BookFilter();
             filterBase1.setName("Liste de souhait");
             filterBase1.setOnWishList(1);
@@ -52,43 +75,30 @@ public class BookFilterCatalog implements Serializable {
             filterBase5.setName("Livres non lus");
             filterBase5.setAdvancementState("Not Read");
             this.Add(filterBase5);
+        }*/
 
-            BookFilter filterBase6 = new BookFilter();
-            filterBase6.setName("Note supérieure à 4");
-            filterBase6.setRatingMin(4);
-            this.Add(filterBase6);
-
-            BookFilter filterBase7 = new BookFilter();
-            filterBase7.setName("Note strictement inférieure à 3");
-            filterBase7.setRatingMax(2);
-            this.Add(filterBase7);
-
-            BookFilter filterBase8 = new BookFilter();
-            filterBase8.setName("Note égale à 5");
-            filterBase8.setRatingMin(5);
-            filterBase8.setRatingMax(5);
-            this.Add(filterBase8);
-
-            BookFilter filterBase9 = new BookFilter();
-            filterBase9.setName("Livre prétés");
-            filterBase9.setPossessionState(3);
-            this.Add(filterBase9);
-
-            BookFilter filterBase10 = new BookFilter();
-            filterBase10.setName("Livre possédés");
-            filterBase10.setPossessionState(2);
-            this.Add(filterBase10);
+        switch(pref_order) {
+            case "Ordre de création":
+                //Do nothing, default bookList order is in the creation order
+                break;
+            case "Ordre alphabétique" :
+                Collections.sort(bookFilterList, new Comparator<BookFilter>() {
+                    @Override
+                    public int compare(final BookFilter object1, final BookFilter object2) {
+                        return object1.getName().compareTo(object2.getName());
+                    }
+                });
+                break;
+            case "Ordre aléatoire" :
+                Collections.shuffle(bookFilterList);
+                break;
         }
     }
 
     public BookFilterCatalog(Context _context, String dbName, int dbVersion) {
         bookFilterList = new ArrayList<>();
         datasource = new BookFiltersDataSource(_context, dbName, dbVersion);
-        AuthorLibrary authorLibrary = new AuthorLibrary(datasource.getDbHelper());
-        CategoryLibrary categoryLibrary = new CategoryLibrary(datasource.getDbHelper());
-        datasource.open();
-        bookFilterList = datasource.getAllBookFilters(authorLibrary, categoryLibrary);
-        datasource.close();
+        loadBookFiltersWithPref(true);
     }
 
     public BookFilterCatalog(Context _context) {
@@ -169,9 +179,7 @@ public class BookFilterCatalog implements Serializable {
     }
 
     public void updateLocalList() {
-        datasource.open();
-        bookFilterList = datasource.getAllBookFilters();
-        datasource.close();
+        loadBookFiltersWithPref(false);
     }
 
     public long updateOrAddFilter(BookFilter filter) {
@@ -188,7 +196,8 @@ public class BookFilterCatalog implements Serializable {
         } else {
             datasource.open();
             filter = datasource.createFilter(filter.getName(), filter.getTitle(), filter.getDescription(), filter.getDatePublicationMin(), filter.getDatePublicationMax(), filter.getPublisher_id(), filter.getNbPagesMin(), filter.getNbPagesMax(), filter.getAdvancementState(), filter.getRatingMin(), filter.getRatingMax(), filter.getOnWishList(), filter.getOnFavoriteList(), filter.getBookState(), filter.getPossessionState(), filter.getComment(), filter.getFriend_id()); //Add book to database
-            bookFilterList = datasource.getAllBookFilters(); //Update books
+            //bookFilterList = datasource.getAllBookFilters(); //Update books
+            loadBookFiltersWithPref(false);
             datasource.close();
         }
         return filter.getId();

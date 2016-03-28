@@ -180,7 +180,6 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
     }
 
     public boolean onMenuItemClick(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.update_filter:
                 BookFilter filter = bookFilterCatalog.getBookFilterList().get(selectedFilterIndex);

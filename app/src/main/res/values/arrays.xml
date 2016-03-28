@@ -36,5 +36,16 @@
         <item>24</item>
     </string-array>
 
+    <string-array name="display_order_values">
+        <item>Ordre de création</item>
+        <item>Ordre alphabétique</item>
+        <item>Ordre aléatoire</item>
+    </string-array>
+
+    <string-array name="display_order">
+        <item>Ordre de création</item>
+        <item>Ordre alphabétique</item>
+        <item>Ordre aléatoire (Change à chaque démarrage de l\'application)</item>
+    </string-array>
     
 </resources>

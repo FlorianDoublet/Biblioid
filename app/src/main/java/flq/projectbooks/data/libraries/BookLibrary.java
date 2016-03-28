@@ -3,13 +3,19 @@ package flq.projectbooks.data.libraries;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.widget.EditText;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import flq.projectbooks.UI.fragments.SettingsFragment;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
@@ -30,19 +36,48 @@ public class BookLibrary implements Serializable {
     public BookLibrary() {
         bookList = new ArrayList<>();
         datasource = new BooksDataSource(context);
-        datasource.open();
-        bookList = datasource.getAllBooks();
-        datasource.close();
+        loadBookListWithPref(false);
     }
 
     public BookLibrary(Context _context, String dbName, int dbVersion) {
         bookList = new ArrayList<>();
         datasource = new BooksDataSource(_context, dbName, dbVersion);
-        AuthorLibrary authorLibrary = new AuthorLibrary(datasource.getDbHelper());
-        CategoryLibrary categoryLibrary = new CategoryLibrary(datasource.getDbHelper());
-        datasource.open();
-        bookList = datasource.getAllBooks(authorLibrary, categoryLibrary);
-        datasource.close();
+        loadBookListWithPref(true);
+    }
+
+    public void loadBookListWithPref(boolean withContext){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String pref_order = sharedPref.getString(SettingsFragment.KEY_PREF_BOOKS_DISPLAY_ORDER, "1");
+
+        if(withContext){
+            AuthorLibrary authorLibrary = new AuthorLibrary(datasource.getDbHelper());
+            CategoryLibrary categoryLibrary = new CategoryLibrary(datasource.getDbHelper());
+            datasource.open();
+            bookList = datasource.getAllBooks(authorLibrary, categoryLibrary);
+            datasource.close();
+        }else{
+            datasource.open();
+            bookList = datasource.getAllBooks();
+            datasource.close();
+        }
+
+
+        switch(pref_order) {
+            case "Ordre de création":
+                //Do nothing, default bookList order is in the creation order
+                break;
+            case "Ordre alphabétique" :
+                Collections.sort(bookList, new Comparator<Book>() {
+                    @Override
+                    public int compare(final Book object1, final Book object2) {
+                        return object1.getTitle().compareTo(object2.getTitle());
+                    }
+                });
+                break;
+            case "Ordre aléatoire" :
+                Collections.shuffle(bookList);
+                break;
+        }
     }
 
     public BookLibrary(Context _context) {

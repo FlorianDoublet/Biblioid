@@ -20,6 +20,31 @@
             android:entryValues="@array/notification_interval_values"
             android:defaultValue="0.05"/>
 
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Ordre d'affichage"
+        android:key="pref_display_order_category">
+
+        <ListPreference
+            android:key="pref_books_display_order"
+            android:title="Ordre d'affichage des livres"
+            android:dialogTitle="Ordre d'affichage des livres"
+            android:summary="%s"
+            android:entries="@array/display_order"
+            android:entryValues="@array/display_order_values"
+            android:defaultValue="Ordre de création"/>
+
+        <ListPreference
+            android:key="pref_filters_display_order"
+            android:title="Ordre d'affichage des filtres"
+            android:dialogTitle="Ordre d'affichage des filtres"
+            android:summary="%s"
+            android:entries="@array/display_order"
+            android:entryValues="@array/display_order_values"
+            android:defaultValue="Ordre de création"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

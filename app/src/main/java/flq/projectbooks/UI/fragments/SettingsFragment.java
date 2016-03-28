@@ -8,6 +8,8 @@ import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 
 import flq.projectbooks.R;
+import flq.projectbooks.data.libraries.BookFilterCatalog;
+import flq.projectbooks.data.libraries.BookLibrary;
 import flq.projectbooks.utilities.BiblioidBroadcastReceiver;
 import flq.projectbooks.utilities.DateReminderCheckService;
 
@@ -19,6 +21,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     //a key is needed for each Preference we want to save
     public static final String KEY_PREF_NOTIF = "pref_notif";
     public static final String KEY_PREF_NOTIF_INTERVAL = "pref_notif_interval";
+    public static final String KEY_PREF_BOOKS_DISPLAY_ORDER = "pref_books_display_order";
+    public static final String KEY_PREF_FILTER_DISPLAY_ORDER = "pref_filters_display_order";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (key.equals(KEY_PREF_NOTIF_INTERVAL)) {
             //if we change the interval we relaunch the alarmTimer for the service notification. This methode will "update" the alarmTimer
             //BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this.getActivity());
+        }
+
+        if(key.equals(KEY_PREF_BOOKS_DISPLAY_ORDER)){
+            BookLibrary.getInstance().loadBookListWithPref(false);
+        }
+
+        if(key.equals(KEY_PREF_FILTER_DISPLAY_ORDER)){
+            BookFilterCatalog.getInstance().loadBookFiltersWithPref(false);
         }
     }
 }
