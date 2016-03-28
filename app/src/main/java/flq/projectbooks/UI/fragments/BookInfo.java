@@ -181,9 +181,6 @@ public class BookInfo extends Fragment implements Parcelable {
 
         webView.loadData(String.format(htmlText, myData), "text/html; charset=utf-8", "utf-8");
 
-        //TextView textViewDescription = (TextView) view.findViewById(R.id.bookInfoDescription);
-        //textViewDescription.setText(book.getDescription());
-
         TextView textViewInfoTitle = (TextView) view.findViewById(R.id.bookInfoTitle);
         textViewInfoTitle.setText(book.getTitle());
 
@@ -538,6 +535,26 @@ public class BookInfo extends Fragment implements Parcelable {
                 }
             }
         );
+
+        if(book.getFriend_id() != -1){
+           //isFriendBook
+           ((TextView)view.findViewById(R.id.isFriendBook)).setText("Ce livre appartient à " + FriendLibrary.getInstance().getFriendById(book.getFriend_id()).getFirstName());
+            view.findViewById(R.id.isFriendBook).setVisibility(View.VISIBLE);
+
+            ratingBar.setEnabled(false);
+            radioGroupBookState.setEnabled(false);
+            radioGroupNotRead.setEnabled(false);
+            radioGroupRead.setEnabled(false);
+            radioGroupReading.setEnabled(false);
+            textViewNbPages.setEnabled(false);
+            checkBoxFavoriteList.setEnabled(false);
+            checkBoxWishList.setEnabled(false);
+            spinnerBookPossession.setEnabled(false);
+            spinnerBookState.setEnabled(false);
+            editTextComment.setEnabled(false);
+            view.findViewById(R.id.btnUpdateBook);
+            tabs.getTabWidget().getChildTabViewAt(2).setVisibility(View.GONE);
+        }
 
     }
 
