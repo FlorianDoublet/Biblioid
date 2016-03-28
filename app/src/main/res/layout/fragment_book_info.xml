@@ -1,10 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="1dp"
-    tools:context=".UI.fragments.BookInfo">
+    tools:context=".UI.fragments.BookInfo"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/isFriendBook"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="18dp"
+        tools:text="Ce livre appartient à"
+        android:textColor="@color/primary"/>
 
     <TabHost
         android:layout_width="match_parent"
@@ -340,6 +352,7 @@
                                 tools:text="Je suis une longue description qui sers a voir comment je suis placé sur l'écran. C'est cool non ?" />
 
                             <Button
+                                android:id="@+id/btnUpdateBook"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -536,4 +549,4 @@
             </FrameLayout>
         </LinearLayout>
     </TabHost>
-</FrameLayout>
+</LinearLayout>
