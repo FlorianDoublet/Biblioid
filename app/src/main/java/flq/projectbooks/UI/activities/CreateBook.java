@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import flq.projectbooks.utilities.GetBookInfo;
 import flq.projectbooks.utilities.GetBookInfoAmazonAPI;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
 
-public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncResponse {
+public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncResponse {
     public static final String ARG_PARAM1 = "param1";
     public final static String GIVE_BOOK_BACK = "flq.NEWBOOK";
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -174,21 +175,21 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         if (photo == null) {
             ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
         }
-        if(intent.hasExtra(DisplayBooks.GIVE_BOOK)){
-            if(book.getImage() != null){
+        if (intent.hasExtra(DisplayBooks.GIVE_BOOK)) {
+            if (book.getImage() != null) {
                 Bitmap imageBitmap = BitmapFactory.decodeByteArray(book.getImage(), 0, book.getImage().length);
                 ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
-            }else{
+            } else {
                 ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
             }
         }
 
-        if(savedInstanceState != null){
-            if(indexBookImage == retrievedBook.size()){
+        if (savedInstanceState != null) {
+            if (indexBookImage == retrievedBook.size()) {
                 if (photo == null) {
                     ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
                 }
-            }else {
+            } else {
                 if (retrievedBook.get(indexBookImage).getImage() != null) {
                     Bitmap imageBitmap = BitmapFactory.decodeByteArray(retrievedBook.get(indexBookImage).getImage(), 0, retrievedBook.get(indexBookImage).getImage().length);
                     ((ImageView) findViewById(R.id.coverView)).setImageDrawable(new BitmapDrawable(getResources(), imageBitmap));
@@ -196,9 +197,9 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                     ((ImageView) findViewById(R.id.coverView)).setImageResource(R.drawable.picturebook);
                 }
             }
-            if(retrievedBook.size() >= 1){
+            if (retrievedBook.size() >= 1) {
                 addCustomSetAllButton();
-                for(int index = 0; index < retrievedBook.size(); index++) {
+                for (int index = 0; index < retrievedBook.size(); index++) {
                     addSourceSetAllButton(index);
                 }
 
@@ -242,7 +243,8 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         return super.onOptionsItemSelected(item);
     }
 
-    public void bookCreation(View view) {
+
+    private void createBook() {
         EditText title = (EditText) findViewById(R.id.bookTitle);
         MultiAutoCompleteTextView author = (MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted);
         EditText isbn = (EditText) findViewById(R.id.bookISBN);
@@ -271,6 +273,26 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
 
         BookLibrary.getInstance().updateOrAddBook(book);
 
+        Toast.makeText(this, "Livre correctement ajouté !", Toast.LENGTH_LONG).show();
+    }
+
+    public void bookCreation(View view) {
+        createBook();
+
+        finish();
+    }
+
+    public void bookCreationAndAddWithScan(View view) {
+        createBook();
+        Intent resultIntent = new Intent();
+        setResult(Main.CREATE_BOOK_FINISHED_AND_ADD_WITH_SCANNER, resultIntent);
+        finish();
+    }
+
+    public void bookCreationAndAddManual(View view) {
+        createBook();
+        Intent resultIntent = new Intent();
+        setResult(Main.CREATE_BOOK_FINISHED_AND_ADD_MANUALLY, resultIntent);
         finish();
     }
 
@@ -759,7 +781,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookAuthor = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookAuthorImageButton)).setImageResource(bookSourcesLogos.get(indexBookAuthor));
-                    customAuthor = ((EditText)findViewById(R.id.bookAuthorMultiAutoCompleted)).getText().toString();
+                    customAuthor = ((EditText) findViewById(R.id.bookAuthorMultiAutoCompleted)).getText().toString();
                 }
             }
         });
@@ -813,7 +835,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookCategory = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookCategoryImageButton)).setImageResource(bookSourcesLogos.get(indexBookCategory));
-                   customCategories = text;
+                    customCategories = text;
                 }
             }
         });
@@ -875,7 +897,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         });
     }
 
-    private void addSourceSetAllButton(final int index){
+    private void addSourceSetAllButton(final int index) {
         ImageButton btnSource = new ImageButton(this);
         int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
         btnSource.setLayoutParams(new LinearLayout.LayoutParams(size, size));
@@ -914,7 +936,7 @@ public class CreateBook extends ActionBarActivity implements GetBookInfo.AsyncRe
         ((LinearLayout) findViewById(R.id.topMenuCreateBook)).addView(btnSource);
     }
 
-    private void addCustomSetAllButton(){
+    private void addCustomSetAllButton() {
         ImageButton btnSource = new ImageButton(this);
         int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
         btnSource.setLayoutParams(new LinearLayout.LayoutParams(size, size));

@@ -1,22 +1,14 @@
 package flq.projectbooks.UI.activities;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -25,26 +17,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import flq.projectbooks.R;
-import flq.projectbooks.data.Book;
-import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Friend;
-import flq.projectbooks.data.libraries.BookFilterCatalog;
-import flq.projectbooks.data.libraries.BookLibrary;
 import flq.projectbooks.data.libraries.FriendLibrary;
-import flq.projectbooks.utilities.FilterAdapter;
 import flq.projectbooks.utilities.FriendAdapter;
 
 
 /**
  * Created by flori on 20/02/2016.
  */
-public class DisplayFriends extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
+public class DisplayFriends extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
+    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
     private int selectedFilterIndex;
     private ListView friendList;
     private FriendAdapter listAdapter;
     private FriendLibrary friendLibrary;
-    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -88,7 +75,8 @@ public class DisplayFriends extends AppCompatActivity implements PopupMenu.OnMen
         List<String> filterNbBooks = new ArrayList<>();
         for (Friend friend : friends.getFriendList()) {
             String completeName = friend.getFirstName();
-            if(friend.getLastName() != null || friend.getLastName() != "") completeName += " " + friend.getLastName();
+            if (friend.getLastName() != null || friend.getLastName() != "")
+                completeName += " " + friend.getLastName();
             names.add(completeName);
         }
 

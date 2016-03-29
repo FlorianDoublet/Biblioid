@@ -12,7 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
 import android.view.Menu;
@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import flq.projectbooks.R;
-import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.libraries.AuthorLibrary;
@@ -40,7 +39,7 @@ import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.MySQLiteHelper;
 import flq.projectbooks.utilities.BiblioidBroadcastReceiver;
 
-public class Main extends ActionBarActivity {
+public class Main extends AppCompatActivity {
     //for DataBase
 
     public final static String EXTERNAL_DB_NAME = "external.db";
@@ -49,6 +48,10 @@ public class Main extends ActionBarActivity {
     //Ask the CreateBook activity to start with an empty book
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
     public final static String GIVE_BOOK_WITH_ISBN = "flq.GIVE_BOOK_WITH_ISBN";
+    public final static int CREATE_BOOK = 110;
+    public final static int CREATE_BOOK_FINISHED = 111;
+    public final static int CREATE_BOOK_FINISHED_AND_ADD_WITH_SCANNER = 112;
+    public final static int CREATE_BOOK_FINISHED_AND_ADD_MANUALLY = 113;
     public final static String ASK_NEW_FRIEND = "flq.ASK_NEW_FRIEND";
 
     protected BookLibrary books;
@@ -72,9 +75,9 @@ public class Main extends ActionBarActivity {
         authors = AuthorLibrary.getInstanceOrInitialize(this);
         categories = CategoryLibrary.getInstanceOrInitialize(this);
         publishers = PublisherLibrary.getInstanceOrInitialize(this);
-        friends =  FriendLibrary.getInstanceOrInitialize(this);
-        books =  BookLibrary.getInstanceOrInitialize(this);
-        loans =  LoanLibrary.getInstanceOrInitialize(this);
+        friends = FriendLibrary.getInstanceOrInitialize(this);
+        books = BookLibrary.getInstanceOrInitialize(this);
+        loans = LoanLibrary.getInstanceOrInitialize(this);
         filters = BookFilterCatalog.getInstanceOrInitialize(this);
 
         //UGLY hack to write another dbfile because cloud don't work for me
@@ -84,8 +87,6 @@ public class Main extends ActionBarActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
 
         BookLibrary bookLibraryFriend = new BookLibrary(this, EXTERNAL_DB_NAME, DB_VERSION);
@@ -110,17 +111,17 @@ public class Main extends ActionBarActivity {
 
         //if the notificationPendingIntent is null then we launch the service for notifications
         //if(BiblioidBroadcastReceiver.notificationPendingIntent == null)
-            BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this);
+        BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this);
 
-        if(findViewById(R.id.imgViewCreateBook) != null){
-            ((ImageView)findViewById(R.id.imgViewCreateBook)).setImageDrawable(this.ResizeImage(R.drawable.book));
-            ((ImageView)findViewById(R.id.imgViewDisplayBooks)).setImageDrawable(this.ResizeImage(R.drawable.library));
-            ((ImageView)findViewById(R.id.imgViewDisplayFilters)).setImageDrawable(this.ResizeImage(R.drawable.filter));
-            ((ImageView)findViewById(R.id.imgViewScanBook)).setImageDrawable(this.ResizeImage(R.drawable.barcode));
-            ((ImageView)findViewById(R.id.imgViewImportExport)).setImageDrawable(this.ResizeImage(R.drawable.importexport));
-            ((ImageView)findViewById(R.id.imgViewAddFriend)).setImageDrawable(this.ResizeImage(R.drawable.friend));
-            ((ImageView)findViewById(R.id.imgViewOptions)).setImageDrawable(this.ResizeImage(R.drawable.option));
-            ((ImageView)findViewById(R.id.imgViewInformations)).setImageDrawable(this.ResizeImage(R.drawable.info));
+        if (findViewById(R.id.imgViewCreateBook) != null) {
+            ((ImageView) findViewById(R.id.imgViewCreateBook)).setImageDrawable(this.ResizeImage(R.drawable.book));
+            ((ImageView) findViewById(R.id.imgViewDisplayBooks)).setImageDrawable(this.ResizeImage(R.drawable.library));
+            ((ImageView) findViewById(R.id.imgViewDisplayFilters)).setImageDrawable(this.ResizeImage(R.drawable.filter));
+            ((ImageView) findViewById(R.id.imgViewScanBook)).setImageDrawable(this.ResizeImage(R.drawable.barcode));
+            ((ImageView) findViewById(R.id.imgViewImportExport)).setImageDrawable(this.ResizeImage(R.drawable.importexport));
+            ((ImageView) findViewById(R.id.imgViewAddFriend)).setImageDrawable(this.ResizeImage(R.drawable.friend));
+            ((ImageView) findViewById(R.id.imgViewOptions)).setImageDrawable(this.ResizeImage(R.drawable.option));
+            ((ImageView) findViewById(R.id.imgViewInformations)).setImageDrawable(this.ResizeImage(R.drawable.info));
         }
     }
 
@@ -148,7 +149,7 @@ public class Main extends ActionBarActivity {
         CreateBook.resetBookCreation();
         Intent intent = new Intent(this, CreateBook.class);
         intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
-        startActivity(intent);
+        startActivityForResult(intent, CREATE_BOOK);
     }
 
     public void openCreateBookActivityWithISBN(String ISBN) {
@@ -157,7 +158,7 @@ public class Main extends ActionBarActivity {
         Intent intent = new Intent(this, CreateBook.class);
         intent.putExtra(GIVE_BOOK_WITH_ISBN, ISBN);
         intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
-        startActivity(intent);
+        startActivityForResult(intent, CREATE_BOOK);
     }
 
     public void openCreateFriendActivity(View view) {
@@ -186,6 +187,14 @@ public class Main extends ActionBarActivity {
         if (data != null && data.hasExtra(("SCAN_RESULT"))) {
             String ISBN = data.getStringExtra("SCAN_RESULT");
             openCreateBookActivityWithISBN(ISBN);
+        }
+
+        if (resultCode == CREATE_BOOK_FINISHED_AND_ADD_MANUALLY) {
+            openCreateBookActivity(null);
+        }
+
+        if (resultCode == CREATE_BOOK_FINISHED_AND_ADD_WITH_SCANNER) {
+            openScannerActivity(null);
         }
     }
 
@@ -238,12 +247,12 @@ public class Main extends ActionBarActivity {
         startActivity(i);
     }
 
-    public void openSettingsActivity(View view){
+    public void openSettingsActivity(View view) {
         Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);
     }
 
-    public  Drawable ResizeImage(int imageID) {
+    public Drawable ResizeImage(int imageID) {
         // Get device dimensions
         Display display = getWindowManager().getDefaultDisplay();
         double deviceWidth = display.getWidth();
@@ -268,8 +277,8 @@ public class Main extends ActionBarActivity {
         int width = bm.getWidth();
         int height = bm.getHeight();
 
-        float scaleWidth = ((float) newWidth/2) / width;
-        float scaleHeight = ((float) newHeight/2) / height;
+        float scaleWidth = ((float) newWidth / 2) / width;
+        float scaleHeight = ((float) newHeight / 2) / height;
 
         // create a matrix for the manipulation
         Matrix matrix = new Matrix();
@@ -284,7 +293,7 @@ public class Main extends ActionBarActivity {
         return resizedBitmap;
     }
 
-    public void openInformationActivity(View view){
+    public void openInformationActivity(View view) {
         Intent i = new Intent(this, Informations.class);
         startActivity(i);
     }

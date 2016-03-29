@@ -38,7 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_weight="7">
+                android:layout_weight="5">
 
             </LinearLayout>
 
@@ -47,12 +47,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_weight="1">
+                android:layout_weight="3">
                 <Button
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:onClick="bookCreation"
                     android:text="✔" />
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="bookCreationAndAddWithScan"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/saveandbarcode" />
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="bookCreationAndAddManual"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/saveandbook" />
             </LinearLayout>
 
         </LinearLayout>
@@ -413,11 +425,26 @@
                 </LinearLayout>
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:onClick="bookCreation"
                     android:text="@string/btnOK" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="bookCreationAndAddWithScan"
+                    android:text="@string/btnOkWithScan" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="bookCreationAndAddManual"
+                    android:text="@string/btnOkWithManual" />
+
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>

@@ -5,8 +5,8 @@
     <string name="title_activity_create_book">Création d\'un livre</string>
     <string name="bookTitle">Titre :</string>
     <string name="bookAuthor">Auteur(s) :</string>
-    <string name="bookISBN">ISBN :</string>
-    <string name="btnOK">OK</string>
+    <string name="bookISBN">Code barre :</string>
+    <string name="btnOK">Valider</string>
     <string name="openCreateBookButton">Création d\'un nouveau livre</string>
     <string name="openBookListButton">Afficher la liste des livres</string>
     <string name="title_activity_display_books">Liste des livres</string>
@@ -74,4 +74,6 @@
     <string name="loan_button_create">Creer Prêt</string>
     <string name="loan_button_modify">Modifier Prêt</string>
     <string name="delete_friend">Supprimer l\'ami</string>
+    <string name="btnOkWithScan">Valider et scanner un nouveau livre</string>
+    <string name="btnOkWithManual">Valider et ajouter un nouveau livre</string>
 </resources>
