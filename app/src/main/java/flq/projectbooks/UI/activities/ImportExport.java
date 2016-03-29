@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -53,7 +53,7 @@ import flq.projectbooks.data.libraries.BookLibrary;
 import flq.projectbooks.database.MySQLiteHelper;
 
 
-public class ImportExport extends ActionBarActivity implements NoticeDialogFragment.NoticeDialogListener {
+public class ImportExport extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener {
 
 
     public final static int FILE_CODE_IMPORT = 1;
@@ -61,9 +61,9 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
 
     private static final int RC_SIGN_IN = 9001;
     private static final int DRIVE_SIGN_IN = 9002;
-    public GoogleApiClient mGoogleApiClient;
     static public DriveId biblioidFolderDriveID = null;
     static public DriveId biblioidFileDriveID = null;
+    public GoogleApiClient mGoogleApiClient;
     private MySQLiteHelper db;
     private Uri uri;
 
@@ -372,7 +372,7 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
                                                     findViewById(R.id.backupInfoDate).setVisibility(View.VISIBLE);
                                                     findViewById(R.id.backupInfoPoids).setVisibility(View.VISIBLE);
                                                     findViewById(R.id.SharingButton).setVisibility(View.VISIBLE);
-                                                            ((TextView) findViewById(R.id.backupInfoDate)).setText("Dernière sauvegarde : à l'instant");
+                                                    ((TextView) findViewById(R.id.backupInfoDate)).setText("Dernière sauvegarde : à l'instant");
 
                                                     DecimalFormat df = new DecimalFormat("##.##");
                                                     df.setRoundingMode(RoundingMode.DOWN);
@@ -509,7 +509,7 @@ public class ImportExport extends ActionBarActivity implements NoticeDialogFragm
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    public void openShareActivity(View view){
+    public void openShareActivity(View view) {
         Intent i = new Intent(this, GoogleDriveRestSharingCode.class);
         startActivity(i);
     }

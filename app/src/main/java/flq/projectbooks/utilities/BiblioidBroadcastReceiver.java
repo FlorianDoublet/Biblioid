@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 
 import java.util.Calendar;
 
-import flq.projectbooks.UI.activities.SettingsActivity;
 import flq.projectbooks.UI.fragments.SettingsFragment;
 
 /**
@@ -26,13 +25,13 @@ public class BiblioidBroadcastReceiver extends BroadcastReceiver {
     public static void runDateReminderCheckerEveryXMinutes(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         boolean notificationEnabled = sharedPref.getBoolean(SettingsFragment.KEY_PREF_NOTIF, false);
-        if(notificationEnabled){
+        if (notificationEnabled) {
 
-                Intent intentForService = new Intent(context.getApplicationContext(), DateReminderCheckService.class);
-                PendingIntent notificationPendingIntent = PendingIntent.getService(context, BiblioidBroadcastReceiver.NOTIFICATION_TIMER,
-                        intentForService, PendingIntent.FLAG_CANCEL_CURRENT);
+            Intent intentForService = new Intent(context.getApplicationContext(), DateReminderCheckService.class);
+            PendingIntent notificationPendingIntent = PendingIntent.getService(context, BiblioidBroadcastReceiver.NOTIFICATION_TIMER,
+                    intentForService, PendingIntent.FLAG_CANCEL_CURRENT);
 
-           // BiblioidBroadcastReceiver.cancelAlarmIfExists(context, NOTIFICATION_TIMER);
+            // BiblioidBroadcastReceiver.cancelAlarmIfExists(context, NOTIFICATION_TIMER);
 
             //and then we set up a new one
             final Calendar time = Calendar.getInstance();
@@ -52,7 +51,7 @@ public class BiblioidBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    public static void cancelAlarmIfExists(Context context,int Id){
+    public static void cancelAlarmIfExists(Context context, int Id) {
         Intent intentForService = new Intent(context.getApplicationContext(), DateReminderCheckService.class);
         PendingIntent notificationPendingIntent = PendingIntent.getService(context.getApplicationContext(), Id,
                 intentForService, PendingIntent.FLAG_CANCEL_CURRENT);

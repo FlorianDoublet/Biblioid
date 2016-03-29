@@ -152,7 +152,7 @@ public class BookFilter implements Serializable {
     public boolean isSelected(Book book) {
 
         //to filtrate on friend books
-        if(friend_id != -1 && book.getFriend_id() != friend_id){
+        if (friend_id != -1 && book.getFriend_id() != friend_id) {
             return false;
         }
 

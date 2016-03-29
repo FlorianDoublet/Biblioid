@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import flq.projectbooks.R;
@@ -16,7 +16,7 @@ import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.libraries.BookLibrary;
 
 
-public class DisplayBooks extends ActionBarActivity implements BookList.OnBookSelected {
+public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSelected {
 
     public final static String GIVE_BOOK = "flq.GIVE_BOOK";
     static final String STATE_FRAGMENT_LIST = "bookList";

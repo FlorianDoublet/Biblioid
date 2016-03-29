@@ -9,7 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,19 +35,16 @@ import java.util.Arrays;
 
 import flq.projectbooks.R;
 
-public class GoogleDriveRestSharingCode extends ActionBarActivity {
-    GoogleAccountCredential mCredential;
-
-    private TextView mIndication;
-    private TextView mOutputText;
-    private TextView mInformation;
-
+public class GoogleDriveRestSharingCode extends AppCompatActivity {
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = { DriveScopes.DRIVE_FILE, DriveScopes.DRIVE, DriveScopes.DRIVE_METADATA_READONLY, DriveScopes.DRIVE_METADATA, DriveScopes.DRIVE_APPDATA, DriveScopes.DRIVE_READONLY };
-
+    private static final String[] SCOPES = {DriveScopes.DRIVE_FILE, DriveScopes.DRIVE, DriveScopes.DRIVE_METADATA_READONLY, DriveScopes.DRIVE_METADATA, DriveScopes.DRIVE_APPDATA, DriveScopes.DRIVE_READONLY};
+    GoogleAccountCredential mCredential;
+    private TextView mIndication;
+    private TextView mOutputText;
+    private TextView mInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,17 +87,18 @@ public class GoogleDriveRestSharingCode extends ActionBarActivity {
      * Called when an activity launched here (specifically, AccountPicker
      * and authorization) exits, giving you the requestCode you started it with,
      * the resultCode it returned, and any additional data from it.
+     *
      * @param requestCode code indicating which activity result is incoming.
-     * @param resultCode code indicating the result of the incoming
-     *     activity result.
-     * @param data Intent (containing result data) returned by incoming
-     *     activity result.
+     * @param resultCode  code indicating the result of the incoming
+     *                    activity result.
+     * @param data        Intent (containing result data) returned by incoming
+     *                    activity result.
      */
     @Override
     protected void onActivityResult(
             int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
+        switch (requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
                     isGooglePlayServicesAvailable();
@@ -161,6 +159,7 @@ public class GoogleDriveRestSharingCode extends ActionBarActivity {
 
     /**
      * Checks whether the device currently has a network connection.
+     *
      * @return true if the device has a network connection, false otherwise.
      */
     private boolean isDeviceOnline() {
@@ -174,8 +173,9 @@ public class GoogleDriveRestSharingCode extends ActionBarActivity {
      * Check that Google Play services APK is installed and up to date. Will
      * launch an error dialog for the user to update Google Play Services if
      * possible.
+     *
      * @return true if Google Play Services is available and up to
-     *     date on this device; false otherwise.
+     * date on this device; false otherwise.
      */
     private boolean isGooglePlayServicesAvailable() {
         final int connectionStatusCode =
@@ -183,7 +183,7 @@ public class GoogleDriveRestSharingCode extends ActionBarActivity {
         if (GooglePlayServicesUtil.isUserRecoverableError(connectionStatusCode)) {
             showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
             return false;
-        } else if (connectionStatusCode != ConnectionResult.SUCCESS ) {
+        } else if (connectionStatusCode != ConnectionResult.SUCCESS) {
             return false;
         }
         return true;
@@ -192,8 +192,9 @@ public class GoogleDriveRestSharingCode extends ActionBarActivity {
     /**
      * Display an error dialog showing that Google Play Services is missing
      * or out of date.
+     *
      * @param connectionStatusCode code describing the presence (or lack of)
-     *     Google Play Services on this device.
+     *                             Google Play Services on this device.
      */
     void showGooglePlayServicesAvailabilityErrorDialog(
             final int connectionStatusCode) {
@@ -209,62 +210,6 @@ public class GoogleDriveRestSharingCode extends ActionBarActivity {
      * Placing the API calls in their own task ensures the UI stays responsive.
      */
     private class MakeRequestTask extends AsyncTask<Void, Void, Permission> {
-        private com.google.api.services.drive.Drive mService = null;
-        private Exception mLastError = null;
-
-        public MakeRequestTask(GoogleAccountCredential credential) {
-            HttpTransport transport = AndroidHttp.newCompatibleTransport();
-            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-            mService = new com.google.api.services.drive.Drive.Builder(
-                    transport, jsonFactory, credential)
-                    .setApplicationName("Biblioid")
-                    .build();
-        }
-
-        /**
-         * Background task to call Drive API.
-         * @param params no parameters needed for this task.
-         */
-        @Override
-        protected Permission doInBackground(Void... params) {
-            return createPermission(mService, ImportExport.biblioidFolderDriveID.getResourceId(), "anyone", "reader");
-        }
-
-        /**
-         * Insert a new permission.
-         *
-         * @param service Drive API service instance.
-         * @param fileId ID of the file to insert permission for.
-        "default" type.
-         * @param type The value "user", "group", "domain" or "default".
-         * @param role The value "owner", "writer" or "reader".
-         * @return The inserted permission if successful, {@code null} otherwise.
-         */
-        private Permission createPermission(Drive service, String fileId, String type, String role) {
-            try {
-                Permission newPermission = new Permission();
-
-                newPermission.setRole(role);
-                newPermission.setType(type);
-
-                return service.permissions().create(fileId, newPermission).execute() ; //.execute();
-            } catch (UserRecoverableAuthIOException e) {
-                startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
-                System.out.println("An error occured : " + e);
-            } catch (IOException e) {
-                System.out.println("An error occured : " + e);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            mOutputText.setText("");
-        }
-
-
-
-
         JsonBatchCallback<Permission> callback = new JsonBatchCallback<Permission>() {
             @Override
             public void onFailure(GoogleJsonError e,
@@ -281,8 +226,59 @@ public class GoogleDriveRestSharingCode extends ActionBarActivity {
                 System.out.println("Permission ID: " + permission.getId());
             }
         };
+        private com.google.api.services.drive.Drive mService = null;
+        private Exception mLastError = null;
 
+        public MakeRequestTask(GoogleAccountCredential credential) {
+            HttpTransport transport = AndroidHttp.newCompatibleTransport();
+            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+            mService = new com.google.api.services.drive.Drive.Builder(
+                    transport, jsonFactory, credential)
+                    .setApplicationName("Biblioid")
+                    .build();
+        }
 
+        /**
+         * Background task to call Drive API.
+         *
+         * @param params no parameters needed for this task.
+         */
+        @Override
+        protected Permission doInBackground(Void... params) {
+            return createPermission(mService, ImportExport.biblioidFolderDriveID.getResourceId(), "anyone", "reader");
+        }
+
+        /**
+         * Insert a new permission.
+         *
+         * @param service Drive API service instance.
+         * @param fileId  ID of the file to insert permission for.
+         *                "default" type.
+         * @param type    The value "user", "group", "domain" or "default".
+         * @param role    The value "owner", "writer" or "reader".
+         * @return The inserted permission if successful, {@code null} otherwise.
+         */
+        private Permission createPermission(Drive service, String fileId, String type, String role) {
+            try {
+                Permission newPermission = new Permission();
+
+                newPermission.setRole(role);
+                newPermission.setType(type);
+
+                return service.permissions().create(fileId, newPermission).execute(); //.execute();
+            } catch (UserRecoverableAuthIOException e) {
+                startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
+                System.out.println("An error occured : " + e);
+            } catch (IOException e) {
+                System.out.println("An error occured : " + e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mOutputText.setText("");
+        }
 
         @Override
         protected void onPostExecute(Permission output) {

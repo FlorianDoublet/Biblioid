@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,14 +14,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import flq.projectbooks.R;
 import flq.projectbooks.data.Book;
@@ -31,7 +27,7 @@ import flq.projectbooks.data.libraries.BookLibrary;
 import flq.projectbooks.utilities.FilterAdapter;
 
 
-public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMenuItemClickListener {
+public class DisplayFilters extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     public final static String GIVE_EMPTY_FILTER = "flq.EMPTY_FILTER";
     public final static String GIVE_FILTER = "flq.GIVEFILTER";
@@ -90,7 +86,7 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
             numberOfFriendBookPerFilter.add(0);
             mListImagesViews.add(new ArrayList<ImageView>());
         }
-        int width = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT);
 
 
@@ -98,9 +94,9 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
             int i = 0;
             for (BookFilter filter : filters.getBookFilterList()) {
                 if (filter.isSelected(book)) {
-                    if(book.getFriend_id() == -1){
+                    if (book.getFriend_id() == -1) {
                         numberOfBookPerFilter.set(i, numberOfBookPerFilter.get(i) + 1);
-                    }else{
+                    } else {
                         numberOfFriendBookPerFilter.set(i, numberOfFriendBookPerFilter.get(i) + 1);
                     }
 
@@ -109,9 +105,9 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
                     imgView.setLayoutParams(lp);
 
                     byte[] b = book.getImage();
-                    if(b != null) {
+                    if (b != null) {
                         imgView.setImageDrawable(new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(b, 0, b.length)));
-                    }else {
+                    } else {
                         imgView.setImageResource(R.drawable.picturebook);
                     }
                     mListImagesViews.get(i).add(imgView);
@@ -134,7 +130,7 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
             } else {
                 nbBookString = size + " livre +";
             }
-            if(filter.getFriend_id() != -1){
+            if (filter.getFriend_id() != -1) {
                 nbBookString = "";
             }
             size = numberOfFriendBookPerFilter.get(i);
@@ -183,11 +179,11 @@ public class DisplayFilters extends ActionBarActivity implements PopupMenu.OnMen
         switch (item.getItemId()) {
             case R.id.update_filter:
                 BookFilter filter = bookFilterCatalog.getBookFilterList().get(selectedFilterIndex);
-                if(filter.getFriend_id() == -1){
+                if (filter.getFriend_id() == -1) {
                     Intent intent = new Intent(this, CreateFilter.class);
                     intent.putExtra(DisplayFilters.GIVE_FILTER, filter);
                     startActivityForResult(intent, 0);
-                }else{
+                } else {
                     Toast.makeText(this, "Ce filtre ne peut pas être modifié car il appartient à un ami.", Toast.LENGTH_LONG).show();
                 }
 

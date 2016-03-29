@@ -32,7 +32,7 @@ public class AuthorLibrary implements Serializable {
         authors = new AuthorLibrary();
     }
 
-    public AuthorLibrary(MySQLiteHelper dbHelper){
+    public AuthorLibrary(MySQLiteHelper dbHelper) {
         authorList = new ArrayList<>();
         datasource = new AuthorsDataSource(dbHelper);
         datasource.open();
@@ -44,8 +44,8 @@ public class AuthorLibrary implements Serializable {
         return authors;
     }
 
-    public static AuthorLibrary getInstanceOrInitialize(Context _context){
-        if(authors == null){
+    public static AuthorLibrary getInstanceOrInitialize(Context _context) {
+        if (authors == null) {
             new AuthorLibrary(_context);
         }
         return authors;

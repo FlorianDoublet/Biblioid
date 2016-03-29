@@ -221,7 +221,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public MySQLiteHelper(Context context, String dbName, int dbVersion) {
         super(context, dbName, null, dbVersion);
         final String packageName = context.getPackageName();
-        DB_FILEPATH = "/data/data/" + packageName + "/databases/"+dbName;
+        DB_FILEPATH = "/data/data/" + packageName + "/databases/" + dbName;
     }
 
     @Override

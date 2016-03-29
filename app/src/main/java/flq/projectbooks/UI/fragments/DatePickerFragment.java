@@ -13,8 +13,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import flq.projectbooks.R;
-
 /**
  * Created by flori on 28/02/2016.
  */

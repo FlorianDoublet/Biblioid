@@ -14,7 +14,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import flq.projectbooks.R;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
@@ -33,10 +32,10 @@ import flq.projectbooks.database.MySQLiteHelper;
  */
 public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
 
-    private Friend friend;
-    private Context mContext;
     private final static int DB_VERSION = 1;
     private final static String EXTERNAL_DB_NAME = "external.db";
+    private Friend friend;
+    private Context mContext;
     private BookLibrary bookLibraryFriend;
     private BookFilterCatalog filterLibrary;
     private PublisherLibrary publisherLibraryFriend;
@@ -47,9 +46,7 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
     private ProgressDialog pd = null;
 
 
-
-
-    public FriendCloudLibraryProcess(Context mContext, Friend friend){
+    public FriendCloudLibraryProcess(Context mContext, Friend friend) {
         super();
         this.friend = friend;
         this.mContext = mContext;
@@ -89,22 +86,22 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
     protected Void doInBackground(Void... voids) {
 
         //first we dowload the file
-        if (!downloadFriendDb(LINK_BEGINING + friend.getCloudLink())){
+        if (!downloadFriendDb(LINK_BEGINING + friend.getCloudLink())) {
             return null;
         }
 
         //we delete all the books of our friend before to add them for the new database retrieve by the cloud
         List<Book> ourBooks = new ArrayList<>(BookLibrary.getInstance().getBookList());
-        for(Book book : ourBooks){
-            if(book.getFriend_id() == friend.getId()){
+        for (Book book : ourBooks) {
+            if (book.getFriend_id() == friend.getId()) {
                 BookLibrary.getInstance().deleteBookById(book.getId());
             }
         }
 
         //we delete all the filters of our friend before to add them for the new database retrieve by the cloud
         List<BookFilter> ourFilters = new ArrayList<>(BookFilterCatalog.getInstance().getBookFilterList());
-        for(BookFilter filter : ourFilters){
-            if(filter.getFriend_id() == friend.getId()){
+        for (BookFilter filter : ourFilters) {
+            if (filter.getFriend_id() == friend.getId()) {
                 BookFilterCatalog.getInstance().deleteFilterById(filter.getId());
             }
         }
@@ -122,12 +119,10 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
         friendFilterTreatment();
 
 
-
-
         return null;
     }
 
-    protected Boolean downloadFriendDb(String stringUrl){
+    protected Boolean downloadFriendDb(String stringUrl) {
         InputStream input = null;
         OutputStream output = null;
         HttpURLConnection connection = null;
@@ -149,7 +144,7 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
 
             // download the file
             input = connection.getInputStream();
-            String friend_db_path = "/data/data/" + mContext.getPackageName() + "/databases/"+ EXTERNAL_DB_NAME;
+            String friend_db_path = "/data/data/" + mContext.getPackageName() + "/databases/" + EXTERNAL_DB_NAME;
             output = new FileOutputStream(friend_db_path);
 
             byte data[] = new byte[4096];
@@ -185,20 +180,20 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
         return true;
     }
 
-    private void friendBookTreatment(){
-        if(friendBookList == null){
+    private void friendBookTreatment() {
+        if (friendBookList == null) {
             return;
         }
-        for(Book friendBook : friendBookList){
+        for (Book friendBook : friendBookList) {
 
             //we don't want a book of a friend of our friend
-            if(friendBook.getFriend_id() != -1){
+            if (friendBook.getFriend_id() != -1) {
                 continue;
             }
 
             //Create publisher if don't exist and update id of the publisher in the book
             long publisher_id = friendBook.getPublisher_id();
-            if(publisher_id != -1){
+            if (publisher_id != -1) {
                 Publisher friendBookPublisher = publisherLibraryFriend.getPublisherById(publisher_id);
                 Publisher newPublisher = PublisherLibrary.getInstance().findAndAddAPublisher(friendBookPublisher.getName());
                 friendBook.setPublisher_id(newPublisher.getId());
@@ -213,8 +208,8 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
             //then add the book to our library
             Book book = BookLibrary.getInstance().Add(friendBook);
 
-            if(friendBookAuthors != null){
-                for(Author author : friendBookAuthors) {
+            if (friendBookAuthors != null) {
+                for (Author author : friendBookAuthors) {
                     Author old_author = AuthorLibrary.getInstance().getAuthorByName(author.getName());
                     //if the author don't exist we create it, else we just replace the new by the old for the good ID
                     if (old_author == null) {
@@ -227,8 +222,8 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
                 }
             }
 
-            if(friendBookCaterogies != null){
-                for(Category category : friendBookCaterogies) {
+            if (friendBookCaterogies != null) {
+                for (Category category : friendBookCaterogies) {
                     Category old_category = CategoryLibrary.getInstance().getCategoryByName(category.getName());
                     //if the author don't exist we create it, else we just replace the new by the old for the good ID
                     if (old_category == null) {
@@ -243,20 +238,20 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
         }
     }
 
-    private void friendFilterTreatment(){
-        if(friendFilterList == null){
+    private void friendFilterTreatment() {
+        if (friendFilterList == null) {
             return;
         }
-        for(BookFilter friendFilter : friendFilterList){
+        for (BookFilter friendFilter : friendFilterList) {
 
             //we don't want a filter of a friend of our friend
-            if(friendFilter.getFriend_id() != -1){
+            if (friendFilter.getFriend_id() != -1) {
                 continue;
             }
 
             //Create publisher if don't exist and update id of the publisher in the filter
             long publisher_id = friendFilter.getPublisher_id();
-            if(publisher_id != -1){
+            if (publisher_id != -1) {
                 Publisher friendFilterPublisher = publisherLibraryFriend.getPublisherById(publisher_id);
                 Publisher newPublisher = PublisherLibrary.getInstance().findAndAddAPublisher(friendFilterPublisher.getName());
                 friendFilter.setPublisher_id(newPublisher.getId());
@@ -271,8 +266,8 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
             //then add the filter to our library
             BookFilter filter = BookFilterCatalog.getInstance().Add(friendFilter);
 
-            if(friendFilterAuthors != null){
-                for(Author author : friendFilterAuthors) {
+            if (friendFilterAuthors != null) {
+                for (Author author : friendFilterAuthors) {
                     Author old_author = AuthorLibrary.getInstance().getAuthorByName(author.getName());
                     //if the author don't exist we create it, else we just replace the new by the old for the good ID
                     if (old_author == null) {
@@ -285,8 +280,8 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
                 }
             }
 
-            if(friendFilterCaterogies != null){
-                for(Category category : friendFilterCaterogies) {
+            if (friendFilterCaterogies != null) {
+                for (Category category : friendFilterCaterogies) {
                     Category old_category = CategoryLibrary.getInstance().getCategoryByName(category.getName());
                     //if the author don't exist we create it, else we just replace the new by the old for the good ID
                     if (old_category == null) {

@@ -2,7 +2,7 @@ package flq.projectbooks.UI.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,7 +22,7 @@ import flq.projectbooks.data.libraries.PublisherLibrary;
 import flq.projectbooks.database.LinkTablesDataSource;
 
 
-public class CreateFilter extends ActionBarActivity {
+public class CreateFilter extends AppCompatActivity {
     BookFilter filter = new BookFilter();
 
     @Override

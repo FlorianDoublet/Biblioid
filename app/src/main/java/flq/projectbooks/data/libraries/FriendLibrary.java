@@ -39,8 +39,8 @@ public class FriendLibrary implements Serializable {
         return friends;
     }
 
-    public static FriendLibrary getInstanceOrInitialize(Context _context){
-        if(friends == null){
+    public static FriendLibrary getInstanceOrInitialize(Context _context) {
+        if (friends == null) {
             new FriendLibrary(_context);
         }
         return friends;
@@ -125,7 +125,7 @@ public class FriendLibrary implements Serializable {
 
                 //remove Loan if exist
                 List<Loan> loanList = new ArrayList<Loan>(LoanLibrary.getInstance().getAllLoansByFriendID(temp.getId()));
-                if(loanList != null) {
+                if (loanList != null) {
                     for (Loan loan : loanList) {
                         LoanLibrary.getInstance().deleteLoanById(loan.getId());
                     }
@@ -133,18 +133,18 @@ public class FriendLibrary implements Serializable {
 
                 //remove books of our friend
                 List<Book> bookList = new ArrayList<Book>(BookLibrary.getInstance().getBookList());
-                if(bookList != null) {
+                if (bookList != null) {
                     for (Book book : bookList) {
-                        if(book.getFriend_id() == temp.getId())
+                        if (book.getFriend_id() == temp.getId())
                             BookLibrary.getInstance().deleteBookById(book.getId());
                     }
                 }
 
                 //remove filters of our friend
                 List<BookFilter> bookFilters = new ArrayList<BookFilter>(BookFilterCatalog.getInstance().getBookFilterList());
-                if(bookFilters != null) {
+                if (bookFilters != null) {
                     for (BookFilter filter : bookFilters) {
-                        if(filter.getFriend_id() == temp.getId())
+                        if (filter.getFriend_id() == temp.getId())
                             BookFilterCatalog.getInstance().deleteFilterById(filter.getId());
                     }
                 }

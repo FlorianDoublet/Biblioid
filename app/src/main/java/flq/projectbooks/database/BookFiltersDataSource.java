@@ -51,7 +51,7 @@ public class BookFiltersDataSource {
         dbHelper = new MySQLiteHelper(context, dbName, dbVersion);
     }
 
-    public MySQLiteHelper getDbHelper(){
+    public MySQLiteHelper getDbHelper() {
         return dbHelper;
     }
 

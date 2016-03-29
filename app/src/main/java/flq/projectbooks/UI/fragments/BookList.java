@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,17 +16,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import flq.projectbooks.R;
 import flq.projectbooks.UI.activities.CreateBook;
@@ -37,7 +28,6 @@ import flq.projectbooks.UI.activities.DisplayBooks;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Category;
-import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
 import flq.projectbooks.database.LinkTablesDataSource;
 import flq.projectbooks.utilities.BookAdapter;
@@ -81,19 +71,19 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         return fragment;
     }
 
-    private void displayMultiSelectionButtons(){
+    private void displayMultiSelectionButtons() {
         getView().findViewById(R.id.multiSelectionCancel).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.multiSelectionNewFilter).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.multiSelectionDelete).setVisibility(View.VISIBLE);
-        LinearLayout l = (LinearLayout)getView().findViewById(R.id.gridzoomLayout);
+        LinearLayout l = (LinearLayout) getView().findViewById(R.id.gridzoomLayout);
         l.setWeightSum(5);
     }
 
-    private void hideMultiSelectionButtons(){
+    private void hideMultiSelectionButtons() {
         getView().findViewById(R.id.multiSelectionCancel).setVisibility(View.GONE);
         getView().findViewById(R.id.multiSelectionNewFilter).setVisibility(View.GONE);
         getView().findViewById(R.id.multiSelectionDelete).setVisibility(View.GONE);
-        LinearLayout l = (LinearLayout)getView().findViewById(R.id.gridzoomLayout);
+        LinearLayout l = (LinearLayout) getView().findViewById(R.id.gridzoomLayout);
         l.setWeightSum(2);
     }
 
@@ -296,12 +286,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         createGridView(this.getView());
     }
 
-    // Container Activity must implement this interface
-    public interface OnBookSelected {
-        public void OnBookSelected(Book book);
-    }
-
-    public void createFilterWithBooksDialogs(View view){
+    public void createFilterWithBooksDialogs(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setTitle("Ajouter le titre du filtre qui contiendra les livres choisis");
 
@@ -344,6 +329,11 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         );
 
         builder.show();
+    }
+
+    // Container Activity must implement this interface
+    public interface OnBookSelected {
+        public void OnBookSelected(Book book);
     }
 
 }

@@ -1,20 +1,14 @@
 package flq.projectbooks.utilities;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -25,9 +19,9 @@ import flq.projectbooks.data.libraries.FriendLibrary;
 /**
  * Created by flori on 20/03/2016.
  */
-public class FriendAdapter extends BaseAdapter{
+public class FriendAdapter extends BaseAdapter {
 
-    private List<String> names ;
+    private List<String> names;
     private boolean elementDeleted = false;
     private ListView mListView;
 
@@ -35,7 +29,7 @@ public class FriendAdapter extends BaseAdapter{
 
     private LayoutInflater mInflater;
 
-    public FriendAdapter(ListView mListView, List<String> names, Context mContext){
+    public FriendAdapter(ListView mListView, List<String> names, Context mContext) {
         this.names = names;
         this.mContext = mContext;
         this.mListView = mListView;
@@ -66,7 +60,7 @@ public class FriendAdapter extends BaseAdapter{
         } else {
             layoutItem = (LinearLayout) view;
         }
-        TextView name = (TextView)layoutItem.findViewById(R.id.friendCompleteName);
+        TextView name = (TextView) layoutItem.findViewById(R.id.friendCompleteName);
         name.setText(names.get(i));
         ImageButton downloadButton = (ImageButton) layoutItem.findViewById(R.id.download_friendDB_button);
 
@@ -85,7 +79,7 @@ public class FriendAdapter extends BaseAdapter{
         return layoutItem;
     }
 
-    public void deleteElement(int i){
+    public void deleteElement(int i) {
         elementDeleted = true;
         names.remove(i);
     }

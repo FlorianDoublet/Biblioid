@@ -1,9 +1,7 @@
 package flq.projectbooks.UI.fragments;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 
@@ -11,7 +9,6 @@ import flq.projectbooks.R;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
 import flq.projectbooks.utilities.BiblioidBroadcastReceiver;
-import flq.projectbooks.utilities.DateReminderCheckService;
 
 /**
  * Created by Florian on 15/03/2016.
@@ -52,10 +49,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                                           String key) {
         if (key.equals(KEY_PREF_NOTIF)) {
             //do something here?
-            SwitchPreference notificationEnabled = (SwitchPreference)findPreference(key);
-            if(notificationEnabled.isChecked()){
+            SwitchPreference notificationEnabled = (SwitchPreference) findPreference(key);
+            if (notificationEnabled.isChecked()) {
                 BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this.getActivity());
-            }else{
+            } else {
                 //we cancel the alarmTime for notification if we uncheck the switch
                 BiblioidBroadcastReceiver.cancelAlarmIfExists(this.getActivity(), BiblioidBroadcastReceiver.NOTIFICATION_TIMER);
             }
@@ -67,11 +64,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             //BiblioidBroadcastReceiver.runDateReminderCheckerEveryXMinutes(this.getActivity());
         }
 
-        if(key.equals(KEY_PREF_BOOKS_DISPLAY_ORDER)){
+        if (key.equals(KEY_PREF_BOOKS_DISPLAY_ORDER)) {
             BookLibrary.getInstance().loadBookListWithPref(false);
         }
 
-        if(key.equals(KEY_PREF_FILTER_DISPLAY_ORDER)){
+        if (key.equals(KEY_PREF_FILTER_DISPLAY_ORDER)) {
             BookFilterCatalog.getInstance().loadBookFiltersWithPref(false);
         }
     }

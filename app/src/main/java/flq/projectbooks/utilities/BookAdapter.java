@@ -1,23 +1,15 @@
 package flq.projectbooks.utilities;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.text.InputType;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -25,9 +17,7 @@ import java.util.List;
 
 import flq.projectbooks.R;
 import flq.projectbooks.data.Book;
-import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Category;
-import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
 import flq.projectbooks.database.LinkTablesDataSource;
 
@@ -164,12 +154,12 @@ public class BookAdapter extends BaseAdapter {
         return layoutItem;
     }
 
-    public void addBooksToFilter(List<Category> cs){
+    public void addBooksToFilter(List<Category> cs) {
         for (int i = isSelected.size() - 1; i >= 0; i--) {
             if (isSelected.get(i)) {
-                if(books.get(i).getCategories() == null){
+                if (books.get(i).getCategories() == null) {
                     LinkTablesDataSource.feedBookWithCategories(books.get(i), cs);
-                } else{
+                } else {
                     cs.addAll(books.get(i).getCategories());
                     LinkTablesDataSource.feedBookWithCategories(books.get(i), cs);
 

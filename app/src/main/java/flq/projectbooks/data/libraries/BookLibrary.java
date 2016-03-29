@@ -1,16 +1,11 @@
 package flq.projectbooks.data.libraries;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.InputType;
-import android.widget.EditText;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -18,10 +13,8 @@ import java.util.List;
 import flq.projectbooks.UI.fragments.SettingsFragment;
 import flq.projectbooks.data.Author;
 import flq.projectbooks.data.Book;
-import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Category;
 import flq.projectbooks.database.BooksDataSource;
-import flq.projectbooks.database.MySQLiteHelper;
 
 /**
  * Created by Doublet F. Delvallet Q. and Delvallet L. on 24/09/15.
@@ -45,28 +38,44 @@ public class BookLibrary implements Serializable {
         loadBookListWithPref(true);
     }
 
-    public void loadBookListWithPref(boolean withContext){
+    public BookLibrary(Context _context) {
+        context = _context;
+        books = new BookLibrary();
+    }
+
+    public static BookLibrary getInstance() {
+        return books;
+    }
+
+    public static BookLibrary getInstanceOrInitialize(Context _context) {
+        if (books == null) {
+            new BookLibrary(_context);
+        }
+        return books;
+    }
+
+    public void loadBookListWithPref(boolean withContext) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String pref_order = sharedPref.getString(SettingsFragment.KEY_PREF_BOOKS_DISPLAY_ORDER, "1");
 
-        if(withContext){
+        if (withContext) {
             AuthorLibrary authorLibrary = new AuthorLibrary(datasource.getDbHelper());
             CategoryLibrary categoryLibrary = new CategoryLibrary(datasource.getDbHelper());
             datasource.open();
             bookList = datasource.getAllBooks(authorLibrary, categoryLibrary);
             datasource.close();
-        }else{
+        } else {
             datasource.open();
             bookList = datasource.getAllBooks();
             datasource.close();
         }
 
 
-        switch(pref_order) {
+        switch (pref_order) {
             case "Ordre de création":
                 //Do nothing, default bookList order is in the creation order
                 break;
-            case "Ordre alphabétique" :
+            case "Ordre alphabétique":
                 Collections.sort(bookList, new Comparator<Book>() {
                     @Override
                     public int compare(final Book object1, final Book object2) {
@@ -74,27 +83,10 @@ public class BookLibrary implements Serializable {
                     }
                 });
                 break;
-            case "Ordre aléatoire" :
+            case "Ordre aléatoire":
                 Collections.shuffle(bookList);
                 break;
         }
-    }
-
-    public BookLibrary(Context _context) {
-        context = _context;
-        books = new BookLibrary();
-    }
-
-
-    public static BookLibrary getInstance() {
-        return books;
-    }
-
-    public static BookLibrary getInstanceOrInitialize(Context _context){
-        if(books == null){
-            new BookLibrary(_context);
-        }
-        return books;
     }
 
     public Book Add(Book book) {
@@ -136,13 +128,12 @@ public class BookLibrary implements Serializable {
                 datasource.close();
 
 
-
                 //if this book was in a loan, delete the loan
                 LoanLibrary.getInstance().deleteLoanByBookId(temp.getId());
 
                 //remove all books_authors link
                 List<Author> authors = getAllAuthorFromABook(temp);
-                if(authors != null) {
+                if (authors != null) {
                     for (Author author : authors) {
                         if (checkIfBooksAuthorLinkExist(temp.getId(), author.getId())) {
                             deleteBooksAuthorsLink(temp.getId(), author.getId());
@@ -151,7 +142,7 @@ public class BookLibrary implements Serializable {
                 }
                 //remove all books_categories link
                 List<Category> categories = getAllCategoryFromABook(temp);
-                if(categories != null) {
+                if (categories != null) {
                     for (Category category : categories) {
                         if (checkIfBooksCategoriesLinkExist(temp.getId(), category.getId())) {
                             deleteBooksCategoriesLink(temp.getId(), category.getId());

@@ -48,7 +48,7 @@ public class BooksDataSource {
         dbHelper = new MySQLiteHelper(context, dbName, dbVersion);
     }
 
-    public MySQLiteHelper getDbHelper(){
+    public MySQLiteHelper getDbHelper() {
         return dbHelper;
     }
 
@@ -122,7 +122,7 @@ public class BooksDataSource {
     }
 
     //get all books but without external table feature like Author or Category
-    public List<Book> getAllBooksWithoutExternalTable(){
+    public List<Book> getAllBooksWithoutExternalTable() {
         List<Book> comments = new ArrayList<>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
@@ -161,7 +161,7 @@ public class BooksDataSource {
         //used to fill the Authors Array
         for (Book book : comments) {
             book.setAuthors(getAllAuthorFromABook(authorLibrary, book));
-    }
+        }
         //used to fill the Categories Array
         for (Book book : comments) {
             book.setCategories(getAllCategoryFromABook(categoryLibrary, book));

@@ -44,8 +44,8 @@ public class CategoryLibrary {
         return categories;
     }
 
-    public static CategoryLibrary getInstanceOrInitialize(Context _context){
-        if(categories == null){
+    public static CategoryLibrary getInstanceOrInitialize(Context _context) {
+        if (categories == null) {
             new CategoryLibrary(_context);
         }
         return categories;

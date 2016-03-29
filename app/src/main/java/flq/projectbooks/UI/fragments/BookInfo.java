@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -86,6 +85,18 @@ public class BookInfo extends Fragment implements Parcelable {
         return fragment;
     }
 
+    public static Date createOneDateWithDateAndTime(Date date, Date time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        Calendar timecal = Calendar.getInstance();
+        timecal.setTime(time);
+
+        cal.set(Calendar.HOUR_OF_DAY, timecal.get(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE, timecal.get(Calendar.MINUTE));
+        Date finalDate = cal.getTime();
+        return finalDate;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
@@ -104,7 +115,6 @@ public class BookInfo extends Fragment implements Parcelable {
             book = (Book) getArguments().getSerializable(ARG_PARAM1);
         }
     }
-
 
     public void modifBook() {
         Intent intent = new Intent(getActivity(), CreateBook.class);
@@ -133,7 +143,7 @@ public class BookInfo extends Fragment implements Parcelable {
         TabHost tabs = (TabHost) view.findViewById(R.id.tabHost);
         tabs.setup();
 
-        if(tabs.getTabWidget().getTabCount() != 3) {
+        if (tabs.getTabWidget().getTabCount() != 3) {
             TabHost.TabSpec detailsTab = tabs.newTabSpec("Détails");
             detailsTab.setIndicator("Détails");
             detailsTab.setContent(R.id.Details);
@@ -175,7 +185,7 @@ public class BookInfo extends Fragment implements Parcelable {
         textViewAuthor.setText(author_s);
 
         String htmlText = " %s ";
-        String myData = "<html><body style=\"text-align:justify\" bgcolor=\"#" + Integer.toHexString(getResources().getColor(R.color.background_material_dark) & 0x00ffffff)  + "\">" + "<font color=\"#"+ Integer.toHexString(getResources().getColor(R.color.dim_foreground_material_dark) & 0x00ffffff) +"\">" + book.getDescription() + "</font></body></Html>";
+        String myData = "<html><body style=\"text-align:justify\" bgcolor=\"#" + Integer.toHexString(getResources().getColor(R.color.background_material_dark) & 0x00ffffff) + "\">" + "<font color=\"#" + Integer.toHexString(getResources().getColor(R.color.dim_foreground_material_dark) & 0x00ffffff) + "\">" + book.getDescription() + "</font></body></Html>";
 
         WebView webView = (WebView) view.findViewById(R.id.bookInfoDescription);
 
@@ -235,9 +245,9 @@ public class BookInfo extends Fragment implements Parcelable {
 
 
         Loan previousLoan = LoanLibrary.getInstance().getLoanByBookId(book.getId());
-        if(previousLoan != null){
+        if (previousLoan != null) {
             spinnerBookPossession.setEnabled(false);
-        }else{
+        } else {
             spinnerBookPossession.setEnabled(true);
         }
 
@@ -429,8 +439,8 @@ public class BookInfo extends Fragment implements Parcelable {
         //part for loan
 
         final LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
-        final Button validateLoanButton = (Button)view.findViewById(R.id.btnValidateLoan);
-        final Button removeLoanButton = (Button)view.findViewById(R.id.btnRemoveLoan);
+        final Button validateLoanButton = (Button) view.findViewById(R.id.btnValidateLoan);
+        final Button removeLoanButton = (Button) view.findViewById(R.id.btnRemoveLoan);
 
         validateLoanButton.setVisibility(View.GONE);
         removeLoanButton.setVisibility(View.GONE);
@@ -480,7 +490,6 @@ public class BookInfo extends Fragment implements Parcelable {
         initFriendSpinner(view);
 
 
-
         Loan loan = LoanLibrary.getInstance().getLoanByBookId(book.getId());
         if (loan != null) {
 
@@ -513,32 +522,32 @@ public class BookInfo extends Fragment implements Parcelable {
 
         CheckBox loanCheckbox = ((CheckBox) view.findViewById(R.id.loanCheckBox));
         loanCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                    if(isChecked){
+                                                    @Override
+                                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                        if (isChecked) {
 
-                        if(removeLoanButton.getVisibility() == View.VISIBLE)
-                            p.weight = 1;
-                        else
-                            p.weight = 2;
-                        validateLoanButton.setLayoutParams(p);
-                        validateLoanButton.setVisibility(View.VISIBLE);
+                                                            if (removeLoanButton.getVisibility() == View.VISIBLE)
+                                                                p.weight = 1;
+                                                            else
+                                                                p.weight = 2;
+                                                            validateLoanButton.setLayoutParams(p);
+                                                            validateLoanButton.setVisibility(View.VISIBLE);
 
 
-                    } else {
-                        if(removeLoanButton.getVisibility() == View.VISIBLE){
-                            p.weight = 2;
-                            removeLoanButton.setLayoutParams(p);
-                        }
-                        validateLoanButton.setVisibility(View.GONE);
-                    }
-                }
-            }
+                                                        } else {
+                                                            if (removeLoanButton.getVisibility() == View.VISIBLE) {
+                                                                p.weight = 2;
+                                                                removeLoanButton.setLayoutParams(p);
+                                                            }
+                                                            validateLoanButton.setVisibility(View.GONE);
+                                                        }
+                                                    }
+                                                }
         );
 
-        if(book.getFriend_id() != -1){
-           //isFriendBook
-           ((TextView)view.findViewById(R.id.isFriendBook)).setText("Ce livre appartient à " + FriendLibrary.getInstance().getFriendById(book.getFriend_id()).getFirstName());
+        if (book.getFriend_id() != -1) {
+            //isFriendBook
+            ((TextView) view.findViewById(R.id.isFriendBook)).setText("Ce livre appartient à " + FriendLibrary.getInstance().getFriendById(book.getFriend_id()).getFirstName());
             view.findViewById(R.id.isFriendBook).setVisibility(View.VISIBLE);
 
             ratingBar.setEnabled(false);
@@ -568,7 +577,7 @@ public class BookInfo extends Fragment implements Parcelable {
 
         if (loanCheckbox.isChecked()) {
             //Set the book in the possession state "Lend"
-            ((Spinner)getView().findViewById(R.id.spinnerBookPossession)).setSelection(2);
+            ((Spinner) getView().findViewById(R.id.spinnerBookPossession)).setSelection(2);
             book.setBookState(2);
 
             long friend_id = FriendLibrary.getInstance().getFriendByFirstNameAndLastName(friend.getSelectedItem().toString()).getId();
@@ -588,7 +597,7 @@ public class BookInfo extends Fragment implements Parcelable {
             LoanLibrary.getInstance().updateOrAddLoan(loan);
         } else if (previousLoan != null) {
             //Set the book in the possession state "Possessed"
-            ((Spinner)getView().findViewById(R.id.spinnerBookPossession)).setSelection(1);
+            ((Spinner) getView().findViewById(R.id.spinnerBookPossession)).setSelection(1);
             book.setBookState(1);
             //here it mean that this book have a previous loan but we don't want it anymore so we juste delete this loan.
             LoanLibrary.getInstance().deleteLoanByLoanId(previousLoan.getId());
@@ -600,7 +609,7 @@ public class BookInfo extends Fragment implements Parcelable {
         tabs.setCurrentTab(0);
     }
 
-    public void deleteLoan(View view){
+    public void deleteLoan(View view) {
 
         Loan previousLoan = LoanLibrary.getInstance().getLoanByBookId(book.getId());
         if (previousLoan != null) {
@@ -608,7 +617,7 @@ public class BookInfo extends Fragment implements Parcelable {
             LoanLibrary.getInstance().deleteLoanByLoanId(previousLoan.getId());
         }
 
-        ((Spinner)getView().findViewById(R.id.spinnerBookPossession)).setSelection(1);
+        ((Spinner) getView().findViewById(R.id.spinnerBookPossession)).setSelection(1);
         book.setBookState(1);
 
         //we set all field to default value
@@ -619,7 +628,7 @@ public class BookInfo extends Fragment implements Parcelable {
     }
 
     //reset all loan field
-    private void resetLoanField(View view){
+    private void resetLoanField(View view) {
         ((CheckBox) getView().findViewById(R.id.loanCheckBox)).setChecked(false);
         ((Spinner) getView().findViewById(R.id.friendSpinner)).setSelection(0);
         this.datePickerFragment.initDateLoan((TextView) getView().findViewById(R.id.loanDateLoanTextViewDate));
@@ -668,18 +677,6 @@ public class BookInfo extends Fragment implements Parcelable {
         //before to call the diaglog you have to define which date you gonna create (for example reminder or date-loan)
         datePickerFragment.setDateReminder((TextView) getView().findViewById(R.id.loanDateReminderTextViewDate));
         datePickerFragment.show(myContext.getFragmentManager(), "datePicker");
-    }
-
-    public static Date createOneDateWithDateAndTime(Date date, Date time) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        Calendar timecal = Calendar.getInstance();
-        timecal.setTime(time);
-
-        cal.set(Calendar.HOUR_OF_DAY, timecal.get(Calendar.HOUR_OF_DAY));
-        cal.set(Calendar.MINUTE, timecal.get(Calendar.MINUTE));
-        Date finalDate = cal.getTime();
-        return finalDate;
     }
 
     @Override

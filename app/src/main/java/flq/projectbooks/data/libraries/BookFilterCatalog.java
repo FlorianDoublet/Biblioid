@@ -12,7 +12,6 @@ import java.util.List;
 
 import flq.projectbooks.UI.fragments.SettingsFragment;
 import flq.projectbooks.data.Author;
-import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Category;
 import flq.projectbooks.database.BookFiltersDataSource;
@@ -33,18 +32,40 @@ public class BookFilterCatalog implements Serializable {
         loadBookFiltersWithPref(false);
     }
 
-    public void loadBookFiltersWithPref(boolean withContext){
+    public BookFilterCatalog(Context _context, String dbName, int dbVersion) {
+        bookFilterList = new ArrayList<>();
+        datasource = new BookFiltersDataSource(_context, dbName, dbVersion);
+        loadBookFiltersWithPref(true);
+    }
+
+    public BookFilterCatalog(Context _context) {
+        context = _context;
+        bookFilters = new BookFilterCatalog();
+    }
+
+    public static BookFilterCatalog getInstance() {
+        return bookFilters;
+    }
+
+    public static BookFilterCatalog getInstanceOrInitialize(Context _context) {
+        if (bookFilters == null) {
+            new BookFilterCatalog(_context);
+        }
+        return bookFilters;
+    }
+
+    public void loadBookFiltersWithPref(boolean withContext) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String pref_order = sharedPref.getString(SettingsFragment.KEY_PREF_FILTER_DISPLAY_ORDER, "1");
 
 
-        if(withContext){
+        if (withContext) {
             AuthorLibrary authorLibrary = new AuthorLibrary(datasource.getDbHelper());
             CategoryLibrary categoryLibrary = new CategoryLibrary(datasource.getDbHelper());
             datasource.open();
             bookFilterList = datasource.getAllBookFilters(authorLibrary, categoryLibrary);
             datasource.close();
-        }else{
+        } else {
             datasource.open();
             bookFilterList = datasource.getAllBookFilters();
             datasource.close();
@@ -77,11 +98,11 @@ public class BookFilterCatalog implements Serializable {
             this.Add(filterBase5);
         }*/
 
-        switch(pref_order) {
+        switch (pref_order) {
             case "Ordre de création":
                 //Do nothing, default bookList order is in the creation order
                 break;
-            case "Ordre alphabétique" :
+            case "Ordre alphabétique":
                 Collections.sort(bookFilterList, new Comparator<BookFilter>() {
                     @Override
                     public int compare(final BookFilter object1, final BookFilter object2) {
@@ -89,34 +110,11 @@ public class BookFilterCatalog implements Serializable {
                     }
                 });
                 break;
-            case "Ordre aléatoire" :
+            case "Ordre aléatoire":
                 Collections.shuffle(bookFilterList);
                 break;
         }
     }
-
-    public BookFilterCatalog(Context _context, String dbName, int dbVersion) {
-        bookFilterList = new ArrayList<>();
-        datasource = new BookFiltersDataSource(_context, dbName, dbVersion);
-        loadBookFiltersWithPref(true);
-    }
-
-    public BookFilterCatalog(Context _context) {
-        context = _context;
-        bookFilters = new BookFilterCatalog();
-    }
-
-    public static BookFilterCatalog getInstance() {
-        return bookFilters;
-    }
-
-    public static BookFilterCatalog getInstanceOrInitialize(Context _context){
-        if(bookFilters == null){
-            new BookFilterCatalog(_context);
-        }
-        return bookFilters;
-    }
-
 
     public BookFilter Add(BookFilter filter) {
         //Add in the database
@@ -152,7 +150,7 @@ public class BookFilterCatalog implements Serializable {
 
                 //remove all filters_authors link
                 List<Author> authors = getAllAuthorFromABookFilter(temp);
-                if(authors != null) {
+                if (authors != null) {
                     for (Author author : authors) {
                         if (checkIfBookFiltersAuthorLinkExist(temp.getId(), author.getId())) {
                             deleteBookFilterAuthorsLink(temp.getId(), author.getId());
@@ -162,7 +160,7 @@ public class BookFilterCatalog implements Serializable {
 
                 //remove all books_categories link
                 List<Category> categories = getAllCategoryFromABookFilter(temp);
-                if(categories != null) {
+                if (categories != null) {
                     for (Category category : categories) {
                         if (checkIfBookFiltersCategoriesLinkExist(temp.getId(), category.getId())) {
                             deleteBookFilterCategoriesLink(temp.getId(), category.getId());

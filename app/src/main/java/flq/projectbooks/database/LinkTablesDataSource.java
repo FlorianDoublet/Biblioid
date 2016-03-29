@@ -92,7 +92,7 @@ public class LinkTablesDataSource {
     }
 
     //only used for external friend database
-    public static List<Author> getAllAuthorFromABookFilter(AuthorLibrary authorLibrary,SQLiteDatabase database, BookFilter filter) {
+    public static List<Author> getAllAuthorFromABookFilter(AuthorLibrary authorLibrary, SQLiteDatabase database, BookFilter filter) {
         long book_filter_id = filter.getId();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOK_FILTERS_AUTHORS, new String[]{MySQLiteHelper.COLUMN_AUTHOR_ID},
                 MySQLiteHelper.COLUMN_BOOK_FILTER_ID + "=? ", new String[]{Long.toString(book_filter_id)}, null, null, null);
@@ -126,7 +126,7 @@ public class LinkTablesDataSource {
     }
 
     //only used for external friend database
-    public static List<Author> getAllAuthorFromABook(AuthorLibrary authorLibrary,SQLiteDatabase database, Book book) {
+    public static List<Author> getAllAuthorFromABook(AuthorLibrary authorLibrary, SQLiteDatabase database, Book book) {
         long book_id = book.getId();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS_AUTHORS, new String[]{MySQLiteHelper.COLUMN_AUTHOR_ID},
                 MySQLiteHelper.COLUMN_BOOK_ID + "=? ", new String[]{Long.toString(book_id)}, null, null, null);
