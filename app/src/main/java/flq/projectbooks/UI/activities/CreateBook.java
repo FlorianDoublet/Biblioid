@@ -975,5 +975,14 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
         });
         ((LinearLayout) findViewById(R.id.topMenuCreateBook)).addView(btnSource);
     }
+
+    @Override
+    public void onBackPressed() {
+        if(findViewById(R.id.topMenuCreateBook).getVisibility() == View.GONE){
+            hideCover(null);
+        }else{
+            super.onBackPressed();
+        }
+    }
 }
 

@@ -47,7 +47,6 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
     private int selectedBookIndex;
     private GridView gridViewBooks;
-    //private List<Map<String, Object>> listOfBooks;
     private BookAdapter listAdapter;
     private BookLibrary bookLibrary;
     private BookFilter bookFilter;
@@ -119,11 +118,14 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         gridViewBooks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                displayMultiSelectionButtons();
-                listAdapter.activateMultiSelection();
-                listAdapter.changeSelection(position);
-                listAdapter.notifyDataSetInvalidated();
-                gridViewBooks.invalidate();
+                if(!listAdapter.isMultiSelectionActivated()){
+                    displayMultiSelectionButtons();
+                    listAdapter.activateMultiSelection();
+                    listAdapter.changeSelection(position);
+                    listAdapter.notifyDataSetInvalidated();
+                    gridViewBooks.invalidate();
+                }
+
                 /*selectedBookIndex = position;
                 PopupMenu popupMenu = new PopupMenu(getActivity(), view);
                 popupMenu.setOnMenuItemClickListener(BookList.this);
@@ -335,5 +337,4 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
     public interface OnBookSelected {
         public void OnBookSelected(Book book);
     }
-
 }
