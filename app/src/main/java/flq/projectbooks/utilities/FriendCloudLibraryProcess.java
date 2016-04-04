@@ -245,7 +245,7 @@ public class FriendCloudLibraryProcess extends AsyncTask<Void, Integer, Void> {
         for (BookFilter friendFilter : friendFilterList) {
 
             //we don't want a filter of a friend of our friend
-            if (friendFilter.getFriend_id() != -1) {
+            if (friendFilter.getFriend_id() != -1 || BookFilterCatalog.isADefaultFilter(friendFilter)) {
                 continue;
             }
 

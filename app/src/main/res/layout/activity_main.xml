@@ -184,11 +184,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openCreateFriendActivity"
+                    android:onClick="openDisplayFriendActivity"
                     android:layout_margin="3dp">
 
                     <ImageView
-                        android:id="@+id/imgViewAddFriend"
+                        android:id="@+id/imgViewDisplayFriend"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:paddingTop="3dp"
@@ -203,7 +203,7 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:maxLines="2"
-                        android:text="@string/addFriend"
+                        android:text="@string/displayFriends"
                         android:textColor="@android:color/white" />
                 </FrameLayout>
             </LinearLayout>

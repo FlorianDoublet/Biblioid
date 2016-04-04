@@ -24,16 +24,15 @@ public class FriendAdapter extends BaseAdapter {
     private List<String> names;
     private boolean elementDeleted = false;
     private ListView mListView;
-
     private Context mContext;
-
+    private List<Boolean> haveLink;
     private LayoutInflater mInflater;
 
-    public FriendAdapter(ListView mListView, List<String> names, Context mContext) {
+    public FriendAdapter(ListView mListView, List<String> names, List<Boolean> haveLink, Context mContext) {
         this.names = names;
         this.mContext = mContext;
         this.mListView = mListView;
-
+        this.haveLink = haveLink;
         mInflater = LayoutInflater.from(mContext);
     }
 
@@ -60,8 +59,10 @@ public class FriendAdapter extends BaseAdapter {
         } else {
             layoutItem = (LinearLayout) view;
         }
+
         TextView name = (TextView) layoutItem.findViewById(R.id.friendCompleteName);
         name.setText(names.get(i));
+
         ImageButton downloadButton = (ImageButton) layoutItem.findViewById(R.id.download_friendDB_button);
 
         downloadButton.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +76,12 @@ public class FriendAdapter extends BaseAdapter {
             }
 
         });
+        LinearLayout buttonLayout = (LinearLayout) layoutItem.findViewById(R.id.download_friendDB_button_area);
+        if(!haveLink.get(i)){
+            buttonLayout.setVisibility(LinearLayout.GONE);
+        }else{
+            buttonLayout.setVisibility(LinearLayout.VISIBLE);
+        }
 
         return layoutItem;
     }
@@ -82,6 +89,7 @@ public class FriendAdapter extends BaseAdapter {
     public void deleteElement(int i) {
         elementDeleted = true;
         names.remove(i);
+        haveLink.remove(i);
     }
 
 }
