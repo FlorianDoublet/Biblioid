@@ -106,7 +106,7 @@ public class BookFilterCatalog implements Serializable {
                 Collections.sort(bookFilterList, new Comparator<BookFilter>() {
                     @Override
                     public int compare(final BookFilter object1, final BookFilter object2) {
-                        return object1.getName().compareTo(object2.getName());
+                        return object1.getName().toLowerCase().compareTo(object2.getName().toLowerCase());
                     }
                 });
                 break;
