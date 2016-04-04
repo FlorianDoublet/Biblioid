@@ -103,6 +103,11 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
         if (getArguments() != null) {
             bookFilter = (BookFilter) getArguments().getSerializable(ARG_PARAM1);
+            String def_string = "Filtre ";
+            if(bookFilter.getFriend_id() != -1){
+                def_string += " amis ";
+            }
+            getActivity().setTitle(def_string + "\" " + bookFilter.getName() + " \"");
         }
     }
 

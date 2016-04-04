@@ -4,6 +4,10 @@
     android:layout_height="match_parent">
 
     <item
+        android:id="@+id/update_friend"
+        android:title="@string/update_friend"
+        android:visible="true" />
+    <item
         android:id="@+id/delete_friend"
         android:title="@string/delete_friend"
         android:visible="true" />

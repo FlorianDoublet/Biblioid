@@ -1,5 +1,6 @@
 package flq.projectbooks.UI.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -22,7 +23,14 @@ public class CreateFriend extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_friend);
 
-        friend = new Friend();
+        Intent intent = getIntent();
+        if (intent.hasExtra(DisplayFriends.GIVE_FRIEND)) {
+            setTitle("Modification d'un ami");
+            friend = (Friend) intent.getSerializableExtra(DisplayFriends.GIVE_FRIEND);
+        } else {
+            setTitle("Création d'un ami");
+            friend = new Friend();
+        }
 
         ((TextView) findViewById(R.id.friendFirstName)).setText(friend.getFirstName());
         ((TextView) findViewById(R.id.friendLastName)).setText(friend.getLastName());

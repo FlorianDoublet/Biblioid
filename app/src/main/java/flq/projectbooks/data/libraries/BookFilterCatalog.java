@@ -26,6 +26,34 @@ public class BookFilterCatalog implements Serializable {
     List<BookFilter> bookFilterList;
     private BookFiltersDataSource datasource;
 
+    //static list for standard filters, if you want to add a new one standard filter do it here
+    private static List<BookFilter> defaultFilters = new ArrayList<BookFilter>(){{
+        BookFilter filterBase1 = new BookFilter();
+        filterBase1.setName("Liste de souhait");
+        filterBase1.setOnWishList(1);
+        add(filterBase1);
+
+        BookFilter filterBase2 = new BookFilter();
+        filterBase2.setName("Liste des favoris");
+        filterBase2.setOnFavoriteList(1);
+        add(filterBase2);
+
+        BookFilter filterBase3 = new BookFilter();
+        filterBase3.setName("Livres lus");
+        filterBase3.setAdvancementState("Read");
+        add(filterBase3);
+
+        BookFilter filterBase4 = new BookFilter();
+        filterBase4.setName("Livres en cours de lecture");
+        filterBase4.setAdvancementState("Reading");
+        add(filterBase4);
+
+        BookFilter filterBase5 = new BookFilter();
+        filterBase5.setName("Livres non lus");
+        filterBase5.setAdvancementState("Not Read");
+        add(filterBase5);
+    }};
+
     public BookFilterCatalog() {
         bookFilterList = new ArrayList<>();
         datasource = new BookFiltersDataSource(context);
@@ -54,6 +82,19 @@ public class BookFilterCatalog implements Serializable {
         return bookFilters;
     }
 
+    public static List<BookFilter> getDefaultFilters(){
+        return defaultFilters;
+    }
+
+    public static Boolean isADefaultFilter(BookFilter filter){
+        List<BookFilter> filters = BookFilterCatalog.getDefaultFilters();
+        for(BookFilter filter_i : filters){
+            if(filter_i.getName().equals(filter.getName()))
+                return true;
+        }
+        return false;
+    }
+
     public void loadBookFiltersWithPref(boolean withContext) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String pref_order = sharedPref.getString(SettingsFragment.KEY_PREF_FILTER_DISPLAY_ORDER, "1");
@@ -71,32 +112,12 @@ public class BookFilterCatalog implements Serializable {
             datasource.close();
         }
 
-        /*if (bookFilterList.size() == 0) {
-            BookFilter filterBase1 = new BookFilter();
-            filterBase1.setName("Liste de souhait");
-            filterBase1.setOnWishList(1);
-            this.Add(filterBase1);
-
-            BookFilter filterBase2 = new BookFilter();
-            filterBase2.setName("Liste des favoris");
-            filterBase2.setOnFavoriteList(1);
-            this.Add(filterBase2);
-
-            BookFilter filterBase3 = new BookFilter();
-            filterBase3.setName("Livres lus");
-            filterBase3.setAdvancementState("Read");
-            this.Add(filterBase3);
-
-            BookFilter filterBase4 = new BookFilter();
-            filterBase4.setName("Livres en cours de lecture");
-            filterBase4.setAdvancementState("Reading");
-            this.Add(filterBase4);
-
-            BookFilter filterBase5 = new BookFilter();
-            filterBase5.setName("Livres non lus");
-            filterBase5.setAdvancementState("Not Read");
-            this.Add(filterBase5);
-        }*/
+        //
+        if (bookFilterList.size() == 0) {
+            for(BookFilter filter : defaultFilters){
+                this.Add(filter);
+            }
+        }
 
         switch (pref_order) {
             case "Ordre de création":

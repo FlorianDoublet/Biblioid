@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import flq.projectbooks.R;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
+import flq.projectbooks.data.Category;
+import flq.projectbooks.data.Publisher;
 import flq.projectbooks.data.libraries.AuthorLibrary;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
@@ -49,10 +51,8 @@ public class Main extends AppCompatActivity {
     public final static String ASK_NEW_BOOK = "flq.ASK_NEW_BOOK";
     public final static String GIVE_BOOK_WITH_ISBN = "flq.GIVE_BOOK_WITH_ISBN";
     public final static int CREATE_BOOK = 110;
-    public final static int CREATE_BOOK_FINISHED = 111;
     public final static int CREATE_BOOK_FINISHED_AND_ADD_WITH_SCANNER = 112;
     public final static int CREATE_BOOK_FINISHED_AND_ADD_MANUALLY = 113;
-    public final static String ASK_NEW_FRIEND = "flq.ASK_NEW_FRIEND";
 
     protected BookLibrary books;
     protected BookFilterCatalog filters;
@@ -119,7 +119,7 @@ public class Main extends AppCompatActivity {
             ((ImageView) findViewById(R.id.imgViewDisplayFilters)).setImageDrawable(this.ResizeImage(R.drawable.filter));
             ((ImageView) findViewById(R.id.imgViewScanBook)).setImageDrawable(this.ResizeImage(R.drawable.barcode));
             ((ImageView) findViewById(R.id.imgViewImportExport)).setImageDrawable(this.ResizeImage(R.drawable.importexport));
-            ((ImageView) findViewById(R.id.imgViewAddFriend)).setImageDrawable(this.ResizeImage(R.drawable.friend));
+            ((ImageView) findViewById(R.id.imgViewDisplayFriend)).setImageDrawable(this.ResizeImage(R.drawable.friend));
             ((ImageView) findViewById(R.id.imgViewOptions)).setImageDrawable(this.ResizeImage(R.drawable.option));
             ((ImageView) findViewById(R.id.imgViewInformations)).setImageDrawable(this.ResizeImage(R.drawable.info));
         }
@@ -161,10 +161,7 @@ public class Main extends AppCompatActivity {
         startActivityForResult(intent, CREATE_BOOK);
     }
 
-    public void openCreateFriendActivity(View view) {
-        /*Intent intent = new Intent(this, CreateFriend.class);
-        intent.putExtra(ASK_NEW_FRIEND, friends.getNewFriend());
-        startActivity(intent);*/
+    public void openDisplayFriendActivity(View view) {
         Intent intent = new Intent(this, DisplayFriends.class);
         startActivity(intent);
     }
@@ -238,8 +235,18 @@ public class Main extends AppCompatActivity {
     void eraseDatabase() {
         deleteDatabase("books.db");
         Toast.makeText(this, "Données remises à zéro", Toast.LENGTH_LONG).show();
+        updateAllLibrary();
+    }
+
+    void updateAllLibrary(){
         BookLibrary.getInstance().updateLocalList();
         BookFilterCatalog.getInstance().updateLocalList();
+        AuthorLibrary.getInstance().updateLocalList();
+        CategoryLibrary.getInstance().updateLocalList();
+        FriendLibrary.getInstance().updateLocalList();
+        LoanLibrary.getInstance().updateLocalList();
+        PublisherLibrary.getInstance().updateLocalList();
+
     }
 
     public void openImportExportActivity(View view) {

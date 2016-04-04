@@ -76,4 +76,6 @@
     <string name="delete_friend">Supprimer l\'ami</string>
     <string name="btnOkWithScan">Valider et scanner un nouveau livre</string>
     <string name="btnOkWithManual">Valider et ajouter un nouveau livre</string>
+    <string name="displayFriends">Afficher les amis</string>
+    <string name="update_friend">Modifier l\'ami</string>
 </resources>

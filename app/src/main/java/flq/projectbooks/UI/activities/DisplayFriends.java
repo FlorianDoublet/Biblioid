@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import flq.projectbooks.R;
+import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Friend;
 import flq.projectbooks.data.libraries.FriendLibrary;
 import flq.projectbooks.utilities.FriendAdapter;
@@ -27,12 +28,12 @@ import flq.projectbooks.utilities.FriendAdapter;
  */
 public class DisplayFriends extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
+    public final static String GIVE_FILTER = "flq.GIVEFILTER";
+    public final static String GIVE_FRIEND = "flq.GIVEFRIEND";
     private int selectedFilterIndex;
     private ListView friendList;
     private FriendAdapter listAdapter;
     private FriendLibrary friendLibrary;
-    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,18 @@ public class DisplayFriends extends AppCompatActivity implements PopupMenu.OnMen
         friendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(view.getContext(), "TODO -> ca affiche le filtre", Toast.LENGTH_SHORT).show();
+                selectedFilterIndex = position;
+                long friendId = FriendLibrary.getInstance().getFriendList().get(position).getId();
+
+                //We create a temporary filter (we don't add it directly to the bookFilterCatalog
+                //and pass it to the DisplayBooks activity
+                BookFilter friendBookFilter = new BookFilter();
+                friendBookFilter.setFriend_id(friendId);
+                friendBookFilter.setName(FriendLibrary.getInstance().getFriendById(friendId).getFirstName());
+
+                Intent intent = new Intent(DisplayFriends.this, DisplayBooks.class);
+                intent.putExtra(GIVE_FILTER, friendBookFilter);
+                startActivity(intent);
 
             }
         });
@@ -72,15 +84,19 @@ public class DisplayFriends extends AppCompatActivity implements PopupMenu.OnMen
         ListView friendList = (ListView) findViewById(R.id.friendList);
 
         List<String> names = new ArrayList<>();
-        List<String> filterNbBooks = new ArrayList<>();
+        List<Boolean> haveLink = new ArrayList<>();
         for (Friend friend : friends.getFriendList()) {
             String completeName = friend.getFirstName();
             if (friend.getLastName() != null || friend.getLastName() != "")
                 completeName += " " + friend.getLastName();
             names.add(completeName);
+            if(friend.getCloudLink() != null && !friend.getCloudLink().equals(""))
+                haveLink.add(true);
+            else
+                haveLink.add(false);
         }
 
-        listAdapter = new FriendAdapter(friendList, names, this);
+        listAdapter = new FriendAdapter(friendList, names,haveLink, this);
 
         friendList.setAdapter(listAdapter);
     }
@@ -117,6 +133,12 @@ public class DisplayFriends extends AppCompatActivity implements PopupMenu.OnMen
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.update_friend:
+                Friend friend = friendLibrary.getFriendList().get(selectedFilterIndex);
+                Intent intent = new Intent(this, CreateFriend.class);
+                intent.putExtra(DisplayFriends.GIVE_FRIEND, friend);
+                startActivityForResult(intent, 0);
+                return true;
             case R.id.delete_friend:
                 FriendLibrary.getInstance().deleteFriendById((int) friendLibrary.getFriendList().get(selectedFilterIndex).getId());
                 listAdapter.deleteElement(selectedFilterIndex);

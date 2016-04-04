@@ -34,16 +34,34 @@
                 android:textColor="@color/white"
                 tools:hint="Nom de l'ami" />
 
+            <LinearLayout
+                android:id="@+id/download_friendDB_button_area"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical|right"
+                android:padding="2dp" >
 
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:lines="1"
+                    android:gravity="center_vertical"
+                    android:text="Mise à jour"
+                    android:paddingRight="15dp"/>
 
                 <ImageButton
                     android:id="@+id/download_friendDB_button"
-                    android:layout_width="57dp"
-                    android:layout_height="57dp"
                     android:clickable="false"
                     android:focusable="false"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:onClick="lockDatePublicationSource"
+                    android:scaleType="centerCrop"
                     android:layout_gravity="center_vertical|right"
-                    android:src="@drawable/download"/>
+                    android:src="@drawable/cloud_download"/>
+
+            </LinearLayout>
 
 
 
