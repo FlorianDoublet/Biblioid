@@ -79,7 +79,7 @@ public class BookLibrary implements Serializable {
                 Collections.sort(bookList, new Comparator<Book>() {
                     @Override
                     public int compare(final Book object1, final Book object2) {
-                        return object1.getTitle().compareTo(object2.getTitle());
+                        return object1.getTitle().toLowerCase().compareTo(object2.getTitle().toLowerCase());
                     }
                 });
                 break;

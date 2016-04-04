@@ -152,6 +152,18 @@ public class DisplayFilters extends AppCompatActivity implements PopupMenu.OnMen
         filterList.setAdapter(listAdapter);
     }
 
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bookFilterCatalog = BookFilterCatalog.getInstance();
+
+        createListView(bookFilterCatalog);
+    }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
