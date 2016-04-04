@@ -181,7 +181,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
         view.findViewById(R.id.multiSelectionDelete).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 new AlertDialog.Builder(view.getContext())
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Suppression de livre(s)")
@@ -189,7 +189,10 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
                         .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                //BookLibrary.getInstance().deleteBookById((int) bookLibrary.getBookList().get(selectedBookIndex).getId());
                                 listAdapter.deleteSelectedBooks();
+                                bookLibrary = BookLibrary.getInstance();
+                                createGridView(view);
                                 listAdapter.desactivateMultiSelection();
                                 hideMultiSelectionButtons();
                                 listAdapter.notifyDataSetInvalidated();
