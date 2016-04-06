@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -80,6 +81,9 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
         bookSources = new ArrayList<>();
 
         setContentView(R.layout.activity_create_book);
+        //used to set our actionBar menu
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         if (retrievedBook == null) {
             bookSourcesLogos = new ArrayList<>();

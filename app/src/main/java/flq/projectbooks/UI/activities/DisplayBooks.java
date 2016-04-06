@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import flq.projectbooks.R;
@@ -59,6 +60,9 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
 
 
         setContentView(R.layout.activity_display_books);
+        //used to set our actionBar menu
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         if (findViewById(R.id.listContainer) != null) {
             if (savedInstanceState != null) {
