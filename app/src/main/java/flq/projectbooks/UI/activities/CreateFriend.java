@@ -3,6 +3,7 @@ package flq.projectbooks.UI.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +23,9 @@ public class CreateFriend extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_friend);
+        //used to set our actionBar menu
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         Intent intent = getIntent();
         if (intent.hasExtra(DisplayFriends.GIVE_FRIEND)) {

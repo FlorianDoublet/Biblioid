@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
 import android.view.Menu;
@@ -68,6 +69,9 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //used to set our actionBar menu
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
         //line used to be sure that our prefered value are greatly initialized
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
