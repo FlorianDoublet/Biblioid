@@ -812,7 +812,11 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
                 if (!equal && bookSourcesLogos.size() != 0) {
                     indexBookNbPages = bookSourcesLogos.size() - 1;
                     ((ImageButton) findViewById(R.id.bookNbPagesImageButton)).setImageResource(bookSourcesLogos.get(indexBookNbPages));
-                    book.setNbPages(Integer.parseInt(text));
+                   if(text.equals("")){
+                       book.setNbPages(0);
+                   }else{
+                       book.setNbPages(Integer.parseInt(text));
+                   }
                 }
             }
         });
