@@ -62,7 +62,8 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
         setContentView(R.layout.activity_display_books);
         //used to set our actionBar menu
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        if(myToolbar != null)
+            setSupportActionBar(myToolbar);
 
         if (findViewById(R.id.listContainer) != null) {
             if (savedInstanceState != null) {
