@@ -28,11 +28,13 @@
             android:textSize="26sp"
             android:text="Informations"/>
 
+
         <TextView
             android:paddingTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ce programme a été initié lors d'un projet étudiant de première année de Master pour l'université de Lille 1."/>
+
 
         <TextView
             android:paddingTop="10dp"
@@ -64,6 +66,13 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:text="Le code source est disponible sur Github : https://github.com/FlorianDoublet/Biblioid"/>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Biblioid est actuellement en version 1.3.1"/>
+
 
         <TextView
             android:paddingTop="10dp"
