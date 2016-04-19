@@ -133,10 +133,6 @@ public class BookInfo extends Fragment implements Parcelable {
     }
 
     public void displayBook(View view) {
-
-        //TextView textViewTitle = (TextView) view.findViewById(R.id.bookInfoTitle);
-        //textViewTitle.setText(book.getTitle());
-
         Drawable drawable = ((RatingBar) view.findViewById(R.id.ratingBar)).getProgressDrawable();
         drawable.setColorFilter(getResources().getColor(R.color.primary), PorterDuff.Mode.SRC_ATOP);
 
@@ -193,6 +189,9 @@ public class BookInfo extends Fragment implements Parcelable {
 
         TextView textViewInfoTitle = (TextView) view.findViewById(R.id.bookInfoTitle);
         textViewInfoTitle.setText(book.getTitle());
+
+        TextView textViewInfoISBN = (TextView) view.findViewById(R.id.bookInfoISBN);
+        textViewInfoISBN.setText("ISBN : " + book.getIsbn());
 
         TextView textViewDatePub = (TextView) view.findViewById(R.id.bookInfoDatePublication);
         if (!book.getDatePublication().equals("")) {

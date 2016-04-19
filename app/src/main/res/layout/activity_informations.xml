@@ -33,14 +33,14 @@
             android:paddingTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ce programme a été initié lors d'un projet étudiant de première année de Master pour l'université de Lille 1."/>
+            android:text="Ce programme a été initié lors d'un projet étudiant de première année de Master pour l'université de Lille 1.  "/>
 
 
         <TextView
             android:paddingTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Open-source Biblioid a été développé par :"/>
+            android:text="Le projet fut initié et supervisé par Cedric Dumoulin. Il aura été développé par :"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -52,13 +52,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
-            android:text="Quentin Delvallet"/>
+            android:text="Florian Doublet"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
-            android:text="Florian Doublet"/>
+            android:text="Quentin Delvallet"/>
+
 
         <TextView
             android:paddingTop="5dp"
