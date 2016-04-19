@@ -42,8 +42,6 @@ import flq.projectbooks.utilities.GetBookInfoAmazonAPI;
 import flq.projectbooks.utilities.GetBookInfoGoogleBooksAPI;
 
 public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncResponse {
-    public static final String ARG_PARAM1 = "param1";
-    public final static String GIVE_BOOK_BACK = "flq.NEWBOOK";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static protected List<Integer> bookSourcesLogos;
     static protected List<Book> retrievedBook;
@@ -150,8 +148,14 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
             }
         }
 
-        ((TextView) findViewById(R.id.bookTitle)).setText(book.getTitle());
-        ((TextView) findViewById(R.id.bookISBN)).setText(book.getIsbn());
+        if(!book.getTitle().equals("")){
+            ((TextView) findViewById(R.id.bookTitle)).setText(book.getTitle());
+        }
+
+        if(!book.getIsbn().equals("")){
+            ((TextView) findViewById(R.id.bookISBN)).setText(book.getIsbn());
+        }
+
 
         ((MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted)).setText(LinkTablesDataSource.authorsToString(book.getAuthors()));
 
@@ -299,6 +303,23 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
         setResult(Main.CREATE_BOOK_FINISHED_AND_ADD_MANUALLY, resultIntent);
         finish();
     }
+
+    public void Cancel(View view) {
+        finish();
+    }
+
+    public void CancelAndAddWithScan(View view) {
+        Intent resultIntent = new Intent();
+        setResult(Main.CREATE_BOOK_FINISHED_AND_ADD_WITH_SCANNER, resultIntent);
+        finish();
+    }
+
+    public void CancelAndAddManual(View view) {
+        Intent resultIntent = new Intent();
+        setResult(Main.CREATE_BOOK_FINISHED_AND_ADD_MANUALLY, resultIntent);
+        finish();
+    }
+
 
     public void takePhoto(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

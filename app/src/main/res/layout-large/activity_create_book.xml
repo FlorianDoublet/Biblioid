@@ -79,12 +79,56 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/cancelTopMenuCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topMenuCreateBookLayout"
+            android:background="#C0000000"
+            android:orientation="horizontal"
+            android:weightSum="8">
+
+            <LinearLayout
+                android:id="@+id/cancelTopMenuCreateBook"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="5">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cancelCreationBookLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="3">
+                <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="Cancel"
+                    android:text="✘" />
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="CancelAndAddWithScan"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/cancelandbarcode" />
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="CancelAndAddManual"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/cancelandbook" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ScrollView
             android:id="@+id/scrollViewCreateBook"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/topMenuCreateBookLayout"
+            android:layout_below="@id/cancelTopMenuCreate"
             android:fillViewport="true">
 
             <LinearLayout
@@ -252,11 +296,11 @@
 
                     <EditText
                         android:id="@+id/bookDatePublication"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:hint="JJ/MM/AAAA"
-                    android:inputType="date" />
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:hint="JJ/MM/AAAA"
+                        android:inputType="date" />
 
                     <ImageButton
                         android:id="@+id/bookDatePublicationImageButton"

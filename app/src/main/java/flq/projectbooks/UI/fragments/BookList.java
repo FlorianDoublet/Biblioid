@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -28,7 +30,9 @@ import flq.projectbooks.UI.activities.DisplayBooks;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
 import flq.projectbooks.data.Category;
+import flq.projectbooks.data.libraries.AuthorLibrary;
 import flq.projectbooks.data.libraries.BookLibrary;
+import flq.projectbooks.data.libraries.CategoryLibrary;
 import flq.projectbooks.database.LinkTablesDataSource;
 import flq.projectbooks.utilities.BookAdapter;
 
@@ -155,14 +159,24 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
             }
         });
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+        int KEY_GRID_ZOOM = Integer.valueOf(sharedPref.getString(SettingsFragment.KEY_GRID_ZOOM, "1"));
+        gridViewBooks.setNumColumns(KEY_GRID_ZOOM);
+
+
         view.findViewById(R.id.layoutZoomPlusGrid).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int nbColumns = gridViewBooks.getNumColumns();
                 if (nbColumns > 1) {
-                    gridViewBooks.setNumColumns(nbColumns - 1);
+                    nbColumns--;
+                    gridViewBooks.setNumColumns(nbColumns);
                 }
 
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(SettingsFragment.KEY_GRID_ZOOM, String.valueOf(nbColumns));
+                editor.commit();
             }
         });
 
@@ -170,9 +184,19 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
             @Override
             public void onClick(View view) {
                 int nbColumns = gridViewBooks.getNumColumns();
-                gridViewBooks.setNumColumns(nbColumns + 1);
+                if (nbColumns < 20) {
+                    nbColumns++;
+                    gridViewBooks.setNumColumns(nbColumns);
+                }
+
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(SettingsFragment.KEY_GRID_ZOOM, String.valueOf(nbColumns));
+                editor.commit();
             }
         });
+
+
 
         view.findViewById(R.id.multiSelectionCancel).setOnClickListener(new View.OnClickListener() {
             @Override

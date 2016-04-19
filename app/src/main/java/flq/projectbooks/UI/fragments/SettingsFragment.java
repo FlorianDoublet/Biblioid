@@ -20,6 +20,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public static final String KEY_PREF_NOTIF_INTERVAL = "pref_notif_interval";
     public static final String KEY_PREF_BOOKS_DISPLAY_ORDER = "pref_books_display_order";
     public static final String KEY_PREF_FILTER_DISPLAY_ORDER = "pref_filters_display_order";
+    public static final String KEY_GRID_ZOOM = "pref_grid_zoom";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -47,5 +47,50 @@
         <item>Ordre alphabétique</item>
         <item>Ordre aléatoire (Change à chaque démarrage de l\'application)</item>
     </string-array>
-    
+
+    <string-array name="grid_zoom_entries">
+        <item>"1 livre par ligne"</item>
+        <item>"2 livres par ligne"</item>
+        <item>"3 livres par ligne"</item>
+        <item>"4 livres par ligne"</item>
+        <item>"5 livres par ligne"</item>
+        <item>"6 livres par ligne"</item>
+        <item>"7 livres par ligne"</item>
+        <item>"8 livres par ligne"</item>
+        <item>"9 livres par ligne"</item>
+        <item>"10 livres par ligne"</item>
+        <item>"11 livres par ligne"</item>
+        <item>"12 livres par ligne"</item>
+        <item>"13 livres par ligne"</item>
+        <item>"14 livres par ligne"</item>
+        <item>"15 livres par ligne"</item>
+        <item>"16 livres par ligne"</item>
+        <item>"17 livres par ligne"</item>
+        <item>"18 livres par ligne"</item>
+        <item>"19 livres par ligne"</item>
+        <item>"20 livres par ligne"</item>
+    </string-array>
+
+    <string-array name="grid_zoom_value">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
 </resources>

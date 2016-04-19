@@ -24,7 +24,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Ordre d'affichage"
+        android:title="Affichage"
         android:key="pref_display_order_category">
 
         <ListPreference
@@ -45,6 +45,19 @@
             android:entryValues="@array/display_order_values"
             android:defaultValue="Ordre de création"/>
 
+        <ListPreference
+            android:key="pref_grid_zoom"
+            android:title="Niveau de zoom dans la liste des livres."
+            android:dialogTitle="Nombre de livre par lignes"
+            android:summary="%s"
+            android:entries="@array/grid_zoom_entries"
+            android:entryValues="@array/grid_zoom_value"
+            android:defaultValue="3"/>
+
+
+
     </PreferenceCategory>
+
+
 
 </PreferenceScreen>
