@@ -78,7 +78,7 @@
         <activity
             android:name=".UI.activities.GoogleDriveRestSharingCode"
             android:label="@string/title_activity_google_drive_rest_sharing_code"></activity>
-        <activity android:name=".UI.activities.Informations"></activity>
+        <activity android:name=".UI.activities.FilteredFilePickerActivity"></activity>
         <activity android:name=".UI.activities.SettingsActivity"
             android:label="Préférence de l'application" />
         <activity android:name=".UI.activities.DisplayFriends"

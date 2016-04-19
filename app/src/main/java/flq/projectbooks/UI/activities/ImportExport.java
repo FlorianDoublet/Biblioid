@@ -33,7 +33,6 @@ import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
-import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -48,6 +47,7 @@ import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
 import flq.projectbooks.R;
+import flq.projectbooks.UI.fragments.FilteredFilePickerFragment;
 import flq.projectbooks.UI.fragments.NoticeDialogFragment;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
@@ -462,22 +462,22 @@ public class ImportExport extends AppCompatActivity implements NoticeDialogFragm
     }
 
     public void exportDatabase(View view) {
-        Intent intent = new Intent(this, FilePickerActivity.class);
-        intent.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        intent.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
-        intent.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
-        intent.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
+        Intent intent = new Intent(this, FilteredFilePickerActivity.class);
+        intent.putExtra(FilteredFilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+        intent.putExtra(FilteredFilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
+        intent.putExtra(FilteredFilePickerActivity.EXTRA_MODE, FilteredFilePickerActivity.MODE_DIR);
+        intent.putExtra(FilteredFilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
 
         startActivityForResult(intent, FILE_CODE_EXPORT);
     }
 
     public void importDatabase(View view) {
-        Intent i = new Intent(this, FilePickerActivity.class);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
+        Intent i = new Intent(this, FilteredFilePickerActivity.class);
+        i.putExtra(FilteredFilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+        i.putExtra(FilteredFilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
+        i.putExtra(FilteredFilePickerActivity.EXTRA_MODE, FilteredFilePickerFragment.MODE_FILE);
 
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
+        i.putExtra(FilteredFilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
 
         startActivityForResult(i, FILE_CODE_IMPORT);
     }

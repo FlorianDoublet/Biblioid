@@ -180,14 +180,16 @@ public class BookFilter implements Serializable {
         //check if all categories in the filter are in the book
         if (categories != null && categories.size() != 0) {
             List<Category> categories_book = book.getCategories();
-            for (Category category_filter : categories) {
-                Boolean categoryMatch = false;
-                for (Category category : categories_book) {
-                    if (category.getId() == category_filter.getId())
-                        categoryMatch = true;
+            if(categories_book != null) {
+                for (Category category_filter : categories) {
+                    Boolean categoryMatch = false;
+                    for (Category category : categories_book) {
+                        if (category.getId() == category_filter.getId())
+                            categoryMatch = true;
+                    }
+                    if (!categoryMatch)
+                        return false;
                 }
-                if (!categoryMatch)
-                    return false;
             }
         }
 
