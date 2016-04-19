@@ -18,7 +18,7 @@
         />
 
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -28,9 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="3">
+            android:weightSum="4">
 
-                <LinearLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:orientation="horizontal"
@@ -41,19 +41,18 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:onClick="openCreateBookActivity"
-                        android:layout_margin="3dp">
+                        android:onClick="openCreateBookActivity">
 
                         <ImageView
                             android:id="@+id/imgViewCreateBook"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:adjustViewBounds="true"
                             android:paddingTop="3dp"
                             android:src="@drawable/book" />
 
                         <TextView
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_gravity="bottom"
                             android:background="#CC000000"
@@ -68,19 +67,17 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:onClick="openDisplayBookActivity"
-                        android:layout_margin="3dp">
+                        android:onClick="openDisplayBookActivity">
 
                         <ImageView
                             android:id="@+id/imgViewDisplayBooks"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:adjustViewBounds="true"
-                            android:paddingTop="3dp"
                             android:src="@drawable/library" />
 
                         <TextView
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_gravity="bottom"
                             android:background="#CC000000"
@@ -103,19 +100,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openDisplayFilterActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openDisplayFilterActivity">
 
                     <ImageView
                         android:id="@+id/imgViewDisplayFilters"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:paddingTop="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:src="@drawable/filter" />
 
                     <TextView
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_gravity="bottom"
                         android:background="#CC000000"
@@ -130,19 +125,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openScannerActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openScannerActivity">
 
                     <ImageView
                         android:id="@+id/imgViewScanBook"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:paddingTop="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:src="@drawable/barcode" />
 
                     <TextView
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_gravity="bottom"
                         android:background="#CC000000"
@@ -165,19 +158,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openImportExportActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openImportExportActivity">
 
                     <ImageView
                         android:id="@+id/imgViewImportExport"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:paddingTop="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:src="@drawable/importexport" />
 
                     <TextView
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_gravity="bottom"
                         android:background="#CC000000"
@@ -192,19 +183,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openDisplayFriendActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openDisplayFriendActivity">
 
                     <ImageView
                         android:id="@+id/imgViewDisplayFriend"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:paddingTop="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:src="@drawable/friend" />
 
                     <TextView
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_gravity="bottom"
                         android:background="#CC000000"
@@ -227,19 +216,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openSettingsActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openSettingsActivity">
 
                     <ImageView
                         android:id="@+id/imgViewOptions"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:paddingTop="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:src="@drawable/option" />
 
                     <TextView
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_gravity="bottom"
                         android:background="#CC000000"
@@ -254,19 +241,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openInformationActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openInformationActivity">
 
                     <ImageView
                         android:id="@+id/imgViewInformations"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:paddingTop="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:src="@drawable/info" />
 
                     <TextView
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_gravity="bottom"
                         android:background="#CC000000"
@@ -278,5 +263,5 @@
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 </LinearLayout>

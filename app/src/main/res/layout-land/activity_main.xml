@@ -18,7 +18,7 @@
         />
 
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="3">
+            android:weightSum="2">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,13 +42,12 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:onClick="openCreateBookActivity"
-                    android:layout_margin="3dp">
+                     >
 
                     <ImageView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:adjustViewBounds="true"
-                        android:paddingTop="3dp"
                         android:src="@drawable/book" />
 
                     <TextView
@@ -67,8 +66,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openDisplayBookActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openDisplayBookActivity">
 
                     <ImageView
                         android:layout_width="fill_parent"
@@ -94,8 +92,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openDisplayFilterActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openDisplayFilterActivity">
 
                     <ImageView
                         android:layout_width="fill_parent"
@@ -120,8 +117,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openScannerActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openScannerActivity">
 
                     <ImageView
                         android:layout_width="fill_parent"
@@ -155,8 +151,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openImportExportActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openImportExportActivity">
 
                     <ImageView
                         android:layout_width="fill_parent"
@@ -181,13 +176,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openCreateFriendActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openCreateFriendActivity">
 
                     <ImageView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:paddingTop="3dp"
                         android:adjustViewBounds="true"
                         android:src="@drawable/friend" />
 
@@ -207,13 +200,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openOptionActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openOptionActivity">
 
                     <ImageView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:paddingTop="3dp"
                         android:adjustViewBounds="true"
                         android:src="@drawable/option" />
 
@@ -233,13 +224,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:onClick="openInformationActivity"
-                    android:layout_margin="3dp">
+                    android:onClick="openInformationActivity">
 
                     <ImageView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:paddingTop="3dp"
                         android:adjustViewBounds="true"
                         android:src="@drawable/info" />
 
@@ -256,5 +245,5 @@
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 </LinearLayout>
