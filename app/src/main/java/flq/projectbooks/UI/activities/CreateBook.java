@@ -1,5 +1,7 @@
 package flq.projectbooks.UI.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -65,6 +67,7 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
     private ArrayAdapter<String> autocompetedArrayAdapterPublisher;
     private ArrayAdapter<String> multiAutocompetedArrayAdapterAuthor;
     private ArrayAdapter<String> multiAutocompetedArrayAdapterCategory;
+    private boolean isUpdatingBook;
 
     public static void resetBookCreation() {
         retrievedBook = null;
@@ -137,7 +140,9 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
         if (intent.hasExtra(DisplayBooks.GIVE_BOOK)) {
             setTitle("Modification d'un livre");
             book = (Book) intent.getSerializableExtra(DisplayBooks.GIVE_BOOK);
+            isUpdatingBook = true;
         } else {
+            isUpdatingBook = false;
             if (intent.hasExtra(Main.GIVE_BOOK_WITH_ISBN)) {
                 ((EditText) findViewById(R.id.bookISBN)).setText(intent.getStringExtra(Main.GIVE_BOOK_WITH_ISBN));
                 book = (Book) intent.getSerializableExtra(Main.ASK_NEW_BOOK);
@@ -252,7 +257,56 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
     }
 
 
-    private void createBook() {
+    private void createOrUpdateBook(View view) {
+        boolean isTheBookAlreadyExist = false;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                view.getContext());
+
+        String isbn = ((EditText) findViewById(R.id.bookISBN)).getText().toString();
+        for(Book b : BookLibrary.getInstance().getBookList()){
+            if(b.getIsbn().equals(isbn)){
+                isTheBookAlreadyExist = true;
+            }
+        }
+
+
+        if(!isUpdatingBook && isTheBookAlreadyExist) {
+            // set title
+            alertDialogBuilder.setTitle("Attention.");
+
+            alertDialogBuilder.setMessage("Un livre avec le même code existe déjà dans votre bilbiothèque. Voulez-vous tout de même créer le livre ?");
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Oui, valider", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, close
+                            // current activity
+                            createBook();
+                        }
+                    })
+                    .setNegativeButton("Non, annuler.", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            dialog.cancel();
+                            finish();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        }else{
+            createBook();
+
+            finish();
+        }
+    }
+
+    public void createBook(){
         EditText title = (EditText) findViewById(R.id.bookTitle);
         MultiAutoCompleteTextView author = (MultiAutoCompleteTextView) findViewById(R.id.bookAuthorMultiAutoCompleted);
         EditText isbn = (EditText) findViewById(R.id.bookISBN);
@@ -281,27 +335,29 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
 
         BookLibrary.getInstance().updateOrAddBook(book);
 
-        Toast.makeText(this, "Livre correctement ajouté !", Toast.LENGTH_LONG).show();
+        if(isUpdatingBook){
+            Toast.makeText(this, "Livre correctement modifié !", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, "Livre correctement ajouté !", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void bookCreation(View view) {
-        createBook();
-
-        finish();
+        createOrUpdateBook(view);
     }
 
     public void bookCreationAndAddWithScan(View view) {
-        createBook();
         Intent resultIntent = new Intent();
         setResult(Main.CREATE_BOOK_FINISHED_AND_ADD_WITH_SCANNER, resultIntent);
-        finish();
+
+        createOrUpdateBook(view);
     }
 
     public void bookCreationAndAddManual(View view) {
-        createBook();
         Intent resultIntent = new Intent();
         setResult(Main.CREATE_BOOK_FINISHED_AND_ADD_MANUALLY, resultIntent);
-        finish();
+
+        createOrUpdateBook(view);
     }
 
     public void Cancel(View view) {
