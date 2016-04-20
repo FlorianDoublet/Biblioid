@@ -72,7 +72,7 @@
             android:paddingTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Biblioid est actuellement en version 1.3.1"/>
+            android:text="Biblioid est actuellement en version 1.4"/>
 
 
         <TextView
