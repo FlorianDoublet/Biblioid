@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -242,6 +243,15 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_create_book, menu);
+        return true;
+    }
+
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -249,7 +259,33 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.display_books_activity_item) {
+            Main.openDisplayBookActivity(this, null);
+            return true;
+        }
+
+        if (id == R.id.display_filters_activity_item) {
+            Main.openDisplayFilterActivity(this, null);
+            return true;
+        }
+        if (id == R.id.scan_book_activity_item) {
+            Main.openScannerActivity(this, null);
+            return true;
+        }
+        if (id == R.id.import_export_activity_item) {
+            Main.openImportExportActivity(this, null);
+            return true;
+        }
+        if (id == R.id.display_friends_activity_item) {
+            Main.openDisplayFriendActivity(this, null);
+            return true;
+        }
+        if (id == R.id.preference_activity_item) {
+            Main.openSettingsActivity(this, null);
+            return true;
+        }
+        if (id == R.id.informations_activity_item) {
+            Main.openInformationActivity(this, null);
             return true;
         }
 
@@ -283,6 +319,7 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
                             // if this button is clicked, close
                             // current activity
                             createBook();
+                            finish();
                         }
                     })
                     .setNegativeButton("Non, annuler.", new DialogInterface.OnClickListener() {
@@ -512,6 +549,10 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
                 ((ImageButton) findViewById(R.id.bookImageImageButton)).setImageResource(bookSourcesLogos.get(indexBookImage));
             }
         }
+
+        Main.onActivityResultStatic(this, requestCode, resultCode, data);
+
+
     }
 
     public void changeImageSource(View view) {

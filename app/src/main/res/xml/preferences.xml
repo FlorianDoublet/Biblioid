@@ -58,6 +58,18 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="Base de donnée"
+        android:key="pref_database">
+
+        <Preference
+            android:key="@string/pref_erase_database"
+            android:title="Remise à zéro de la bibliothèque"
+            />
+
+
+    </PreferenceCategory>
+
 
 
 </PreferenceScreen>

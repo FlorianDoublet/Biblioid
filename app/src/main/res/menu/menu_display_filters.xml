@@ -6,5 +6,32 @@
         android:id="@+id/create_filter_option"
         android:title="Ajouter"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/create_book_activity_item"
+        android:title="@string/title_activity_create_book"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/display_books_activity_item"
+        android:title="@string/title_activity_display_books"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/scan_book_activity_item"
+        android:title="@string/scan"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/import_export_activity_item"
+        android:title="@string/importExport"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/display_friends_activity_item"
+        android:title="@string/displayFriends"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/preference_activity_item"
+        android:title="@string/option"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/informations_activity_item"
+        android:title="@string/Info"
+        app:showAsAction="never" />
 </menu>

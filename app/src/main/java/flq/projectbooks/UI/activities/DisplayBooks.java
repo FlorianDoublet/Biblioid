@@ -7,7 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import flq.projectbooks.R;
 import flq.projectbooks.UI.fragments.BookInfo;
@@ -27,6 +32,13 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
 
     @Override
     public void OnBookSelected(Book book) {
+        FrameLayout layoutBookInfoContainer = (FrameLayout) findViewById(R.id.bookInfoContainer);
+        if(layoutBookInfoContainer != null){
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    0,
+                    ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
+            layoutBookInfoContainer.setLayoutParams(param);
+        }
         fragmentInfoBook = new BookInfo();
         Bundle bundle = new Bundle();
         bundle.putSerializable(BookInfo.ARG_PARAM1, book);
@@ -40,6 +52,7 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
             transaction.replace(R.id.listContainer, fragmentInfoBook);
             transaction.commit();
         }
+
     }
 
     @Override
@@ -65,6 +78,9 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
         if(myToolbar != null)
             setSupportActionBar(myToolbar);
 
+
+
+
         if (findViewById(R.id.listContainer) != null) {
             if (savedInstanceState != null) {
 
@@ -80,10 +96,26 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
                     transaction.replace(R.id.listContainer, fragmentList);
                     if (fragmentInfoBook != null) {
                         transaction.replace(R.id.bookInfoContainer, fragmentInfoBook);
+                    } else {
+                        FrameLayout layoutBookInfoContainer = (FrameLayout) findViewById(R.id.bookInfoContainer);
+                        if(layoutBookInfoContainer != null){
+                            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                                    0,
+                                    ViewGroup.LayoutParams.MATCH_PARENT, 0.0f);
+                            layoutBookInfoContainer.setLayoutParams(param);
+                        }
                     }
                 }
                 transaction.commit();
                 return;
+            } else {
+                FrameLayout layoutBookInfoContainer = (FrameLayout) findViewById(R.id.bookInfoContainer);
+                if(layoutBookInfoContainer != null){
+                    LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                            0,
+                            ViewGroup.LayoutParams.MATCH_PARENT, 0.0f);
+                    layoutBookInfoContainer.setLayoutParams(param);
+                }
             }
             fragmentList = new BookList();
 
@@ -106,6 +138,61 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
 
     public void modifBook(View view) {
         fragmentInfoBook.modifBook();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_display_books, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.create_book_activity_item) {
+            Main.openCreateBookActivity(this, null);
+            return true;
+        }
+
+        if (id == R.id.display_filters_activity_item) {
+            Main.openDisplayFilterActivity(this, null);
+            return true;
+        }
+        if (id == R.id.scan_book_activity_item) {
+            Main.openScannerActivity(this, null);
+            return true;
+        }
+        if (id == R.id.import_export_activity_item) {
+            Main.openImportExportActivity(this, null);
+            return true;
+        }
+        if (id == R.id.display_friends_activity_item) {
+            Main.openDisplayFriendActivity(this, null);
+            return true;
+        }
+        if (id == R.id.preference_activity_item) {
+            Main.openSettingsActivity(this, null);
+            return true;
+        }
+        if (id == R.id.informations_activity_item) {
+            Main.openInformationActivity(this, null);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        fragmentList.onActivityResult(requestCode, resultCode, data);
+        Main.onActivityResultStatic(this, requestCode, resultCode, data);
+
     }
 
 }

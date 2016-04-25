@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -120,6 +122,55 @@ public class ImportExport extends AppCompatActivity implements NoticeDialogFragm
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_import_export, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.create_book_activity_item) {
+            Main.openCreateBookActivity(this, null);
+            return true;
+        }
+
+        if (id == R.id.display_books_activity_item) {
+            Main.openDisplayBookActivity(this, null);
+            return true;
+        }
+
+        if (id == R.id.display_filters_activity_item) {
+            Main.openDisplayFilterActivity(this, null);
+            return true;
+        }
+        if (id == R.id.scan_book_activity_item) {
+            Main.openScannerActivity(this, null);
+            return true;
+        }
+        if (id == R.id.display_friends_activity_item) {
+            Main.openDisplayFriendActivity(this, null);
+            return true;
+        }
+        if (id == R.id.preference_activity_item) {
+            Main.openSettingsActivity(this, null);
+            return true;
+        }
+        if (id == R.id.informations_activity_item) {
+            Main.openInformationActivity(this, null);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -160,6 +211,8 @@ public class ImportExport extends AppCompatActivity implements NoticeDialogFragm
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleDriveSignInResult(result);
         }
+
+        Main.onActivityResultStatic(this, requestCode, resultCode, data);
     }
 
     private void handleSignInResult(GoogleSignInResult result) {

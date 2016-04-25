@@ -1,8 +1,7 @@
 package flq.projectbooks.UI.activities;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,13 +13,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextThemeWrapper;
 import android.view.Display;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 
@@ -30,8 +26,6 @@ import java.util.ArrayList;
 import flq.projectbooks.R;
 import flq.projectbooks.data.Book;
 import flq.projectbooks.data.BookFilter;
-import flq.projectbooks.data.Category;
-import flq.projectbooks.data.Publisher;
 import flq.projectbooks.data.libraries.AuthorLibrary;
 import flq.projectbooks.data.libraries.BookFilterCatalog;
 import flq.projectbooks.data.libraries.BookLibrary;
@@ -137,130 +131,136 @@ public class Main extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_raz) {
-            confirmDialogRAZ(this);
+        if (id == R.id.create_book_activity_item) {
+            Main.openCreateBookActivity(this, null);
+            return true;
+        }
+
+        if (id == R.id.display_books_activity_item) {
+            openDisplayBookActivity(this, null);
+            return true;
+        }
+
+        if (id == R.id.display_filters_activity_item) {
+            openDisplayFilterActivity(this, null);
+            return true;
+        }
+        if (id == R.id.scan_book_activity_item) {
+            openScannerActivity(this, null);
+            return true;
+        }
+        if (id == R.id.import_export_activity_item) {
+            openImportExportActivity(this, null);
+            return true;
+        }
+        if (id == R.id.display_friends_activity_item) {
+            openDisplayFriendActivity(this, null);
+            return true;
+        }
+        if (id == R.id.preference_activity_item) {
+            openSettingsActivity(this, null);
+            return true;
+        }
+        if (id == R.id.informations_activity_item) {
+            openInformationActivity(this, null);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void openScannerActivity(View view) {
-        new IntentIntegrator(this).initiateScan();
+    public  void openScannerActivity(View view) {
+        openScannerActivity(view.getContext(), view);
     }
 
-    public void openCreateBookActivity(View view) {
-        CreateBook.resetBookCreation();
-        Intent intent = new Intent(this, CreateBook.class);
-        intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
-        startActivityForResult(intent, CREATE_BOOK);
+    public static void openScannerActivity(Context context, View view) {
+        new IntentIntegrator(((Activity)context)).initiateScan();
     }
 
-    public void openCreateBookActivityWithISBN(String ISBN) {
+    public  void openCreateBookActivity(View view) {
+        openCreateBookActivity(view.getContext(), view);
+    }
+
+    public static void openCreateBookActivity(Context context, View view) {
+        CreateBook.resetBookCreation();
+        Intent intent = new Intent(context, CreateBook.class);
+        intent.putExtra(ASK_NEW_BOOK, BookLibrary.getInstance().getNewBook());
+        ((Activity)context).startActivityForResult(intent, CREATE_BOOK);
+    }
+
+    public static void openCreateBookActivityWithISBN(Context context, String ISBN) {
         CreateBook.resetBookCreation();
 
-        Intent intent = new Intent(this, CreateBook.class);
+        Intent intent = new Intent(context, CreateBook.class);
         intent.putExtra(GIVE_BOOK_WITH_ISBN, ISBN);
-        intent.putExtra(ASK_NEW_BOOK, books.getNewBook());
-        startActivityForResult(intent, CREATE_BOOK);
+        intent.putExtra(ASK_NEW_BOOK, BookLibrary.getInstance().getNewBook());
+        ((Activity)context).startActivityForResult(intent, CREATE_BOOK);
     }
 
-    public void openDisplayFriendActivity(View view) {
-        Intent intent = new Intent(this, DisplayFriends.class);
-        startActivity(intent);
+    public void openDisplayFriendActivity(View view){
+        openDisplayFriendActivity(view.getContext(), view);
     }
 
+    public static void openDisplayFriendActivity(Context context, View view) {
+        Intent intent = new Intent(context, DisplayFriends.class);
+        context.startActivity(intent);
+    }
 
     public void openDisplayBookActivity(View view) {
-        Intent intent = new Intent(this, DisplayBooks.class);
-        startActivity(intent);
+        openDisplayBookActivity(view.getContext(), view);
+    }
+
+    public static void openDisplayBookActivity(Context context, View view) {
+        Intent intent = new Intent(context, DisplayBooks.class);
+        context.startActivity(intent);
     }
 
     public void openDisplayFilterActivity(View view) {
-        Intent intent = new Intent(this, DisplayFilters.class);
-        startActivity(intent);
+        openDisplayFilterActivity(view.getContext(), view);
+    }
+
+    public static void openDisplayFilterActivity(Context context, View view) {
+        Intent intent = new Intent(context, DisplayFilters.class);
+        context.startActivity(intent);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        MySQLiteHelper db = new MySQLiteHelper(this);
+        onActivityResultStatic(this, requestCode, resultCode, data);
+    }
 
+    public static void onActivityResultStatic(Context context, int requestCode, int resultCode, Intent data){
         if (data != null && data.hasExtra(("SCAN_RESULT"))) {
             String ISBN = data.getStringExtra("SCAN_RESULT");
-            openCreateBookActivityWithISBN(ISBN);
+            openCreateBookActivityWithISBN(context, ISBN);
         }
 
         if (resultCode == CREATE_BOOK_FINISHED_AND_ADD_MANUALLY) {
-            openCreateBookActivity(null);
+            openCreateBookActivity(context, null);
         }
 
         if (resultCode == CREATE_BOOK_FINISHED_AND_ADD_WITH_SCANNER) {
-            openScannerActivity(null);
+            openScannerActivity(context, null);
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+    public void openImportExportActivity(View view){
+        openImportExportActivity(view.getContext(), view);
     }
 
-    private void confirmDialogRAZ(Context context) {
-        final AlertDialog alert = new AlertDialog.Builder(
-                new ContextThemeWrapper(context, android.R.style.Theme_Dialog))
-                .create();
-        alert.setTitle("Attention");
-        alert.setMessage("Voulez-vous vraiment effacer les données ?");
-        alert.setCancelable(false);
-        alert.setCanceledOnTouchOutside(false);
-
-        alert.setButton(DialogInterface.BUTTON_POSITIVE, "Oui",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        eraseDatabase();
-
-                        alert.dismiss();
-                    }
-                });
-
-        alert.setButton(DialogInterface.BUTTON_NEGATIVE, "Non",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        alert.dismiss();
-
-                    }
-                });
-
-        alert.show();
+    public static void openImportExportActivity(Context context, View view) {
+        Intent i = new Intent(context, ImportExport.class);
+        context.startActivity(i);
     }
 
-    void eraseDatabase() {
-        deleteDatabase("books.db");
-        Toast.makeText(this, "Données remises à zéro", Toast.LENGTH_LONG).show();
-        updateAllLibrary();
+    public void openSettingsActivity(View view){
+        openSettingsActivity(view.getContext(), view);
     }
 
-    void updateAllLibrary(){
-        BookLibrary.getInstance().updateLocalList();
-        BookFilterCatalog.getInstance().updateLocalList();
-        AuthorLibrary.getInstance().updateLocalList();
-        CategoryLibrary.getInstance().updateLocalList();
-        FriendLibrary.getInstance().updateLocalList();
-        LoanLibrary.getInstance().updateLocalList();
-        PublisherLibrary.getInstance().updateLocalList();
-
-    }
-
-    public void openImportExportActivity(View view) {
-        Intent i = new Intent(this, ImportExport.class);
-        startActivity(i);
-    }
-
-    public void openSettingsActivity(View view) {
-        Intent i = new Intent(this, SettingsActivity.class);
-        startActivity(i);
+    public static void openSettingsActivity(Context context, View view) {
+        Intent i = new Intent(context, SettingsActivity.class);
+        context.startActivity(i);
     }
 
     public Drawable ResizeImage(int imageID) {
@@ -304,8 +304,12 @@ public class Main extends AppCompatActivity {
         return resizedBitmap;
     }
 
-    public void openInformationActivity(View view) {
-        Intent i = new Intent(this, Informations.class);
-        startActivity(i);
+    public  void openInformationActivity(View view) {
+        openInformationActivity(view.getContext(), view);
+    }
+
+    public static void openInformationActivity(Context context, View view) {
+        Intent i = new Intent(context, Informations.class);
+        context.startActivity(i);
     }
 }
