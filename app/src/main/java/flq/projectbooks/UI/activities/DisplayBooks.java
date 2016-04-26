@@ -191,6 +191,10 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         fragmentList.onActivityResult(requestCode, resultCode, data);
+        if(fragmentInfoBook != null){
+            fragmentInfoBook.onActivityResult(requestCode, resultCode, data);
+        }
+
         Main.onActivityResultStatic(this, requestCode, resultCode, data);
 
     }

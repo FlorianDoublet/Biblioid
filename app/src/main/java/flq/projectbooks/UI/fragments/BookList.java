@@ -2,6 +2,7 @@ package flq.projectbooks.UI.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,7 +49,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
 
 
     private OnBookSelected mBookListener;
-
+    private Context mContext;
     private int selectedBookIndex;
     private GridView gridViewBooks;
     private BookAdapter listAdapter;
@@ -120,7 +121,7 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
 
         gridViewBooks = (GridView) view.findViewById(R.id.gridViewBooks);
-
+        mContext = view.getContext();
         bookLibrary = BookLibrary.getInstance();
         createGridView(view);
 
@@ -270,11 +271,13 @@ public class BookList extends Fragment implements PopupMenu.OnMenuItemClickListe
             bookLibrary = bookFilter.getFilteredLibrary();
         }
 
-        listAdapter = new BookAdapter(bookLibrary.getBookList(), view.getContext(), gridViewBooks);
+        if(view == null){
+            listAdapter = new BookAdapter(bookLibrary.getBookList(), mContext, gridViewBooks);
+        }else{
+            listAdapter = new BookAdapter(bookLibrary.getBookList(), view.getContext(), gridViewBooks);
+        }
 
         gridViewBooks.setAdapter(listAdapter);
-
-
         listAdapter.notifyDataSetInvalidated();
         gridViewBooks.invalidate();
     }

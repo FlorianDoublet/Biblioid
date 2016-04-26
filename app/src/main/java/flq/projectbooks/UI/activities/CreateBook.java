@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,8 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
     private ArrayAdapter<String> multiAutocompetedArrayAdapterAuthor;
     private ArrayAdapter<String> multiAutocompetedArrayAdapterCategory;
     private boolean isUpdatingBook;
+
+    static int index_action_after_creation = -1;
 
     public static void resetBookCreation() {
         retrievedBook = null;
@@ -236,6 +239,24 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
             }
         }
 
+
+
+        List<String> spinnerArray =  new ArrayList<String>();
+        spinnerArray.add("Quitter");
+        spinnerArray.add("Nouveau scan");
+        spinnerArray.add("Nouveau livre");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinnerArray);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner sItems = (Spinner) findViewById(R.id.spinnerCreateBook);
+        sItems.setAdapter(adapter);
+
+        if(index_action_after_creation != -1){
+            sItems.setSelection(index_action_after_creation);
+        }
+
         //init of our (multi) auto-completed text view
         initPublisherAutoCompletion();
         initAuthorsMultiAutoCompletion();
@@ -338,7 +359,7 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
             alertDialog.show();
         }else{
             createBook();
-
+            setResult(RESULT_OK, new Intent());
             finish();
         }
     }
@@ -380,7 +401,22 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
     }
 
     public void bookCreation(View view) {
-        createOrUpdateBook(view);
+        Spinner sItems = (Spinner) findViewById(R.id.spinnerCreateBook);
+        int getSelectedItem = sItems.getSelectedItemPosition();
+        index_action_after_creation = getSelectedItem;
+        switch (getSelectedItem){
+            case 0:
+                createOrUpdateBook(view);
+                break;
+            case 1:
+                bookCreationAndAddWithScan(view);
+                break;
+            case 2:
+                bookCreationAndAddManual(view);
+                break;
+            default:
+                createOrUpdateBook(view);
+        }
     }
 
     public void bookCreationAndAddWithScan(View view) {
@@ -398,7 +434,22 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
     }
 
     public void Cancel(View view) {
-        finish();
+        Spinner sItems = (Spinner) findViewById(R.id.spinnerCreateBook);
+        int getSelectedItem = sItems.getSelectedItemPosition();
+        index_action_after_creation = getSelectedItem;
+        switch (getSelectedItem){
+            case 0:
+                finish();
+                break;
+            case 1:
+                CancelAndAddWithScan(view);
+                break;
+            case 2:
+                CancelAndAddManual(view);
+                break;
+            default:
+                finish();
+        }
     }
 
     public void CancelAndAddWithScan(View view) {
@@ -1025,7 +1076,7 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
 
     private void addSourceSetAllButton(final int index) {
         ImageButton btnSource = new ImageButton(this);
-        int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+        int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics());
         btnSource.setLayoutParams(new LinearLayout.LayoutParams(size, size));
         btnSource.setScaleType(ImageView.ScaleType.FIT_XY);
         btnSource.setImageResource(bookSourcesLogos.get(index));
@@ -1064,7 +1115,7 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
 
     private void addCustomSetAllButton() {
         ImageButton btnSource = new ImageButton(this);
-        int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+        int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics());
         btnSource.setLayoutParams(new LinearLayout.LayoutParams(size, size));
         btnSource.setScaleType(ImageView.ScaleType.FIT_XY);
         btnSource.setImageResource(bookSourcesLogos.get(bookSourcesLogos.size() - 1));
