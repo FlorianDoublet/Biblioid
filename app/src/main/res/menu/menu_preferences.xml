@@ -1,12 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".UI.activities.DisplayFriends">
-    <item
-        android:id="@+id/create_friend_option"
-        android:title="Ajouter"
-        app:showAsAction="ifRoom" />
-
+    tools:context=".UI.activities.SettingsActivity">
     <item
         android:id="@+id/create_book_activity_item"
         android:title="@string/title_activity_create_book"
@@ -28,12 +23,13 @@
         android:title="@string/importExport"
         app:showAsAction="never" />
     <item
-        android:id="@+id/preference_activity_item"
-        android:title="@string/option"
+        android:id="@+id/display_friends_activity_item"
+        android:title="@string/displayFriends"
         app:showAsAction="never" />
     <item
         android:id="@+id/informations_activity_item"
         android:title="@string/Info"
         app:showAsAction="never" />
+
 
 </menu>

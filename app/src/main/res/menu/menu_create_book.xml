@@ -2,9 +2,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".UI.activities.CreateBook">
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:id="@+id/display_books_activity_item"
+        android:title="@string/title_activity_display_books"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/display_filters_activity_item"
+        android:title="@string/title_activity_display_filters"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/scan_book_activity_item"
+        android:title="@string/scan"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/import_export_activity_item"
+        android:title="@string/importExport"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/display_friends_activity_item"
+        android:title="@string/displayFriends"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/preference_activity_item"
+        android:title="@string/option"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/informations_activity_item"
+        android:title="@string/Info"
         app:showAsAction="never" />
 </menu>

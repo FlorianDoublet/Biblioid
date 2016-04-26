@@ -59,22 +59,15 @@
                 android:orientation="horizontal"
                 android:layout_weight="3">
                 <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="65dp"
+                    android:layout_height="45dp"
                     android:onClick="bookCreation"
                     android:text="✔" />
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:onClick="bookCreationAndAddWithScan"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/saveandbarcode" />
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:onClick="bookCreationAndAddManual"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/saveandbook" />
+                <Button
+                    android:layout_width="65dp"
+                    android:layout_height="45dp"
+                    android:onClick="Cancel"
+                    android:text="✘" />
             </LinearLayout>
 
         </LinearLayout>
@@ -95,31 +88,6 @@
                 android:orientation="horizontal"
                 android:layout_weight="5">
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/cancelCreationBookLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="3">
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:onClick="Cancel"
-                    android:text="✘" />
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:onClick="CancelAndAddWithScan"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/cancelandbarcode" />
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:onClick="CancelAndAddManual"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/cancelandbook" />
             </LinearLayout>
 
         </LinearLayout>
@@ -478,26 +446,44 @@
                         android:visibility="gone" />
                 </LinearLayout>
 
-                <Button
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:onClick="bookCreation"
-                    android:text="@string/btnOK" />
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:onClick="bookCreation"
+                        android:text="@string/btnOK" />
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:onClick="bookCreationAndAddWithScan"
-                    android:text="@string/btnOkWithScan" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=" ou "/>
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:onClick="bookCreationAndAddManual"
-                    android:text="@string/btnOkWithManual" />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:onClick="Cancel"
+                        android:text="@string/btnCancelBook" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=" et "/>
+
+                    <Spinner
+                        android:id="@+id/spinnerCreateBook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+                    </Spinner>
+                </LinearLayout>
+
 
             </LinearLayout>
         </ScrollView>

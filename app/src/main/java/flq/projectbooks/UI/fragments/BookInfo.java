@@ -685,7 +685,6 @@ public class BookInfo extends Fragment implements Parcelable {
         super.onActivityResult(requestCode, resultCode, data);
 
         book = BookLibrary.getInstance().getBookById(book.getId());
-
         displayBook(this.getView());
     }
 
