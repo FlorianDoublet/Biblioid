@@ -90,7 +90,13 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 getSupportFragmentManager().popBackStack();
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    transaction.replace(R.id.listContainer, fragmentList);
+                    if (fragmentInfoBook != null) {
+                        //used to show the infoBook if in landscape a book was previously clicked
+                        transaction.replace(R.id.listContainer, fragmentInfoBook);
+                        //needed to save the previous fragment
+                        transaction.addToBackStack(null);
+                    }
+
                 } else {
                     invalidateOptionsMenu();
                     transaction.replace(R.id.listContainer, fragmentList);
@@ -197,6 +203,13 @@ public class DisplayBooks extends AppCompatActivity implements BookList.OnBookSe
 
         Main.onActivityResultStatic(this, requestCode, resultCode, data);
 
+    }
+
+    //Used to don't show a previous clicked book in landscape mode if we has process a "back" on a book before
+    @Override
+    public void onBackPressed() {
+        fragmentInfoBook = null;
+        super.onBackPressed();
     }
 
 }
