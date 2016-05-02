@@ -359,7 +359,8 @@ public class CreateBook extends AppCompatActivity implements GetBookInfo.AsyncRe
             alertDialog.show();
         }else{
             createBook();
-            setResult(RESULT_OK, new Intent());
+            //setResult(RESULT_OK, getIntent());
+            //setResult(RESULT_OK, new Intent());
             finish();
         }
     }
