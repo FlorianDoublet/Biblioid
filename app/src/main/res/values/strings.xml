@@ -69,8 +69,8 @@
     <string name="enable_notification">Active les notifications</string>
     <string name="enable_notification_sum">Autorise biblioid à vous envoyer des notifications</string>
     <string name="notification_category">Notifications</string>
-    <string name="notification_interval">Intervale des notifications</string>
-    <string name="notification_interval_sum">Intervale des notifications en minute ou heure</string>
+    <string name="notification_interval">Intervalle des notifications</string>
+    <string name="notification_interval_sum">Intervalle des notifications en minute ou heure</string>
     <string name="loan_button_create">Creer Prêt</string>
     <string name="loan_button_modify">Modifier Prêt</string>
     <string name="delete_friend">Supprimer l\'ami</string>
